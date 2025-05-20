@@ -5,16 +5,16 @@
 <template>
   <footer class="footer">
     <div class="footer-cta">
-      <h2>Ready to Bring Your Vision to Life?</h2>
-      <p>Let's discuss your project and create something amazing together.</p>
-      <button class="btn btn-primary">Get in Touch</button>
+      <h2>¿Quieres compartir tu historia?</h2>
+      <p>Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.</p>
+      <button class="btn btn-primary">Contactar</button>
     </div>
 
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <span class="logo-text">Monica</span>
-          <p>Diseñadora y desarrolladora web</p>
+          <span class="logo-text">Mujeres Trabajadoras</span>
+          <p>Historias que inspiran</p>
         </div>
 
         <div class="footer-links">
@@ -22,9 +22,8 @@
             <h3>Navegación</h3>
             <ul>
               <li><a href="/">Inicio</a></li>
-              <li><a href="/historias">Proyectos</a></li>
-              <li><a href="/servicios">Servicios</a></li>
-              <li><a href="/experiencia">Experiencia</a></li>
+              <li><a href="/historias">Historias</a></li>
+              <li><a href="/organizacion">Organización</a></li>
             </ul>
           </div>
 
@@ -60,7 +59,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2023 Monica. Todos los derechos reservados.</p>
+        <p>&copy; 2023 Mujeres Trabajadoras. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>

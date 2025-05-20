@@ -8,6 +8,18 @@ defineProps({
     type: String,
     default: ''
   },
+  origin: {
+    type: String,
+    default: ''
+  },
+  age: {
+    type: [Number, String],
+    default: ''
+  },
+  profession: {
+    type: String,
+    default: ''
+  },
   color: {
     type: String,
     default: 'orange' // 'orange', 'black', 'blue'
@@ -18,7 +30,7 @@ defineProps({
   },
   buttonText: {
     type: String,
-    default: 'Ver proyecto'
+    default: 'Leer historia'
   },
   link: {
     type: String,
@@ -41,7 +53,7 @@ const getBackgroundColor = (color) => {
 </script>
 
 <template>
-  <div class="project-card" :class="color">
+  <div class="story-card" :class="color">
     <div class="card-content">
       <div class="card-icon">
         <!-- Sun icon -->
@@ -72,6 +84,21 @@ const getBackgroundColor = (color) => {
 
       <h3 class="card-title">{{ title }}</h3>
 
+      <div class="card-details" v-if="origin || age || profession">
+        <div class="detail-item" v-if="origin">
+          <span class="detail-label">Origen:</span>
+          <span class="detail-value">{{ origin }}</span>
+        </div>
+        <div class="detail-item" v-if="age">
+          <span class="detail-label">Edad:</span>
+          <span class="detail-value">{{ age }} años</span>
+        </div>
+        <div class="detail-item" v-if="profession">
+          <span class="detail-label">Profesión:</span>
+          <span class="detail-value">{{ profession }}</span>
+        </div>
+      </div>
+
       <p v-if="description" class="card-description">{{ description }}</p>
 
       <a :href="link" class="card-button">
@@ -88,7 +115,7 @@ const getBackgroundColor = (color) => {
 </template>
 
 <style scoped>
-.project-card {
+.story-card {
   position: relative;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
@@ -101,20 +128,20 @@ const getBackgroundColor = (color) => {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.project-card:hover {
+.story-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
 }
 
-.project-card.orange {
+.story-card.orange {
   background-color: var(--card-orange);
 }
 
-.project-card.black {
+.story-card.black {
   background-color: var(--card-black);
 }
 
-.project-card.blue {
+.story-card.blue {
   background-color: var(--card-blue);
 }
 
@@ -133,6 +160,21 @@ const getBackgroundColor = (color) => {
   color: white;
   font-size: var(--font-size-xl);
   margin-bottom: var(--spacing-md);
+}
+
+.card-details {
+  margin-bottom: var(--spacing-md);
+}
+
+.detail-item {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.detail-label {
+  font-weight: bold;
+  margin-right: var(--spacing-xs);
 }
 
 .card-description {

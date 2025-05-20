@@ -15,7 +15,7 @@ function toggleMenu() {
       <nav class="navbar">
         <div class="logo">
           <RouterLink to="/">
-            <span class="logo-text">Monica</span>
+            <span class="logo-text">Mujeres Trabajadoras</span>
           </RouterLink>
         </div>
 
@@ -27,10 +27,8 @@ function toggleMenu() {
 
         <div class="nav-links" :class="{ 'active': isMenuOpen }">
           <RouterLink to="/" @click="isMenuOpen = false">Inicio</RouterLink>
-          <RouterLink to="/historias" @click="isMenuOpen = false">Proyectos</RouterLink>
-          <RouterLink to="/servicios" @click="isMenuOpen = false">Servicios</RouterLink>
-          <RouterLink to="/experiencia" @click="isMenuOpen = false">Experiencia</RouterLink>
-          <RouterLink to="/sobre-mi" @click="isMenuOpen = false">Sobre mí</RouterLink>
+          <RouterLink to="/historias" @click="isMenuOpen = false">Historias</RouterLink>
+          <RouterLink to="/organizacion" @click="isMenuOpen = false">Organización</RouterLink>
           <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
         </div>
 
@@ -48,7 +46,7 @@ function toggleMenu() {
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
           </button>
-          <button class="contact-btn btn btn-primary">Contacto</button>
+          <button class="contact-btn btn btn-primary">Compartir Historia</button>
         </div>
       </nav>
     </div>
@@ -72,7 +70,7 @@ function toggleMenu() {
 }
 
 .logo {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: 700;
 }
 

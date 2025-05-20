@@ -1,69 +1,33 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
-import ServiceCard from '../components/ServiceCard.vue'
-import ExperienceCard from '../components/ExperienceCard.vue'
 import FaqItem from '../components/FaqItem.vue'
 import { computed } from 'vue'
 
 const storyStore = useStoryStore()
-const featuredProjects = computed(() => storyStore.getLatestStories)
+const latestStories = computed(() => storyStore.getLatestStories)
 
 // Datos de ejemplo para las secciones
-const services = [
-  { id: 1, title: 'Diseño web', color: 'pink', icon: 'design' },
-  { id: 2, title: 'Desarrollo', color: 'yellow', icon: 'code' },
-  { id: 3, title: 'Marketing', color: 'blue', icon: 'marketing' },
-  { id: 4, title: 'Consultoría', color: 'mint', icon: 'consulting' }
-]
-
-const experiences = [
-  {
-    id: 1,
-    title: 'UX/UI Designer',
-    company: 'Creative Solutions',
-    period: '2020 - Present',
-    description: 'Led the design of multiple web and mobile applications, collaborating with cross-functional teams to deliver user-centered solutions that increased engagement by 40%.',
-    color: 'blue'
-  },
-  {
-    id: 2,
-    title: 'Senior Web Developer',
-    company: 'Digital Agency',
-    period: '2018 - 2020',
-    description: 'Developed responsive websites and web applications for clients across various industries, implementing best practices in performance and accessibility.',
-    color: 'yellow'
-  },
-  {
-    id: 3,
-    title: 'Graphic Designer',
-    company: 'Creative Studio',
-    period: '2016 - 2018',
-    description: 'Created visual identities, marketing materials, and digital assets for brands, maintaining consistent design language across multiple platforms.',
-    color: 'pink'
-  }
-]
-
 const faqs = [
   {
     id: 1,
-    question: 'What services do you offer?',
-    answer: 'I offer a range of services including web design, development, branding, and digital marketing. Each service is tailored to meet your specific needs and goals.'
+    question: '¿Qué es el proyecto "Mujeres Trabajadoras"?',
+    answer: 'Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.'
   },
   {
     id: 2,
-    question: 'How do you charge for projects?',
-    answer: 'I typically work on a project basis with a fixed price quote after understanding your requirements. For ongoing work, I also offer monthly retainer packages.'
+    question: '¿Cómo puedo compartir mi historia?',
+    answer: 'Puedes contactarnos a través del formulario en nuestra web o enviarnos un correo electrónico. Realizaremos una entrevista y trabajaremos contigo para dar forma a tu historia.'
   },
   {
     id: 3,
-    question: 'How long does a typical project take?',
-    answer: 'Project timelines vary depending on scope and complexity. A simple website might take 2-4 weeks, while more complex projects can take 2-3 months or more.'
+    question: '¿Quiénes pueden participar?',
+    answer: 'Todas las mujeres trabajadoras, independientemente de su profesión, edad u origen, pueden compartir sus experiencias. Buscamos representar la diversidad del mundo laboral femenino.'
   },
   {
     id: 4,
-    question: 'Can you help with ongoing maintenance?',
-    answer: 'Yes, I offer maintenance packages to keep your website secure, updated, and performing optimally after launch.'
+    question: '¿Cómo puedo apoyar este proyecto?',
+    answer: 'Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias.'
   }
 ]
 </script>
@@ -75,14 +39,14 @@ const faqs = [
       <div class="container">
         <div class="hero-content">
           <div class="hero-text">
-            <p class="intro-text">Hi, I'm Monica</p>
-            <h1>Bringing your digital vision to life with creative design</h1>
+            <p class="intro-text">Proyecto</p>
+            <h1>Mujeres Trabajadoras: Historias que Inspiran</h1>
             <p class="hero-description">
-              I'm a designer and developer specializing in creating beautiful, functional websites and applications that help businesses grow and succeed in the digital world.
+              Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.
             </p>
             <div class="hero-buttons">
-              <button class="btn btn-primary">View My Work</button>
-              <button class="btn btn-secondary">Contact Me</button>
+              <button class="btn btn-primary" @click="$router.push('/historias')">Ver Historias</button>
+              <button class="btn btn-secondary">Contacto</button>
             </div>
             <div class="social-links">
               <a href="#" class="social-link">
@@ -103,97 +67,87 @@ const faqs = [
             </div>
           </div>
           <div class="hero-image">
-            <img src="@/assets/placeholder-image.svg" alt="Monica - Designer and Developer" />
+            <img src="@/assets/placeholder-image.svg" alt="Mujeres Trabajadoras - Historias que Inspiran" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Featured Projects Section -->
-    <section class="section featured-projects-section">
+    <!-- Sección de Organización -->
+    <section class="section organization-section">
       <div class="container">
-        <h2 class="section-title">Featured Projects</h2>
+        <h2 class="section-title">Organización</h2>
 
-        <div class="projects-grid">
+        <div class="organization-content">
+          <div class="organization-text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
+              felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
+              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
+              fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
+              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
+              fermentum.
+            </p>
+            <p>
+              Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
+              porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
+              enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
+              libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
+              porttitor nulla nec eros.
+            </p>
+            <button class="btn btn-primary" @click="$router.push('/organizacion')">Conocer más</button>
+          </div>
+          <div class="organization-image">
+            <img src="@/assets/placeholder-image.svg" alt="Organización Mujeres Trabajadoras" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Últimas Historias -->
+    <section class="section latest-stories-section">
+      <div class="container">
+        <h2 class="section-title">Últimas Historias</h2>
+
+        <div class="stories-grid">
           <StoryCard
-            v-for="project in featuredProjects"
-            :key="project.id"
-            :title="project.name"
-            :color="project.color"
-            :icon="project.color === 'orange' ? 'sun' : project.color === 'black' ? 'bolt' : 'wave'"
-            :buttonText="project.buttonText"
-            :link="`/historias/${project.id}`"
+            v-for="story in latestStories"
+            :key="story.id"
+            :title="story.name"
+            :color="story.color"
+            :icon="story.color === 'orange' ? 'sun' : story.color === 'black' ? 'bolt' : 'wave'"
+            :buttonText="story.buttonText"
+            :link="`/historias/${story.id}`"
           />
         </div>
 
         <div class="section-footer">
-          <button class="btn btn-secondary" @click="$router.push('/historias')">View All Projects</button>
+          <button class="btn btn-secondary" @click="$router.push('/historias')">Ver más historias</button>
         </div>
       </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="section services-section">
+    <!-- Sección de Nuestra Historia -->
+    <section class="section our-story-section">
       <div class="container">
-        <h2 class="section-title">My Services</h2>
+        <h2 class="section-title">Nuestra Historia</h2>
 
-        <div class="services-grid">
-          <ServiceCard
-            v-for="service in services"
-            :key="service.id"
-            :title="service.title"
-            :color="service.color"
-            :icon="service.icon"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="section experience-section">
-      <div class="container">
-        <h2 class="section-title">My Experience</h2>
-
-        <div class="experience-grid">
-          <ExperienceCard
-            v-for="experience in experiences"
-            :key="experience.id"
-            :title="experience.title"
-            :company="experience.company"
-            :period="experience.period"
-            :description="experience.description"
-            :color="experience.color"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- About Me Section -->
-    <section class="section about-section">
-      <div class="container">
-        <h2 class="section-title">About Me</h2>
-
-        <div class="about-content">
-          <div class="about-images">
-            <div class="image-stack">
-              <img src="@/assets/placeholder-image.svg" alt="Monica working" class="about-image" />
-              <img src="@/assets/placeholder-image.svg" alt="Monica at a conference" class="about-image" />
-              <img src="@/assets/placeholder-image.svg" alt="Monica's workspace" class="about-image" />
-            </div>
-          </div>
-
-          <div class="about-text">
-            <p>
-              I'm a passionate designer and developer with over 5 years of experience creating digital experiences that users love. My journey in the digital world started when I was in college, where I discovered my love for combining creativity with technical skills.
-            </p>
-            <p>
-              I specialize in creating user-centered designs and turning them into fully functional websites and applications. My approach focuses on understanding the unique needs of each client and delivering solutions that not only look great but also perform exceptionally well.
-            </p>
-            <p>
-              When I'm not designing or coding, you can find me exploring new hiking trails, experimenting with photography, or attending local tech meetups to stay connected with the community.
-            </p>
-            <button class="btn btn-primary">Download Resume</button>
-          </div>
+        <div class="our-story-content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
+            felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
+            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
+            fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
+            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
+            fermentum.
+          </p>
+          <p>
+            Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
+            porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
+            enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
+            libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
+            porttitor nulla nec eros.
+          </p>
         </div>
       </div>
     </section>
@@ -201,7 +155,7 @@ const faqs = [
     <!-- FAQ Section -->
     <section class="section faq-section">
       <div class="container">
-        <h2 class="section-title">FAQ</h2>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
 
         <div class="faq-container">
           <FaqItem
@@ -289,85 +243,73 @@ const faqs = [
   box-shadow: var(--shadow-lg);
 }
 
-/* Featured Projects Section */
-.projects-grid {
+/* Organization Section */
+.organization-section {
+  background-color: var(--light-gray);
+  padding: var(--spacing-xl) 0;
+}
+
+.organization-content {
+  display: flex;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.organization-text {
+  flex: 1;
+}
+
+.organization-text p {
+  margin-bottom: var(--spacing-md);
+}
+
+.organization-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.organization-image img {
+  max-width: 100%;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Latest Stories Section */
+.latest-stories-section {
+  padding: var(--spacing-xl) 0;
+}
+
+.stories-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
 
-/* Services Section */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
+/* Our Story Section */
+.our-story-section {
+  background-color: var(--light-gray);
+  padding: var(--spacing-xl) 0;
 }
 
-/* Experience Section */
-.experience-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-
-/* About Section */
-.about-content {
-  display: flex;
-  gap: var(--spacing-xl);
-  align-items: center;
-}
-
-.about-images {
-  flex: 1;
-}
-
-.image-stack {
-  position: relative;
-  width: 100%;
-  height: 400px;
-}
-
-.about-image {
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
+.our-story-content {
+  background-color: white;
+  padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
-  border: 5px solid white;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.about-image:nth-child(1) {
-  top: 0;
-  left: 0;
-  z-index: 3;
-  transform: rotate(-5deg);
-}
-
-.about-image:nth-child(2) {
-  top: 50px;
-  left: 100px;
-  z-index: 2;
-  transform: rotate(5deg);
-}
-
-.about-image:nth-child(3) {
-  top: 150px;
-  left: 50px;
-  z-index: 1;
-  transform: rotate(-8deg);
-}
-
-.about-text {
-  flex: 1;
-}
-
-.about-text p {
+.our-story-content p {
   margin-bottom: var(--spacing-md);
 }
 
 /* FAQ Section */
+.faq-section {
+  padding: var(--spacing-xl) 0;
+}
+
 .faq-container {
   max-width: 800px;
   margin: 0 auto;
@@ -382,7 +324,7 @@ const faqs = [
 
 /* Responsive */
 @media (max-width: 992px) {
-  .projects-grid {
+  .stories-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -396,18 +338,12 @@ const faqs = [
     font-size: var(--font-size-xxl);
   }
 
-  .projects-grid,
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .about-content {
+  .organization-content {
     flex-direction: column;
   }
 
-  .image-stack {
-    height: 350px;
-    margin-bottom: var(--spacing-lg);
+  .stories-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
