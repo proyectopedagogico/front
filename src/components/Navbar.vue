@@ -3,9 +3,34 @@ import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
 
 const isMenuOpen = ref(false)
+const isLanguageMenuOpen = ref(false)
+const currentLanguage = ref('es')
+
+const languages = [
+  { code: 'es', name: 'Español' },
+  { code: 'en', name: 'English' },
+  { code: 'fr', name: 'Français' },
+  { code: 'ar', name: 'العربية' },
+  { code: 'ur', name: 'اردو' }
+]
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
+}
+
+function toggleLanguageMenu() {
+  isLanguageMenuOpen.value = !isLanguageMenuOpen.value
+}
+
+function selectLanguage(langCode) {
+  currentLanguage.value = langCode
+  isLanguageMenuOpen.value = false
+  // Aquí se implementaría la lógica para cambiar el idioma de la aplicación
+}
+
+function getLanguageName(langCode) {
+  const lang = languages.find(l => l.code === langCode)
+  return lang ? lang.name : ''
 }
 </script>
 
@@ -46,7 +71,30 @@ function toggleMenu() {
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
           </button>
-          <button class="contact-btn btn btn-primary">Compartir Historia</button>
+          <div class="language-selector" :class="{ 'active': isLanguageMenuOpen }">
+            <button class="language-btn" @click="toggleLanguageMenu">
+              <span class="current-language">{{ getLanguageName(currentLanguage) }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="language-icon">
+                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
+                <path d="M2 12h20"></path>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="language-dropdown">
+              <button
+                v-for="lang in languages"
+                :key="lang.code"
+                class="language-option"
+                :class="{ 'selected': currentLanguage === lang.code }"
+                @click="selectLanguage(lang.code)"
+              >
+                {{ lang.name }}
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
@@ -67,6 +115,9 @@ function toggleMenu() {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: 1px solid;
+  border-radius: 3rem;
+  padding: 0.8rem;
 }
 
 .logo {
@@ -77,6 +128,7 @@ function toggleMenu() {
 .logo-text {
   background: linear-gradient(90deg, #000 0%, #666 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -130,9 +182,78 @@ function toggleMenu() {
   background-color: var(--light-gray);
 }
 
-.contact-btn {
-  font-size: var(--font-size-sm);
+.language-selector {
+  position: relative;
+}
+
+.language-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius-md);
   padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+  background-color: var(--light-gray);
+}
+
+.current-language {
+  font-weight: 500;
+}
+
+.language-icon {
+  color: var(--primary-color);
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.language-selector.active .arrow-icon {
+  transform: rotate(180deg);
+}
+
+.language-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background-color: white;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 0.5rem;
+  min-width: 150px;
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.language-selector.active .language-dropdown {
+  display: flex;
+}
+
+.language-option {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.language-option:hover {
+  background-color: var(--light-gray);
+}
+
+.language-option.selected {
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 .nav-toggle {
@@ -178,7 +299,16 @@ function toggleMenu() {
   }
 
   .nav-actions {
-    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .language-dropdown {
+    bottom: calc(100% + 0.5rem);
+    top: auto;
   }
 }
 </style>
