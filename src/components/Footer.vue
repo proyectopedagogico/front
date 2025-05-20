@@ -59,7 +59,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2023 Mujeres Trabajadoras. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Mujeres Trabajadoras. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>

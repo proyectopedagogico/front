@@ -70,10 +70,15 @@ function applyFilter(type, value) {
         <StoryCard
           v-for="story in stories"
           :key="story.id"
-          :name="story.name"
+          :title="story.name"
           :color="story.color"
           :buttonText="story.buttonText"
-          :buttonColor="story.buttonColor"
+          :icon="story.color === 'orange' ? 'sun' : story.color === 'black' ? 'bolt' : 'wave'"
+          :origin="story.origin"
+          :age="story.age"
+          :profession="story.profession"
+          :description="story.description"
+          class="show-details"
         />
       </div>
     </section>
@@ -141,7 +146,7 @@ function applyFilter(type, value) {
 
 .stories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
   justify-items: center;
 }

@@ -32,10 +32,7 @@ defineProps({
     type: String,
     default: 'Leer historia'
   },
-  link: {
-    type: String,
-    default: '#'
-  }
+
 })
 
 const getBackgroundColor = (color) => {
@@ -50,14 +47,27 @@ const getBackgroundColor = (color) => {
       return 'var(--card-orange)';
   }
 }
+
+const getCardClass = (color) => {
+  switch (color) {
+    case 'orange':
+      return 'card-bg-orange';
+    case 'black':
+      return 'card-bg-yellow';
+    case 'blue':
+      return 'card-bg-pink';
+    default:
+      return 'card-bg-orange';
+  }
+}
 </script>
 
 <template>
-  <div class="story-card" :class="color">
-    <div class="card-content">
+  <div class="story-card" :class="getCardClass(color)">
+    <div class="card-image-container" :class="color">
       <div class="card-icon">
         <!-- Sun icon -->
-        <svg v-if="icon === 'sun'" viewBox="0 0 24 24" fill="white" width="40" height="40">
+        <svg v-if="icon === 'sun'" viewBox="0 0 24 24" fill="white" width="60" height="60">
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="3" stroke="white" stroke-width="2" />
           <line x1="12" y1="21" x2="12" y2="23" stroke="white" stroke-width="2" />
@@ -70,20 +80,23 @@ const getBackgroundColor = (color) => {
         </svg>
 
         <!-- Bolt icon -->
-        <svg v-else-if="icon === 'bolt'" viewBox="0 0 24 24" fill="white" width="40" height="40">
+        <svg v-else-if="icon === 'bolt'" viewBox="0 0 24 24" fill="white" width="60" height="60">
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </svg>
 
         <!-- Wave icon -->
-        <svg v-else viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="40" height="40">
+        <svg v-else viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="60" height="60">
           <path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
           <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
           <path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
         </svg>
       </div>
+    </div>
 
+    <div class="card-content">
       <h3 class="card-title">{{ title }}</h3>
 
+      <!-- En la vista de historias (show-details) se muestra todo -->
       <div class="card-details" v-if="origin || age || profession">
         <div class="detail-item" v-if="origin">
           <span class="detail-label">Origen:</span>
@@ -101,15 +114,9 @@ const getBackgroundColor = (color) => {
 
       <p v-if="description" class="card-description">{{ description }}</p>
 
-      <a :href="link" class="card-button">
+      <router-link to="/historias" class="card-button">
         {{ buttonText }}
-      </a>
-    </div>
-
-    <div class="card-decoration">
-      <div class="card-dot"></div>
-      <div class="card-dot"></div>
-      <div class="card-dot"></div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -117,59 +124,93 @@ const getBackgroundColor = (color) => {
 <style scoped>
 .story-card {
   position: relative;
-  border-radius: var(--border-radius-lg);
+  border-radius: 20px;
   overflow: hidden;
-  padding: var(--spacing-lg);
-  height: 100%;
-  min-height: 280px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+  transform: rotate(-2deg);
 }
 
 .story-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px) rotate(-2deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.story-card.orange {
+/* Fondos de tarjeta pastel */
+.story-card.card-bg-orange {
+  background-color: var(--pastel-blue);
+}
+
+.story-card.card-bg-yellow {
+  background-color: var(--pastel-yellow);
+}
+
+.story-card.card-bg-pink {
+  background-color: var(--pastel-pink);
+}
+
+/* Contenedor de imagen */
+.card-image-container {
+  width: calc(100% - 20px);
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+.card-image-container.orange {
   background-color: var(--card-orange);
 }
 
-.story-card.black {
+.card-image-container.black {
   background-color: var(--card-black);
 }
 
-.story-card.blue {
+.card-image-container.blue {
   background-color: var(--card-blue);
 }
 
-.card-content {
+.card-icon {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  z-index: 1;
+  justify-content: center;
+  align-items: center;
 }
 
-.card-icon {
-  margin-bottom: var(--spacing-md);
+/* Contenido de la tarjeta */
+.card-content {
+  padding: 0 var(--spacing-md) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .card-title {
-  color: white;
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--spacing-md);
+  color: var(--text-color);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
 }
 
 .card-details {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+  width: 100%;
+  display: none; /* Por defecto oculto, se mostrará en la vista de historias */
 }
 
 .detail-item {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-color);
   margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-sm);
+  text-align: left;
 }
 
 .detail-label {
@@ -178,9 +219,10 @@ const getBackgroundColor = (color) => {
 }
 
 .card-description {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: var(--spacing-lg);
+  color: var(--text-color);
+  margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-sm);
+  display: none; /* Por defecto oculto, se mostrará en la vista de historias */
 }
 
 .card-button {
@@ -189,32 +231,40 @@ const getBackgroundColor = (color) => {
   justify-content: center;
   background-color: white;
   color: var(--text-color);
-  border-radius: var(--border-radius-md);
+  border: 1px solid var(--text-color);
+  border-radius: 50px;
   padding: 0.5rem 1.25rem;
   font-weight: 600;
   font-size: var(--font-size-sm);
   text-decoration: none;
-  align-self: flex-start;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   margin-top: auto;
 }
 
 .card-button:hover {
-  transform: translateY(-2px);
+  background-color: var(--text-color);
+  color: white;
 }
 
-.card-decoration {
-  position: absolute;
-  bottom: var(--spacing-md);
-  right: var(--spacing-md);
-  display: flex;
-  gap: 8px;
+/* Clases para mostrar detalles en la vista de historias */
+.show-details .card-details {
+  display: block;
 }
 
-.card-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.3);
+.show-details .card-description {
+  display: block;
+}
+
+/* Ajustes para la vista de historias */
+.show-details.story-card {
+  height: auto;
+  min-height: 350px;
+  transform: rotate(0deg);
+  width: 100%;
+  max-width: 350px;
+}
+
+.show-details.story-card:hover {
+  transform: translateY(-5px) rotate(0deg);
 }
 </style>

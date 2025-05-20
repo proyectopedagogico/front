@@ -66,6 +66,20 @@ function resetForm() {
   }
   currentStoryId.value = null
 }
+
+// Función para obtener la clase de color de la tarjeta
+function getCardClass(color) {
+  switch (color) {
+    case 'orange':
+      return 'card-blue'
+    case 'black':
+      return 'card-yellow'
+    case 'blue':
+      return 'card-pink'
+    default:
+      return 'card-blue'
+  }
+}
 </script>
 
 <template>
@@ -78,22 +92,29 @@ function resetForm() {
 
     <!-- Componente 1: Lista de historias para editar/borrar -->
     <section class="story-list-section">
-      <h2 class="component-title">Componente 1: Lista de todas las historias para editar o borrar</h2>
+      <h2 class="component-title">Componente 1: todas las historias para editar o borrar</h2>
 
       <div class="story-list">
         <div
           v-for="story in stories"
           :key="story.id"
           class="story-item"
-          :style="{ backgroundColor: story.buttonColor }"
+          :class="getCardClass(story.color)"
         >
           <div class="story-info">
             <h3>{{ story.name }}</h3>
-            <p>{{ story.story || 'Sin descripción' }}</p>
+            <div class="story-details">
+              <span v-if="story.origin"><strong>Origen:</strong> {{ story.origin }}</span>
+              <span v-if="story.age"><strong>Edad:</strong> {{ story.age }} años</span>
+              <span v-if="story.profession"><strong>Profesión:</strong> {{ story.profession }}</span>
+            </div>
+            <div class="story-text">
+              <p>{{ story.description }}</p>
+            </div>
           </div>
           <div class="story-actions">
-            <button class="action-btn" @click="editStory(story)">Editar</button>
-            <button class="action-btn" @click="deleteStory(story.id)">Borrar</button>
+            <button class="action-btn edit-btn" @click="editStory(story)">Editar</button>
+            <button class="action-btn delete-btn" @click="deleteStory(story.id)">Borrar</button>
           </div>
         </div>
       </div>
@@ -102,7 +123,7 @@ function resetForm() {
     <!-- Componente 2: Formulario para crear/editar historias -->
     <section v-if="showForm" class="story-form-section">
       <h2 class="component-title">
-        {{ formMode === 'create' ? 'Crear nueva historia' : 'Editar historia' }}
+        Componente 2: Formulario para la creación de nuevas historias
       </h2>
 
       <form class="story-form" @submit.prevent="submitForm">
@@ -112,27 +133,8 @@ function resetForm() {
         </div>
 
         <div class="form-group">
-          <label for="color">Color:</label>
-          <select id="color" class="form-control" v-model="formData.color">
-            <option value="orange">Naranja</option>
-            <option value="black">Negro</option>
-            <option value="blue">Azul</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="buttonText">Texto del botón:</label>
-          <input type="text" id="buttonText" class="form-control" v-model="formData.buttonText" required />
-        </div>
-
-        <div class="form-group">
-          <label for="buttonColor">Color del botón:</label>
-          <select id="buttonColor" class="form-control" v-model="formData.buttonColor">
-            <option value="lightblue">Azul claro</option>
-            <option value="lightyellow">Amarillo claro</option>
-            <option value="lightpink">Rosa claro</option>
-            <option value="lightcyan">Cian claro</option>
-          </select>
+          <label for="imagen">Imagen perfil:</label>
+          <input type="text" id="imagen" class="form-control" placeholder="URL de la imagen" />
         </div>
 
         <div class="form-group">
@@ -151,13 +153,21 @@ function resetForm() {
         </div>
 
         <div class="form-group">
+          <label for="color">Color:</label>
+          <select id="color" class="form-control" v-model="formData.color">
+            <option value="orange">Naranja</option>
+            <option value="black">Negro</option>
+            <option value="blue">Azul</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label for="historia">Historia:</label>
           <textarea id="historia" class="form-control textarea" v-model="formData.story"></textarea>
         </div>
 
         <div class="form-actions">
-          <button type="button" class="cancel-btn" @click="showForm = false">Cancelar</button>
-          <button type="submit" class="submit-btn">
+          <button type="submit" class="create-btn">
             {{ formMode === 'create' ? 'Crear' : 'Guardar cambios' }}
           </button>
         </div>
@@ -168,58 +178,77 @@ function resetForm() {
 
 <style scoped>
 .admin-view {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .dashboard-title {
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .create-story-container {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .create-story-btn {
   background-color: white;
   border: 1px solid #333;
   border-radius: 20px;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .story-list-section,
 .story-form-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
+  margin-bottom: 40px;
+  padding: 20px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
 .component-title {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  font-size: 14px;
+  margin-bottom: 20px;
   text-align: center;
-  color: #666;
+  color: #333;
 }
 
 .story-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 15px;
 }
 
 .story-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 10px;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 15px;
+  min-height: 120px;
+}
+
+/* Clases para los colores de las tarjetas */
+.card-blue {
+  background-color: var(--pastel-blue);
+}
+
+.card-yellow {
+  background-color: var(--pastel-yellow);
+}
+
+.card-pink {
+  background-color: var(--pastel-pink);
 }
 
 .story-info {
@@ -227,39 +256,116 @@ function resetForm() {
 }
 
 .story-info h3 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.story-info h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80%;
+  height: 1px;
+  background-color: #333;
+}
+
+.story-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 10px;
+}
+
+.story-details span {
+  display: block;
+}
+
+.story-text {
+  margin-top: 10px;
+}
+
+.story-text p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .story-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 12px;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
 .action-btn {
   background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  padding: 0.25rem 1rem;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
   cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+  text-align: center;
 }
 
+.edit-btn {
+  background-color: white;
+}
+
+.delete-btn {
+  background-color: white;
+}
+
+/* Círculo de selección */
+.story-item::before {
+  content: "";
+  position: absolute;
+  top: 16.5px;
+  right: 277px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background-color: white;
+}
+
+/* Formulario */
 .story-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 15px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 5px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .form-control {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f5f5f5;
 }
 
 .textarea {
@@ -270,24 +376,16 @@ function resetForm() {
 .form-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 20px;
 }
 
-.submit-btn {
+.create-btn {
   background-color: white;
   border: 1px solid #333;
   border-radius: 20px;
-  padding: 0.5rem 2rem;
+  padding: 8px 24px;
   cursor: pointer;
-}
-
-.cancel-btn {
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 0.5rem 2rem;
-  cursor: pointer;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
@@ -298,7 +396,8 @@ function resetForm() {
 
   .story-actions {
     flex-direction: row;
-    margin-top: 1rem;
+    margin-top: 15px;
+    width: 100%;
   }
 }
 </style>
