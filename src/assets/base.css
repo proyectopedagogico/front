@@ -1,4 +1,4 @@
-/* Base CSS para el proyecto de Mujeres Trabajadoras */
+/* Base CSS para el proyecto de Mujeres Trabajadoras - Nuevo diseño */
 :root {
   /* Colores base */
   --white: #ffffff;
@@ -7,22 +7,49 @@
   --dark-gray: #333333;
   --black: #000000;
 
+  /* Paleta de colores vibrantes para tarjetas de proyectos */
+  --card-orange: #FF5C39;
+  --card-black: #000000;
+  --card-blue: #3B82F6;
+
+  /* Paleta de colores pastel para servicios y experiencia */
+  --pastel-pink: #FFD6EC;
+  --pastel-yellow: #FFF3B0;
+  --pastel-blue: #B8E3FF;
+  --pastel-mint: #C1F0E6;
+
+  /* Colores de acento */
+  --accent-yellow: #FFD600;
+  --accent-blue: #00B2FF;
+
   /* Espaciado */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
+  --spacing-xxl: 5rem;
 
   /* Bordes */
   --border-radius-sm: 5px;
   --border-radius-md: 10px;
   --border-radius-lg: 20px;
+  --border-radius-xl: 30px;
 
   /* Sombras */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Tipografía */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+  --font-size-xxxl: 3rem;
 }
 
 *,

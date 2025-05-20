@@ -1,19 +1,24 @@
 @import './base.css';
 
-/* Variables globales */
+/* Variables globales adicionales */
 :root {
-  --primary-color: #00c2cb;
-  --secondary-color: #ff6b6b;
-  --accent-color: #ffcce6;
-  --text-color: #333;
-  --background-color: #f5f5f5;
-  --card-orange: #ff7f50;
-  --card-black: #222;
-  --card-blue: #4169e1;
-  --card-lightblue: #add8e6;
-  --card-lightyellow: #fffacd;
-  --card-lightpink: #ffb6c1;
-  --card-lightcyan: #e0ffff;
+  --primary-color: #000000;
+  --secondary-color: #666666;
+  --text-color: #333333;
+  --background-color: #FFFFFF;
+  --section-title-color: #000000;
+  --section-title-size: var(--font-size-xl);
+  --section-spacing: var(--spacing-xxl);
+}
+
+/* Estilos globales */
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  font-size: var(--font-size-md);
+  overflow-x: hidden;
 }
 
 #app {
@@ -25,47 +30,169 @@
   flex-direction: column;
 }
 
+/* Enlaces y botones */
 a {
   text-decoration: none;
   color: var(--text-color);
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 button {
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
+  border: none;
+  font-weight: 500;
 }
 
-button:hover {
-  opacity: 0.8;
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-@media (hover: hover) {
-  a:hover {
-    color: var(--primary-color);
-  }
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
 }
 
-/* Estilos para secciones comunes */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+}
+
+h1 {
+  font-size: var(--font-size-xxxl);
+}
+
+h2 {
+  font-size: var(--font-size-xxl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Secciones */
+.section {
+  padding: var(--spacing-xl) 0;
+  position: relative;
+}
+
 .section-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-  font-weight: bold;
+  font-size: var(--section-title-size);
+  margin-bottom: var(--spacing-lg);
+  color: var(--section-title-color);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
-/* Estilos para contenedores */
+.section-title::after {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD600'%3E%3Cpath d='M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Contenedores */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--spacing-lg);
 }
 
-/* Estilos para tarjetas */
+/* Tarjetas */
 .card {
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 1rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Utilidades */
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+
+.gap-md {
+  gap: var(--spacing-md);
+}
+
+.gap-lg {
+  gap: var(--spacing-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+
+  h1 {
+    font-size: var(--font-size-xxl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .section {
+    padding: var(--spacing-lg) 0;
+  }
 }
