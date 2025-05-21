@@ -39,6 +39,7 @@ function getLanguageName(langCode) {
     <div class="container">
       <nav class="navbar">
         <div class="logo">
+          <img src="@/assets/images/logo.png" alt="Logo">
           <RouterLink to="/">
             <span class="logo-text">Mujeres Trabajadoras</span>
           </RouterLink>
@@ -123,6 +124,14 @@ function getLanguageName(langCode) {
 .logo {
   font-size: var(--font-size-lg);
   font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: var(--spacing-sm);
 }
 
 .logo-text {
