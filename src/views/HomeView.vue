@@ -51,7 +51,7 @@ const faqs = [
 
           </div>
           <div class="hero-image">
-            <img src="@/assets/placeholder-image.svg" alt="Mujeres Trabajadoras - Historias que Inspiran" />
+            <img src="@/assets/images/Portada.png" alt="Organización Mujeres Trabajadoras" />
           </div>
         </div>
       </div>
@@ -222,12 +222,15 @@ const faqs = [
   display: flex;
   justify-content: center;
   align-items: center;
+   border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  background-color: #5db898;
+  rotate: 5deg;
 }
 
 .hero-image img {
-  max-width: 100%;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
+  max-height: 500px;
+
 }
 
 /* Organization Section */
