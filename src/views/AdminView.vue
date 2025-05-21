@@ -31,11 +31,33 @@ const formData = ref({
 // Mostrar/ocultar formulario
 const showForm = ref(false)
 
+// Referencia al formulario para desplazamiento
+const formSection = ref(null)
+
+// Función para desplazarse suavemente al formulario
+function scrollToForm() {
+  // Esperar a que el formulario esté visible en el DOM
+  setTimeout(() => {
+    if (formSection.value) {
+      // Desplazarse al formulario con un offset
+      const yOffset = -80; // Ajusta este valor para controlar cuánto espacio dejar arriba
+      const y = formSection.value.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
+    }
+  }, 100) // Pequeño retraso para asegurar que el formulario esté renderizado
+}
+
 // Funciones
 function createNewStory() {
   formMode.value = 'create'
   resetForm()
   showForm.value = true
+  // Desplazarse al formulario después de hacerlo visible
+  scrollToForm()
 }
 
 function editStory(story) {
@@ -43,6 +65,8 @@ function editStory(story) {
   currentStoryId.value = story.id
   formData.value = { ...story }
   showForm.value = true
+  // Desplazarse al formulario después de hacerlo visible
+  scrollToForm()
 }
 
 async function deleteStory(id) {
@@ -113,7 +137,7 @@ function getCardClass(color) {
 
     <!-- Componente 1: Lista de historias para editar/borrar -->
     <section class="story-list-section">
-      <h2 class="component-title">Componente 1: todas las historias para editar o borrar</h2>
+      <h2 class="component-title">Lista de historias</h2>
 
       <!-- Estado de carga -->
       <div v-if="isLoading" class="loading-container">
@@ -162,9 +186,9 @@ function getCardClass(color) {
     </section>
 
     <!-- Componente 2: Formulario para crear/editar historias -->
-    <section v-if="showForm" class="story-form-section">
+    <section v-if="showForm" class="story-form-section" ref="formSection">
       <h2 class="component-title">
-        Componente 2: Formulario para la creación de nuevas historias
+       Formulario para la {{ formMode === 'create' ? 'creación' : 'edición' }} de historias
       </h2>
 
       <form class="story-form" @submit.prevent="submitForm">
@@ -338,6 +362,7 @@ function getCardClass(color) {
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -372,7 +397,7 @@ function getCardClass(color) {
 }
 
 /* Círculo de selección */
-.story-item::before {
+/* .story-item::before {
   content: "";
   position: absolute;
   top: 16.5px;
@@ -382,7 +407,7 @@ function getCardClass(color) {
   border-radius: 50%;
   border: 1px solid #333;
   background-color: white;
-}
+} */
 
 /* Estados de carga y error */
 .loading-container {
