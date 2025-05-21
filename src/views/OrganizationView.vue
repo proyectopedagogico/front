@@ -90,7 +90,7 @@ const milestones = [
         </p>
       </div>
     </section>
-    
+
     <section class="section mission-section">
       <div class="container">
         <div class="mission-content">
@@ -112,20 +112,20 @@ const milestones = [
             </ul>
           </div>
           <div class="mission-image">
-            <img src="@/assets/placeholder-image.svg" alt="Misión y Visión" />
+            <img src="@/assets/images/Texto_Mujeres.png" alt="Misión y Visión" />
           </div>
         </div>
       </div>
     </section>
-    
+
     <section class="section team-section">
       <div class="container">
         <h2 class="section-title">Nuestro Equipo</h2>
-        
+
         <div class="team-grid">
-          <div 
-            v-for="member in teamMembers" 
-            :key="member.id" 
+          <div
+            v-for="member in teamMembers"
+            :key="member.id"
             class="team-card"
           >
             <div class="member-image">
@@ -140,15 +140,15 @@ const milestones = [
         </div>
       </div>
     </section>
-    
+
     <section class="section timeline-section">
       <div class="container">
         <h2 class="section-title">Nuestra Historia</h2>
-        
+
         <div class="timeline">
-          <div 
-            v-for="(milestone, index) in milestones" 
-            :key="index" 
+          <div
+            v-for="(milestone, index) in milestones"
+            :key="index"
             class="timeline-item"
           >
             <div class="timeline-year">{{ milestone.year }}</div>
@@ -160,15 +160,15 @@ const milestones = [
         </div>
       </div>
     </section>
-    
+
     <section class="section partners-section">
       <div class="container">
         <h2 class="section-title">Colaboradores</h2>
-        
+
         <div class="partners-grid">
-          <div 
-            v-for="partner in partners" 
-            :key="partner.id" 
+          <div
+            v-for="partner in partners"
+            :key="partner.id"
             class="partner-card"
           >
             <div class="partner-logo">
@@ -180,7 +180,7 @@ const milestones = [
         </div>
       </div>
     </section>
-    
+
     <section class="section contact-section">
       <div class="container">
         <div class="contact-content">
@@ -245,6 +245,10 @@ const milestones = [
 
 .mission-image {
   flex: 2;
+  background-color: #5db898;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  rotate: -5deg;
 }
 
 .mission-image img {
@@ -411,16 +415,16 @@ const milestones = [
   .mission-content {
     flex-direction: column;
   }
-  
+
   .team-grid,
   .partners-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .team-card {
     flex-direction: column;
   }
-  
+
   .member-image {
     height: 200px;
   }

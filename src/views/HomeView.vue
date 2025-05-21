@@ -82,7 +82,7 @@ const faqs = [
             <button class="btn btn-primary" @click="$router.push('/organizacion')">Conocer más</button>
           </div>
           <div class="organization-image">
-            <img src="@/assets/placeholder-image.svg" alt="Organización Mujeres Trabajadoras" />
+            <img src="@/assets/images/Organizacion.png" alt="Organización Mujeres Trabajadoras" />
           </div>
         </div>
       </div>

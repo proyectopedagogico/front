@@ -25,7 +25,7 @@ function applyFilter(type, value) {
     <section class="world-map-section">
       <h2 class="section-title">MAPA MUNDI</h2>
       <div class="map-container">
-        <img src="@/assets/world-map.svg" alt="Mapa mundial" class="world-map" />
+        <img src="@/assets/images/Mapamundi.png" alt="Mapa mundial" class="world-map" />
       </div>
     </section>
 
@@ -112,11 +112,12 @@ function applyFilter(type, value) {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+    max-height: 500px;
+background-color: black;
 }
 
 .world-map {
   width: 100%;
-  max-height: 300px;
   border-radius: 10px;
   object-fit: contain;
 }
