@@ -1,9 +1,18 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const storyStore = useStoryStore()
-const stories = storyStore.stories
+const stories = computed(() => storyStore.stories)
+const isLoading = computed(() => storyStore.isLoading)
+const error = computed(() => storyStore.error)
+
+// Cargar historias al montar el componente
+onMounted(async () => {
+  if (stories.value.length === 0) {
+    await storyStore.fetchStories()
+  }
+})
 
 // Estado para el formulario
 const formMode = ref('create') // 'create' o 'edit'
@@ -36,21 +45,33 @@ function editStory(story) {
   showForm.value = true
 }
 
-function deleteStory(id) {
+async function deleteStory(id) {
   if (confirm('¿Estás seguro de que quieres eliminar esta historia?')) {
-    storyStore.deleteStory(id)
+    try {
+      await storyStore.deleteStory(id)
+    } catch (err) {
+      alert(`Error al eliminar la historia: ${err}`)
+    }
   }
 }
 
-function submitForm() {
-  if (formMode.value === 'create') {
-    storyStore.addStory({ ...formData.value })
-  } else {
-    storyStore.updateStory(currentStoryId.value, { ...formData.value })
+async function submitForm() {
+  try {
+    if (formMode.value === 'create') {
+      await storyStore.addStory({ ...formData.value })
+    } else {
+      await storyStore.updateStory(currentStoryId.value, { ...formData.value })
+    }
+    showForm.value = false
+    resetForm()
+  } catch (err) {
+    alert(`Error al guardar la historia: ${err}`)
   }
+}
 
-  showForm.value = false
-  resetForm()
+// Función para reintentar la carga si hay error
+function retryFetchStories() {
+  storyStore.fetchStories()
 }
 
 function resetForm() {
@@ -94,7 +115,27 @@ function getCardClass(color) {
     <section class="story-list-section">
       <h2 class="component-title">Componente 1: todas las historias para editar o borrar</h2>
 
-      <div class="story-list">
+      <!-- Estado de carga -->
+      <div v-if="isLoading" class="loading-container">
+        <div class="loader"></div>
+        <p class="loading-text">Cargando historias...</p>
+      </div>
+
+      <!-- Estado de error -->
+      <div v-else-if="error" class="error-container">
+        <p class="error-message">{{ error }}</p>
+        <button @click="retryFetchStories" class="retry-btn">
+          Intentar de nuevo
+        </button>
+      </div>
+
+      <!-- Lista de historias -->
+      <div v-else class="story-list">
+        <!-- Mensaje cuando no hay historias -->
+        <div v-if="stories.length === 0" class="no-stories-message">
+          <p>No hay historias disponibles. Crea una nueva historia para comenzar.</p>
+        </div>
+
         <div
           v-for="story in stories"
           :key="story.id"
@@ -341,6 +382,77 @@ function getCardClass(color) {
   border-radius: 50%;
   border: 1px solid #333;
   background-color: white;
+}
+
+/* Estados de carga y error */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  width: 100%;
+}
+
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-color);
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.error-message {
+  color: #e53935;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.retry-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.retry-btn:hover {
+  background-color: #000;
+  transform: translateY(-2px);
+}
+
+.no-stories-message {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 /* Formulario */
