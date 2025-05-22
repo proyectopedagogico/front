@@ -1,0 +1,42 @@
+{
+  "title": "Mujeres Trabajadoras",
+  "menu": {
+    "home": "Inicio",
+    "stories": "Historias",
+    "organization": "Organización",
+    "admin": "Admin"
+  },
+  "project": "Proyecto",
+  "headline": "Mujeres Trabajadoras: Historias que Inspiran",
+  "description": "Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.",
+  "sections": {
+    "organization": "Organización",
+    "latest_stories": "Últimas Historias",
+    "our_story": "Nuestra Historia",
+    "faq": "Preguntas Frecuentes"
+  },
+  "faq": {
+    "q1": "¿Qué es el proyecto \"Mujeres Trabajadoras\"?",
+    "a1": "Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.",
+    "q2": "¿Cómo puedo compartir mi historia?",
+    "a2": "Puedes contactarnos a través del formulario en nuestra web o enviarnos un correo electrónico. Realizaremos una entrevista y trabajaremos contigo para dar forma a tu historia.",
+    "q3": "¿Quiénes pueden participar?",
+    "a3": "Todas las mujeres trabajadoras, independientemente de su profesión, edad u origen, pueden compartir sus experiencias. Buscamos representar la diversidad del mundo laboral femenino.",
+    "q4": "¿Cómo puedo apoyar este proyecto?",
+    "a4": "Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias."
+  },
+  "cta": {
+    "share_story": "¿Quieres compartir tu historia?",
+    "join_us": "Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras."
+  },
+  "footer": {
+    "slogan": "Historias que inspiran",
+    "navigation": "Navegación",
+    "legal": {
+      "privacy": "Política de privacidad",
+      "terms": "Términos de servicio"
+    },
+    "social": "Social",
+    "copyright": "© 2025 Mujeres Trabajadoras. Todos los derechos reservados."
+  }
+}
