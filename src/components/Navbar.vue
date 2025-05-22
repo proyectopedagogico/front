@@ -39,7 +39,7 @@ function getLanguageName(langCode) {
     <div class="container">
       <nav class="navbar">
         <div class="logo">
-          <img src="@/assets/images/logo.png" alt="Logo">
+          <img src="@/assets/images/Logo.png" alt="Logo">
           <RouterLink to="/">
             <span class="logo-text">Mujeres Trabajadoras</span>
           </RouterLink>
