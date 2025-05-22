@@ -1,11 +1,13 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
 import { ref, computed, onMounted } from 'vue'
+import countriesData from '../assets/countries.json'
 
 const storyStore = useStoryStore()
 const stories = computed(() => storyStore.stories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
+const countries = computed(() => countriesData)
 
 // Cargar historias al montar el componente
 onMounted(async () => {
@@ -22,7 +24,7 @@ const formData = ref({
   color: 'orange',
   buttonText: 'Leer',
   buttonColor: 'lightblue',
-  age: '',
+  birthYear: '',
   origin: '',
   profession: '',
   story: ''
@@ -104,7 +106,7 @@ function resetForm() {
     color: 'orange',
     buttonText: 'Leer',
     buttonColor: 'lightblue',
-    age: '',
+    birthYear: '',
     origin: '',
     profession: '',
     story: ''
@@ -170,7 +172,7 @@ function getCardClass(color) {
             <h3>{{ story.name }}</h3>
             <div class="story-details">
               <span v-if="story.origin"><strong>Origen:</strong> {{ story.origin }}</span>
-              <span v-if="story.age"><strong>Edad:</strong> {{ story.age }} años</span>
+              <span v-if="story.birthYear"><strong>Año de nacimiento:</strong> {{ story.birthYear }}</span>
               <span v-if="story.profession"><strong>Profesión:</strong> {{ story.profession }}</span>
             </div>
             <div class="story-text">
@@ -203,13 +205,18 @@ function getCardClass(color) {
         </div>
 
         <div class="form-group">
-          <label for="edad">Edad:</label>
-          <input type="number" id="edad" class="form-control" v-model="formData.age" />
+          <label for="anioNacimiento">Año de nacimiento:</label>
+          <input type="number" id="anioNacimiento" class="form-control" v-model="formData.birthYear" min="1950" :max="new Date().getFullYear()" />
         </div>
 
         <div class="form-group">
-          <label for="procedencia">Procedencia:</label>
-          <input type="text" id="procedencia" class="form-control" v-model="formData.origin" />
+          <label for="procedencia">País de origen:</label>
+          <select id="procedencia" class="form-control" v-model="formData.origin">
+            <option value="">Selecciona un país</option>
+            <option v-for="country in countries" :key="country.id" :value="country.name">
+              {{ country.name }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
