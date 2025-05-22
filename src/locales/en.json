@@ -1,0 +1,42 @@
+{
+  "title": "Working Women",
+  "menu": {
+    "home": "Home",
+    "stories": "Stories",
+    "organization": "Organization",
+    "admin": "Admin"
+  },
+  "project": "Project",
+  "headline": "Working Women: Stories that Inspire",
+  "description": "Discover the experiences, challenges, and achievements of working women from diverse backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+  "sections": {
+    "organization": "Organization",
+    "latest_stories": "Latest Stories",
+    "our_story": "Our Story",
+    "faq": "Frequently Asked Questions"
+  },
+  "faq": {
+    "q1": "What is the 'Working Women' project?",
+    "a1": "It is an initiative aimed at highlighting the stories and experiences of working women from various backgrounds, ages, and professions, showcasing their contributions and the challenges they face.",
+    "q2": "How can I share my story?",
+    "a2": "You can contact us through the form on our website or send us an email. We will conduct an interview and work with you to shape your story.",
+    "q3": "Who can participate?",
+    "a3": "All working women, regardless of profession, age, or background, are welcome to share their experiences. We aim to represent the diversity of women in the workforce.",
+    "q4": "How can I support this project?",
+    "a4": "You can share the stories on social media, attend our events, or volunteer to help collect and edit stories."
+  },
+  "cta": {
+    "share_story": "Want to share your story?",
+    "join_us": "Join our project and help us highlight the experiences of working women."
+  },
+  "footer": {
+    "slogan": "Stories that Inspire",
+    "navigation": "Navigation",
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "social": "Social",
+    "copyright": "© 2025 Working Women. All rights reserved."
+  }
+}
