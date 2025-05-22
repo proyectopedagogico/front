@@ -22,7 +22,7 @@ defineProps({
   },
   color: {
     type: String,
-    default: 'orange' // 'orange', 'black', 'blue'
+    default: 'pink' // 'pink', 'yellow', 'blue', 'mint'
   },
   icon: {
     type: String,
@@ -50,14 +50,16 @@ const getBackgroundColor = (color) => {
 
 const getCardClass = (color) => {
   switch (color) {
-    case 'orange':
-      return 'card-bg-orange';
-    case 'black':
-      return 'card-bg-yellow';
+    case 'pink':
+      return 'card-pink';
+    case 'yellow':
+      return 'card-yellow';
     case 'blue':
-      return 'card-bg-pink';
+      return 'card-blue';
+    case 'mint':
+      return 'card-mint';
     default:
-      return 'card-bg-orange';
+      return 'card-pink';
   }
 }
 </script>
@@ -114,9 +116,9 @@ const getCardClass = (color) => {
 
       <p v-if="description" class="card-description">{{ description }}</p>
 
-      <router-link to="/historias" class="card-button">
+      <button @click="$emit('readStory')" class="card-button">
         {{ buttonText }}
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
@@ -141,17 +143,21 @@ const getCardClass = (color) => {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Fondos de tarjeta pastel */
-.story-card.card-bg-orange {
-  background-color: var(--pastel-blue);
+/* Fondos de tarjeta */
+.story-card.card-pink {
+  background-color: var(--pastel-pink);
 }
 
-.story-card.card-bg-yellow {
+.story-card.card-yellow {
   background-color: var(--pastel-yellow);
 }
 
-.story-card.card-bg-pink {
-  background-color: var(--pastel-pink);
+.story-card.card-blue {
+  background-color: var(--pastel-blue);
+}
+
+.story-card.card-mint {
+  background-color: var(--pastel-mint);
 }
 
 /* Contenedor de imagen */
@@ -165,16 +171,20 @@ const getCardClass = (color) => {
   border-radius: 12px;
 }
 
-.card-image-container.orange {
-  background-color: var(--card-orange);
+.card-image-container.pink {
+  background-color: var(--pastel-pink);
 }
 
-.card-image-container.black {
-  background-color: var(--card-black);
+.card-image-container.yellow {
+  background-color: var(--pastel-yellow);
 }
 
 .card-image-container.blue {
-  background-color: var(--card-blue);
+  background-color: var(--pastel-blue);
+}
+
+.card-image-container.mint {
+  background-color: var(--pastel-mint);
 }
 
 .card-icon {

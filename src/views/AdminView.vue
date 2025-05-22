@@ -21,9 +21,9 @@ const formMode = ref('create') // 'create' o 'edit'
 const currentStoryId = ref(null)
 const formData = ref({
   name: '',
-  color: 'orange',
+  color: 'pink', // Color pastel por defecto
   buttonText: 'Leer',
-  buttonColor: 'lightblue',
+  buttonColor: 'white',
   birthYear: '',
   origin: '',
   profession: '',
@@ -105,7 +105,7 @@ function resetForm() {
     name: '',
     color: 'orange',
     buttonText: 'Leer',
-    buttonColor: 'lightblue',
+    buttonColor: 'white',
     birthYear: '',
     origin: '',
     profession: '',
@@ -117,14 +117,16 @@ function resetForm() {
 // Función para obtener la clase de color de la tarjeta
 function getCardClass(color) {
   switch (color) {
-    case 'orange':
-      return 'card-blue'
-    case 'black':
+    case 'pink':
+      return 'card-pink'
+    case 'yellow':
       return 'card-yellow'
     case 'blue':
-      return 'card-pink'
-    default:
       return 'card-blue'
+    case 'mint':
+      return 'card-mint'
+    default:
+      return 'card-pink'
   }
 }
 </script>
@@ -227,9 +229,11 @@ function getCardClass(color) {
         <div class="form-group">
           <label for="color">Color:</label>
           <select id="color" class="form-control" v-model="formData.color">
-            <option value="orange">Naranja</option>
-            <option value="black">Negro</option>
-            <option value="blue">Azul</option>
+            <option value="orange">Naranja vibrante</option>
+            <option value="pink">Rosa pastel</option>
+            <option value="yellow">Amarillo pastel</option>
+            <option value="blue">Azul pastel</option>
+            <option value="mint">Menta pastel</option>
           </select>
         </div>
 
@@ -311,16 +315,24 @@ function getCardClass(color) {
 }
 
 /* Clases para los colores de las tarjetas */
-.card-blue {
-  background-color: var(--pastel-blue);
+.card-orange {
+  background-color: var(--card-orange);
+}
+
+.card-pink {
+  background-color: var(--pastel-pink);
 }
 
 .card-yellow {
   background-color: var(--pastel-yellow);
 }
 
-.card-pink {
-  background-color: var(--pastel-pink);
+.card-blue {
+  background-color: var(--pastel-blue);
+}
+
+.card-mint {
+  background-color: var(--pastel-mint);
 }
 
 .story-info {

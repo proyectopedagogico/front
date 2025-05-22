@@ -2,11 +2,25 @@
 import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
 import { ref, onMounted, computed } from 'vue'
+import StoryModal from '../components/StoryModal.vue'
 
 const storyStore = useStoryStore()
 const stories = computed(() => storyStore.stories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
+
+const selectedStory = ref(null)
+const showModal = ref(false)
+
+const openStoryModal = (story) => {
+  selectedStory.value = story
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedStory.value = null
+}
 
 // Filtros
 const activeFilters = ref({
@@ -102,12 +116,13 @@ function retryFetchStories() {
           :title="story.name"
           :color="story.color"
           :buttonText="story.buttonText"
-          :icon="story.color === 'orange' ? 'sun' : story.color === 'black' ? 'bolt' : 'wave'"
+          :icon="story.color === 'pink' ? 'sun' : story.color === 'yellow' ? 'bolt' : story.color === 'blue' ? 'wave' : 'sun'"
           :origin="story.origin"
-          :age="story.age"
+          :age="story.birthYear"
           :profession="story.profession"
           :description="story.description"
           class="show-details"
+          @readStory="openStoryModal(story)"
         />
 
         <!-- Mensaje cuando no hay historias -->
@@ -116,6 +131,14 @@ function retryFetchStories() {
         </div>
       </div>
     </section>
+
+    <!-- Modal de Historia -->
+    <StoryModal
+      v-if="selectedStory"
+      :show="showModal"
+      :story="selectedStory"
+      @close="closeModal"
+    />
   </div>
 </template>
 
