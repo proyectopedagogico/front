@@ -3,7 +3,11 @@ import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
 import FaqItem from '../components/FaqItem.vue'
 import { computed, onMounted } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+import { useI18n } from 'vue-i18n'
 
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
 const storyStore = useStoryStore()
 const latestStories = computed(() => storyStore.getLatestStories)
 const isLoading = computed(() => storyStore.isLoading)
@@ -14,6 +18,11 @@ onMounted(async () => {
   if (storyStore.stories.length === 0) {
     await storyStore.fetchStories()
   }
+})
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
 })
 
 // Función para reintentar la carga si hay error
@@ -54,7 +63,7 @@ const faqs = [
         <div class="hero-content">
           <div class="hero-text">
             <p class="intro-text">Proyecto</p>
-            <h1>Mujeres Trabajadoras: Historias que Inspiran</h1>
+            <h1>{{ t('views.home.headline')}}</h1>
             <p class="hero-description">
               Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.
             </p>

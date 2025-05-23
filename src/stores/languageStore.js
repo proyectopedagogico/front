@@ -1,32 +1,43 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
-// Import your JSON translation files here
-import es from '@/locales/es.json'
-import en from '@/locales/en.json'
-import fr from '@/locales/fr.json'
-import ar from '@/locales/ar.json'
-import ur from '@/locales/ur.json'
-
-const translations = { es, en, fr, ar, ur }
+import { ref } from 'vue'
 
 export const useLanguageStore = defineStore('language', () => {
   const currentLanguage = ref('es')
+  const availableLanguages = [
+    { code: 'es', name: 'Español' },
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' },
+    { code: 'ar', name: 'العربية' },
+    { code: 'ur', name: 'اردو' }
+  ]
 
-  function setLanguage(language) {
-    if (Object.keys(translations).includes(language)) {
-      currentLanguage.value = language
+  // Cargar el idioma guardado al iniciar
+  const init = () => {
+    const savedLanguage = localStorage.getItem('userLanguage')
+    if (savedLanguage) {
+      currentLanguage.value = savedLanguage
     }
   }
 
-  // computed property to get current translations object
-  const t = computed(() => {
-    return translations[currentLanguage.value] || translations.es
-  })
+  // Cambiar idioma
+  const setLanguage = (langCode) => {
+    currentLanguage.value = langCode
+    localStorage.setItem('userLanguage', langCode)
+  }
+
+  // Obtener nombre del idioma
+  const getLanguageName = (langCode) => {
+    const lang = availableLanguages.find(l => l.code === langCode) // Corregido: era lang.Code
+    return lang ? lang.name : ''
+  }
 
   return {
     currentLanguage,
+    availableLanguages,
+    init,
     setLanguage,
-    t,
+    getLanguageName
   }
 })
+
+
