@@ -1,42 +1,126 @@
 {
-  "title": "Working Women",
-  "menu": {
-    "home": "Home",
-    "stories": "Stories",
-    "organization": "Organization",
-    "admin": "Admin"
+  "common": {
+    "title": "Working women",
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "success": "Operación exitosa",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior"
   },
-  "project": "Project",
-  "headline": "Working Women: Stories that Inspire",
-  "description": "Discover the experiences, challenges, and achievements of working women from diverse backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+  "nav": {
+    "logo": "Working women",
+    "menu": {
+      "home": "Home",
+      "stories": "Stories",
+      "organization": "Organization",
+      "admin": "Admin"
+    },
+    "languages": {
+      "select": "Select language",
+      "es": "Español",
+      "en": "English",
+      "fr": "Français",
+      "ar": "العربية",
+      "ur": "اردو"
+    }
+  },
+  "views": {
+    "home": {
+      "headline": "Working women: Spiring stories",
+      "description": "Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.",
+      "featured": "Historias Destacadas",
+      "latest": "Últimas Historias"
+    },
+    "stories": {
+      "title": "Historias",
+      "filters": {
+        "category": "Categoría",
+        "date": "Fecha",
+        "search": "Buscar historias..."
+      },
+      "empty": "No se encontraron historias",
+      "readMore": "Leer más"
+    },
+    "organization": {
+      "title": "Organización",
+      "about": "Sobre Nosotras",
+      "mission": "Nuestra Misión",
+      "vision": "Nuestra Visión",
+      "team": "Nuestro Equipo",
+      "contact": "Contacto"
+    },
+    "admin": {
+      "title": "Panel de Administración",
+      "stories": {
+        "title": "Gestión de Historias",
+        "new": "Nueva Historia",
+        "edit": "Editar Historia",
+        "list": "Lista de Historias"
+      },
+      "users": {
+        "title": "Gestión de Usuarios",
+        "new": "Nuevo Usuario",
+        "edit": "Editar Usuario",
+        "list": "Lista de Usuarios"
+      }
+    }
+  },
+  "components": {
+    "storyCard": {
+      "author": "Por",
+      "date": "Publicado el",
+      "category": "Categoría",
+      "readTime": "Tiempo de lectura"
+    },
+    "storyForm": {
+      "title": "Título",
+      "content": "Contenido",
+      "category": "Categoría",
+      "image": "Imagen",
+      "author": "Autora",
+      "submit": "Publicar Historia"
+    },
+    "contactForm": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "submit": "Enviar"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "of": "de"
+    }
+  },
   "sections": {
-    "organization": "Organization",
-    "latest_stories": "Latest Stories",
-    "our_story": "Our Story",
-    "faq": "Frequently Asked Questions"
+    "organization": "Organización",
+    "latest_stories": "Últimas Historias",
+    "our_story": "Nuestra Historia",
+    "faq": "Preguntas Frecuentes"
   },
   "faq": {
-    "q1": "What is the 'Working Women' project?",
-    "a1": "It is an initiative aimed at highlighting the stories and experiences of working women from various backgrounds, ages, and professions, showcasing their contributions and the challenges they face.",
-    "q2": "How can I share my story?",
-    "a2": "You can contact us through the form on our website or send us an email. We will conduct an interview and work with you to shape your story.",
-    "q3": "Who can participate?",
-    "a3": "All working women, regardless of profession, age, or background, are welcome to share their experiences. We aim to represent the diversity of women in the workforce.",
-    "q4": "How can I support this project?",
-    "a4": "You can share the stories on social media, attend our events, or volunteer to help collect and edit stories."
-  },
-  "cta": {
-    "share_story": "Want to share your story?",
-    "join_us": "Join our project and help us highlight the experiences of working women."
+    "q1": "¿Qué es el proyecto \"Mujeres Trabajadoras\"?",
+    "a1": "Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.",
+    "q2": "¿Cómo puedo compartir mi historia?",
+    "a2": "Puedes contactarnos a través del formulario en nuestra web o enviarnos un correo electrónico. Realizaremos una entrevista y trabajaremos contigo para dar forma a tu historia.",
+    "q3": "¿Quiénes pueden participar?",
+    "a3": "Todas las mujeres trabajadoras, independientemente de su profesión, edad u origen, pueden compartir sus experiencias. Buscamos representar la diversidad del mundo laboral femenino.",
+    "q4": "¿Cómo puedo apoyar este proyecto?",
+    "a4": "Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias."
   },
   "footer": {
-    "slogan": "Stories that Inspire",
-    "navigation": "Navigation",
+    "slogan": "Historias que inspiran",
+    "navigation": "Navegación",
     "legal": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service"
+      "privacy": "Política de privacidad",
+      "terms": "Términos de servicio"
     },
     "social": "Social",
-    "copyright": "© 2025 Working Women. All rights reserved."
+    "copyright": "© 2025 Mujeres Trabajadoras. Todos los derechos reservados."
   }
 }
