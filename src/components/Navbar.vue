@@ -1,6 +1,10 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useAuthStore } from '../stores/authStore'
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 const isMenuOpen = ref(false)
 const isLanguageMenuOpen = ref(false)
@@ -32,6 +36,11 @@ function getLanguageName(langCode) {
   const lang = languages.find(l => l.code === langCode)
   return lang ? lang.name : ''
 }
+
+function handleLogout() {
+  authStore.logout()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -55,7 +64,13 @@ function getLanguageName(langCode) {
           <RouterLink to="/" @click="isMenuOpen = false">Inicio</RouterLink>
           <RouterLink to="/historias" @click="isMenuOpen = false">Historias</RouterLink>
           <RouterLink to="/organizacion" @click="isMenuOpen = false">Organización</RouterLink>
-          <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
+          <template v-if="authStore.isAuthenticated">
+            <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
+            <a href="#" @click.prevent="handleLogout" class="logout-link">Cerrar sesión</a>
+          </template>
+          <template v-else>
+            <RouterLink to="/login" @click="isMenuOpen = false">Admin Login</RouterLink>
+          </template>
         </div>
 
         <div class="nav-actions">
@@ -166,6 +181,14 @@ function getLanguageName(langCode) {
 .nav-links a:hover::after,
 .nav-links a.router-link-active::after {
   width: 100%;
+}
+
+.logout-link {
+  color: var(--secondary-color);
+}
+
+.logout-link:hover::after {
+  background-color: var(--secondary-color);
 }
 
 .nav-actions {
