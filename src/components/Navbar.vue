@@ -1,8 +1,16 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
 import { ref, onMounted } from 'vue'
 import { useLanguageStore } from '@/stores/languageStore'
 import { useI18n } from 'vue-i18n'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+
+
 
 const { t, locale } = useI18n()
 const languageStore = useLanguageStore()
@@ -29,10 +37,11 @@ function selectLanguage(langCode) {
   isLanguageMenuOpen.value = false
 }
 
-// function getLanguageName(langCode) {
-//   const lang = languages.find(l => l.code === langCode)
-//   return lang ? lang.name : ''
-// }
+function handleLogout() {
+  authStore.logout()
+  router.push('/')
+}
+
 </script>
 
 <template>
@@ -57,7 +66,14 @@ function selectLanguage(langCode) {
   <RouterLink to="/historias" @click="isMenuOpen = false">{{ t('nav.menu.stories') }}</RouterLink>
   <RouterLink to="/organizacion" @click="isMenuOpen = false">{{ t('nav.menu.organization') }}</RouterLink>
   <RouterLink to="/admin" @click="isMenuOpen = false">{{ t('nav.menu.admin') }}</RouterLink>
+   <template v-if="authStore.isAuthenticated">
+            <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
+            <a href="#" @click.prevent="handleLogout" class="logout-link">Cerrar sesión</a>
+          </template>
+          <template v-else>
+            <RouterLink to="/login" @click="isMenuOpen = false">Admin Login</RouterLink>
 </div>
+
 
         <div class="nav-actions">
           <button class="theme-toggle">
@@ -168,6 +184,14 @@ function selectLanguage(langCode) {
 .nav-links a:hover::after,
 .nav-links a.router-link-active::after {
   width: 100%;
+}
+
+.logout-link {
+  color: var(--secondary-color);
+}
+
+.logout-link:hover::after {
+  background-color: var(--secondary-color);
 }
 
 .nav-actions {
