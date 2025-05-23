@@ -10,12 +10,14 @@ import router from './router'
 
 
 const app = createApp(App)
+const pinia = createPinia()
+
 app.use(i18n)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 // Check authentication status on app start
-const authStore = useAuthStore(pinia)
+const authStore = useAuthStore()
 authStore.checkAuth()
 
 app.mount('#app')
