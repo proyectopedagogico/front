@@ -32,7 +32,10 @@ defineProps({
     type: String,
     default: 'Leer historia'
   },
-
+  profileImage: {
+    type: String,
+    default: null
+  }
 })
 
 const getBackgroundColor = (color) => {
@@ -67,7 +70,10 @@ const getCardClass = (color) => {
 <template>
   <div class="story-card" :class="getCardClass(color)">
     <div class="card-image-container" :class="color">
-      <div class="card-icon">
+      <template v-if="profileImage">
+        <img :src="profileImage" :alt="title" class="profile-image">
+      </template>
+      <div v-else class="card-icon">
         <!-- Sun icon -->
         <svg v-if="icon === 'sun'" viewBox="0 0 24 24" fill="white" width="60" height="60">
           <circle cx="12" cy="12" r="5" />
@@ -169,6 +175,8 @@ const getCardClass = (color) => {
   justify-content: center;
   margin: 10px;
   border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .card-image-container.pink {
@@ -276,5 +284,13 @@ const getCardClass = (color) => {
 
 .show-details.story-card:hover {
   transform: translateY(-5px) rotate(0deg);
+}
+
+/* Nueva clase para la imagen de perfil */
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
 </style>

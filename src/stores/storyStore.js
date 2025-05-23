@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { storyService } from '../services/storyService'
 
 export const useStoryStore = defineStore('story', () => {
   // Estado
@@ -13,7 +14,8 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'España',
       profession: 'Profesora',
       description: 'Profesora de primaria con más de 20 años de experiencia, especializada en educación inclusiva.',
-      story: 'Historia de Erika...'
+      story: 'Historia de Erika...',
+      profileImage: null // Se llenará desde la API
     },
     {
       id: 2,
@@ -24,7 +26,8 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'México',
       profession: 'Ingeniera',
       description: 'Ingeniera civil que ha liderado proyectos de infraestructura sostenible en comunidades rurales.',
-      story: 'Historia de Belén...'
+      story: 'Historia de Belén...',
+      profileImage: null // Se llenará desde la API
     },
     {
       id: 3,
@@ -35,7 +38,8 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'Colombia',
       profession: 'Diseñadora',
       description: 'Diseñadora gráfica y activista social que utiliza el arte para visibilizar problemáticas de género.',
-      story: 'Historia de Thais...'
+      story: 'Historia de Thais...',
+      profileImage: null // Se llenará desde la API
     },
     {
       id: 4,
@@ -46,7 +50,8 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'Argentina',
       profession: 'Médica',
       description: 'Médica rural que ha dedicado su carrera a mejorar el acceso a la salud en zonas remotas.',
-      story: 'Historia de Nayra...'
+      story: 'Historia de Nayra...',
+      profileImage: null // Se llenará desde la API
     },
     {
       id: 5,
@@ -57,7 +62,8 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'Marruecos',
       profession: 'Empresaria',
       description: 'Fundadora de una cooperativa de mujeres artesanas que exporta productos tradicionales.',
-      story: 'Historia de Fatima...'
+      story: 'Historia de Fatima...',
+      profileImage: null // Se llenará desde la API
     },
     {
       id: 6,
@@ -68,9 +74,17 @@ export const useStoryStore = defineStore('story', () => {
       origin: 'China',
       profession: 'Programadora',
       description: 'Desarrolladora de software especializada en aplicaciones educativas para niños con discapacidad.',
-      story: 'Historia de Mei...'
+      story: 'Historia de Mei...',
+      profileImage: null // Se llenará desde la API
     }
   ])
+  const isLoading = ref(false)
+  const error = ref(null)
+  const filterOptions = ref({
+    origins: [],
+    professions: [],
+    tags: []
+  })
 
   // Getters
   const getStoryById = computed(() => {
@@ -82,6 +96,27 @@ export const useStoryStore = defineStore('story', () => {
   })
 
   // Acciones
+  async function fetchFilterOptions() {
+    try {
+      isLoading.value = true
+      const [origins, professions, tags] = await Promise.all([
+        storyService.getOrigins(),
+        storyService.getProfessions(),
+        storyService.getTags()
+      ])
+      filterOptions.value = {
+        origins,
+        professions,
+        tags
+      }
+    } catch (err) {
+      error.value = 'Error al cargar las opciones de filtro'
+      console.error('Error fetching filter options:', err)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   function addStory(story) {
     const newId = stories.value.length > 0
       ? Math.max(...stories.value.map(s => s.id)) + 1
@@ -109,10 +144,14 @@ export const useStoryStore = defineStore('story', () => {
 
   return {
     stories,
+    isLoading,
+    error,
+    filterOptions,
     getStoryById,
     getLatestStories,
     addStory,
     updateStory,
-    deleteStory
+    deleteStory,
+    fetchFilterOptions
   }
 })

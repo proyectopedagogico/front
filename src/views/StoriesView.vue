@@ -24,27 +24,38 @@ const closeModal = () => {
 
 // Filtros
 const activeFilters = ref({
-  origin: null,
-  age: null,
-  profession: null,
-  education: null
+  origin: '',
+  profession: '',
+  tags: ''
 })
 
-function applyFilter(type, value) {
-  activeFilters.value[type] = activeFilters.value[type] === value ? null : value
-}
+// Cargar historias filtradas
+const filteredStories = computed(() => {
+  return stories.value.filter(story => {
+    const matchOrigin = !activeFilters.value.origin || story.origin === activeFilters.value.origin;
+    const matchProfession = !activeFilters.value.profession || story.profession === activeFilters.value.profession;
+    const matchTags = !activeFilters.value.tags || (story.tags && story.tags.includes(activeFilters.value.tags));
+    
+    return matchOrigin && matchProfession && matchTags;
+  });
+});
 
-// Cargar historias al montar el componente
-onMounted(async () => {
-  if (stories.value.length === 0) {
-    await storyStore.fetchStories()
+// Función para reintentar la carga
+const retryLoad = async () => {
+  try {
+    await Promise.all([
+      storyStore.fetchStories(),
+      storyStore.fetchFilterOptions()
+    ])
+  } catch (err) {
+    error.value = 'Error al cargar los datos'
   }
-})
-
-// Función para reintentar la carga si hay error
-function retryFetchStories() {
-  storyStore.fetchStories()
 }
+
+// Cargar datos al montar el componente
+onMounted(async () => {
+  await retryLoad()
+})
 </script>
 
 <template>
@@ -61,34 +72,59 @@ function retryFetchStories() {
     <section class="filter-section">
       <h2 class="section-title">FILTRO</h2>
       <div class="filters">
-        <button
-          class="filter-btn"
-          :class="{ active: activeFilters.origin }"
-          @click="applyFilter('origin', 'any')"
-        >
-          Procedencia
-        </button>
-        <button
-          class="filter-btn"
-          :class="{ active: activeFilters.age }"
-          @click="applyFilter('age', 'any')"
-        >
-          Edad
-        </button>
-        <button
-          class="filter-btn"
-          :class="{ active: activeFilters.profession }"
-          @click="applyFilter('profession', 'any')"
-        >
-          Oficio
-        </button>
-        <button
-          class="filter-btn"
-          :class="{ active: activeFilters.education }"
-          @click="applyFilter('education', 'any')"
-        >
-          Formación
-        </button>
+        <div class="filter-group">
+          <label for="origin">Procedencia</label>
+          <select
+            id="origin"
+            v-model="activeFilters.origin"
+            class="filter-select"
+          >
+            <option value="">Todas</option>
+            <option
+              v-for="origin in storyStore.filterOptions.origins"
+              :key="origin"
+              :value="origin"
+            >
+              {{ origin }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="profession">Profesión</label>
+          <select
+            id="profession"
+            v-model="activeFilters.profession"
+            class="filter-select"
+          >
+            <option value="">Todas</option>
+            <option
+              v-for="profession in storyStore.filterOptions.professions"
+              :key="profession"
+              :value="profession"
+            >
+              {{ profession }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="tags">Etiquetas</label>
+          <select
+            id="tags"
+            v-model="activeFilters.tags"
+            class="filter-select"
+          >
+            <option value="">Todas</option>
+            <option
+              v-for="tag in storyStore.filterOptions.tags"
+              :key="tag"
+              :value="tag"
+            >
+              {{ tag }}
+            </option>
+          </select>
+        </div>
       </div>
     </section>
 
@@ -111,7 +147,7 @@ function retryFetchStories() {
       <!-- Historias (cuando no hay error ni está cargando) -->
       <div v-else class="stories-grid">
         <StoryCard
-          v-for="story in stories"
+          v-for="story in filteredStories"
           :key="story.id"
           :title="story.name"
           :color="story.color"
@@ -121,6 +157,7 @@ function retryFetchStories() {
           :age="story.birthYear"
           :profession="story.profession"
           :description="story.description"
+          :profileImage="story.profileImage"
           class="show-details"
           @readStory="openStoryModal(story)"
         />
@@ -187,18 +224,32 @@ background-color: black;
   margin-bottom: 1rem;
 }
 
-.filter-btn {
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-size: var(--font-size-sm);
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.filter-select {
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 20px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  outline: none;
+  font-size: var(--font-size-sm);
 }
 
-.filter-btn.active {
-  background-color: var(--primary-color);
-  color: white;
+.filter-select:hover,
+.filter-select:focus {
   border-color: var(--primary-color);
 }
 
@@ -278,6 +329,18 @@ background-color: black;
   text-align: center;
   padding: 2rem;
   color: var(--text-color);
+}
+
+/* Mensaje cuando no hay resultados */
+.stories-grid:empty + .no-stories-message {
+  display: block;
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-color);
+  font-size: var(--font-size-md);
+  background-color: var(--light-gray);
+  border-radius: var(--border-radius-md);
+  margin: 2rem 0;
 }
 
 @media (max-width: 768px) {
