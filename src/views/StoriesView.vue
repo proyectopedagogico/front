@@ -13,7 +13,15 @@ const paginationInfo = computed(() => storyStore.paginationInfo) // Para la pagi
 const selectedStory = ref(null)
 const showModal = ref(false)
 
-// ... (openStoryModal, closeModal) ...
+const openStoryModal = (story) => {
+  selectedStory.value = story
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedStory.value = null
+}
 
 const activeFilters = ref({
   origin: '',
