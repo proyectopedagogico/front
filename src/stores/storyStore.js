@@ -1,6 +1,7 @@
-
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+// This store relies on 'storyService' having getOriginOptions, getProfessionOptions, and getTagOptions methods.
+// Ensure your '../services/storyService.js' file defines and exports these.
 import { storyService } from '../services/storyService'; 
 
 export const useStoryStore = defineStore('story', () => {
@@ -52,28 +53,32 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  // Action to fetch filter options (example with static data)
+  // Action to fetch filter options dynamically from the API
   async function fetchFilterOptions() {
-    isLoading.value = true; // Optional: set loading state if fetching from API
-    error.value = null;
+    isLoading.value = true; 
+    error.value = null; 
     try {
-      // In a real application, you would fetch these from an API endpoint
-      // For example: const options = await filterApiService.getOptions();
-      // filterOptions.value = options;
+      // Fetch options dynamically from the API using storyService
+      // This requires storyService.getOriginOptions, storyService.getProfessionOptions, 
+      // and storyService.getTagOptions to be defined and correctly call the API.
+      const [originsData, professionsData, tagsData] = await Promise.all([
+        storyService.getOriginOptions(),
+        storyService.getProfessionOptions(),
+        storyService.getTagOptions()
+      ]);
 
-      // Using static data for now as an example
       filterOptions.value = {
-        origins: ['Rumanía', 'Colombia', 'Senegal', 'España', 'Siria', 'Nicaragua', 'Honduras', 'Bolivia', 'Marruecos', 'Pakistán', 'Polonia', 'Ucrania', 'Argelia'],
-        professions: ['Enfermera', 'Asistenta del hogar', 'Vendedora ambulante', 'Ama de casa', 'Estudiante', 'Profesora de biología', 'Paleoceanógrafa', 'Analista clínica', 'Tendera', 'Cuidadora de personas mayores', 'Profesora de inglés', 'Agente de seguros', 'Trabajadora de hotel', 'Camarera', 'Abogada', 'Auxiliar de geriatría', 'Educadora', 'Librera', 'Limpiadora', 'Modista', 'Pescadera', 'Cocinera', 'Integradora Social', 'Secretaria', 'Ingeniera'],
-        tags: ['Superación', 'Emprendimiento', 'Resiliencia', 'Familia', 'Comunidad', 'Migración', 'Educación', 'Liderazgo', 'Identidad cultural', 'Cambio social', 'Maternidad', 'Salud', 'Arte'] // These should match the 'name' from your 'etiquetas' table
+        origins: originsData || [], 
+        professions: professionsData || [],
+        tags: tagsData || [] 
       };
-      console.log("Filter options loaded:", filterOptions.value);
+      console.log("Dynamic filter options loaded from API:", filterOptions.value);
     } catch (err) {
-      console.error('Error fetching filter options:', err);
-      error.value = 'Error loading filter options';
-      filterOptions.value = { origins: [], professions: [], tags: [] }; // Reset on error
+      console.error('Error fetching dynamic filter options from API:', err);
+      error.value = (err.data && (err.data.message || err.data.error)) || err.message || 'Error loading filter options';
+      filterOptions.value = { origins: [], professions: [], tags: [] }; 
     } finally {
-      isLoading.value = false; // Optional
+      isLoading.value = false; 
     }
   }
 
@@ -124,19 +129,17 @@ export const useStoryStore = defineStore('story', () => {
       isLoading.value = false; 
     } 
   } 
-  // Removed initial call to fetchStories() from here
-  // It's called in your StoriesView.vue onMounted.
 
   return {
     stories,
     paginationInfo,
     isLoading,
     error,
-    filterOptions, // Expose filterOptions
+    filterOptions, 
     getStoryById,
     getLatestStories,
     fetchStories,
-    fetchFilterOptions, // Expose the action to fetch filter options
+    fetchFilterOptions, 
     addStory,
     updateStory,
     deleteStory

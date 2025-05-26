@@ -1,61 +1,70 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue' // Importa watch
 import StoryModal from '../components/StoryModal.vue'
 
 const storyStore = useStoryStore()
 const stories = computed(() => storyStore.stories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
+const paginationInfo = computed(() => storyStore.paginationInfo) // Para la paginación
 
 const selectedStory = ref(null)
 const showModal = ref(false)
 
-const openStoryModal = (story) => {
-  selectedStory.value = story
-  showModal.value = true
-}
+// ... (openStoryModal, closeModal) ...
 
-const closeModal = () => {
-  showModal.value = false
-  selectedStory.value = null
-}
-
-// Filtros
 const activeFilters = ref({
   origin: '',
   profession: '',
-  tags: ''
+  tags: '' // Asegúrate que el backend espera 'tags' y no 'tag' si es un string
 })
 
-// Cargar historias filtradas
+// Cargar historias filtradas (esta computed property es para la visualización)
 const filteredStories = computed(() => {
-  return stories.value.filter(story => {
-    const matchOrigin = !activeFilters.value.origin || story.origin === activeFilters.value.origin;
-    const matchProfession = !activeFilters.value.profession || story.profession === activeFilters.value.profession;
-    const matchTags = !activeFilters.value.tags || (story.tags && story.tags.includes(activeFilters.value.tags));
-    
-    return matchOrigin && matchProfession && matchTags;
-  });
+  // Esta lógica de filtro se aplica DESPUÉS de que la API devuelve los datos.
+  // Si quieres que la API haga el filtrado, debes pasar activeFilters a fetchStories.
+  // Por ahora, esta computed property podría no ser necesaria si la API ya filtra.
+  // O podría usarse para un filtrado adicional en el cliente.
+  // Simplemente devolvemos las historias del store por ahora, asumiendo que la API las filtró.
+  return stories.value; 
 });
 
-// Función para reintentar la carga
-const retryLoad = async () => {
+async function loadData() {
   try {
-    await Promise.all([
-      storyStore.fetchStories(),
-      storyStore.fetchFilterOptions()
-    ])
+    // Pasa los filtros activos a fetchStories
+    // También pasa la página actual (o 1 si es una nueva búsqueda de filtro)
+    // y los ítems por página.
+    await storyStore.fetchStories(
+      'es', // O el idioma activo
+      1,    // Al aplicar un nuevo filtro, usualmente vuelves a la página 1
+      paginationInfo.value.per_page || 10, // Mantén el per_page o usa un default
+      activeFilters.value // <--- PASA LOS FILTROS ACTIVOS
+    );
+    // No necesitas llamar a fetchFilterOptions cada vez que aplicas un filtro,
+    // solo una vez al montar el componente, a menos que las opciones de filtro cambien.
   } catch (err) {
-    error.value = 'Error al cargar los datos'
+    // El error ya debería estar manejado en el store
+    console.error("Error en loadData:", err);
   }
 }
 
-// Cargar datos al montar el componente
+// Observa cambios en activeFilters para volver a cargar las historias
+watch(activeFilters, () => {
+  loadData();
+}, { deep: true }); // 'deep: true' para observar cambios dentro del objeto activeFilters
+
+// Cargar datos iniciales al montar el componente
 onMounted(async () => {
-  await retryLoad()
-})
+  await storyStore.fetchFilterOptions(); // Carga las opciones de filtro una vez
+  await loadData(); // Carga las historias (inicialmente sin filtros o con filtros por defecto)
+});
+
+// Función para reintentar la carga (podría ser la misma que loadData)
+const retryFetchStories = () => {
+  loadData();
+}
 </script>
 
 <template>
@@ -153,10 +162,10 @@ onMounted(async () => {
           :color="story.color"
           :buttonText="story.buttonText"
           :icon="story.color === 'pink' ? 'sun' : story.color === 'yellow' ? 'bolt' : story.color === 'blue' ? 'wave' : 'sun'"
-          :origin="story.origin"
-          :age="story.birthYear"
-          :profession="story.profession"
-          :description="story.description"
+          :origin="story.persona_procedencia"
+          :profession="story.persona_profesion"
+          :age="story.persona_anio_nacimiento"
+          :description="story.contenido"
           :profileImage="story.profileImage"
           class="show-details"
           @readStory="openStoryModal(story)"

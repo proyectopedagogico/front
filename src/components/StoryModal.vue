@@ -4,12 +4,12 @@
       <button class="close-button" @click="closeModal">&times;</button>
       <h2 class="modal-title">{{ story.name }}</h2>
       <div class="modal-details">
-        <p v-if="story.origin"><strong>Origen:</strong> {{ story.origin }}</p>
-        <p v-if="story.birthYear"><strong>Año de nacimiento:</strong> {{ story.birthYear }}</p>
-        <p v-if="story.profession"><strong>Profesión:</strong> {{ story.profession }}</p>
+        <p v-if="story.persona_procedencia"><strong>Origen:</strong> {{ story.persona_procedencia }}</p>
+        <p v-if="story.persona_anio_nacimiento"><strong>Año de nacimiento:</strong> {{ story.persona_anio_nacimiento }}</p>
+        <p v-if="story.persona_profesion"><strong>Profesión:</strong> {{ story.persona_profesion }}</p>
       </div>
       <div class="modal-story">
-        <p>{{ story.story }}</p>
+        <p>{{ story.contenido }}</p>
       </div>
     </div>
   </div>
