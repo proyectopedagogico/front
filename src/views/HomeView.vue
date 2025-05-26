@@ -2,7 +2,8 @@
 import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
 import FaqItem from '../components/FaqItem.vue'
-import { computed, onMounted } from 'vue'
+import StoryModal from '../components/StoryModal.vue'
+import { ref, onMounted, computed, watch } from 'vue' 
 import { useLanguageStore } from '@/stores/languageStore'
 import { useI18n } from 'vue-i18n'
 
@@ -12,6 +13,19 @@ const storyStore = useStoryStore()
 const latestStories = computed(() => storyStore.getLatestStories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
+
+const selectedStory = ref(null)
+const showModal = ref(false)
+
+const openStoryModal = (story) => {
+  selectedStory.value = story
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  selectedStory.value = null
+}
 
 // Cargar historias al montar el componente si no están ya cargadas
 onMounted(async () => {
@@ -135,14 +149,16 @@ const faqs = [
           <StoryCard
             v-for="story in latestStories"
             :key="story.id"
-            :title="story.name"
+            :title="story.nombre_persona"
             :color="story.color"
             :icon="story.color === 'orange' ? 'sun' : story.color === 'black' ? 'bolt' : 'wave'"
             :buttonText="story.buttonText"
-            :origin="story.origin"
-            :age="story.age"
-            :profession="story.profession"
-            :description="story.description"
+            :origin="story.persona_procedencia"
+            :age="story.persona_anio_nacimiento"
+            :profession="story.persona_profesion"
+            :description="story.contenido"
+            @readStory="openStoryModal(story)"
+
           />
 
           <!-- Mensaje cuando no hay historias -->
@@ -150,6 +166,13 @@ const faqs = [
             <p>No hay historias disponibles en este momento.</p>
           </div>
         </div>
+        
+            <StoryModal
+      v-if="selectedStory"
+      :show="showModal"
+      :story="selectedStory"
+      @close="closeModal"
+    />
 
         <div class="section-footer">
           <button class="btn btn-secondary" @click="$router.push('/historias')">Ver más historias</button>
