@@ -1,4 +1,16 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+import { onMounted } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
+
 const teamMembers = [
   {
     id: 1,
@@ -30,63 +42,63 @@ const teamMembers = [
   }
 ]
 
-const partners = [
-  {
-    id: 1,
-    name: 'Fundación Mujeres',
-    logo: '@/assets/placeholder-image.svg',
-    description: 'Organización sin ánimo de lucro que trabaja por la igualdad de oportunidades entre mujeres y hombres.'
-  },
-  {
-    id: 2,
-    name: 'Instituto de la Mujer',
-    logo: '@/assets/placeholder-image.svg',
-    description: 'Organismo autónomo que promueve y fomenta la igualdad de ambos sexos, facilitando las condiciones para la participación efectiva de las mujeres en la vida política, cultural, económica y social.'
-  },
-  {
-    id: 3,
-    name: 'ONU Mujeres',
-    logo: '@/assets/placeholder-image.svg',
-    description: 'Entidad de las Naciones Unidas para la Igualdad de Género y el Empoderamiento de las Mujeres.'
-  }
-]
+// const partners = [
+//   {
+//     id: 1,
+//     name: 'Fundación Mujeres',
+//     logo: '@/assets/placeholder-image.svg',
+//     description: 'Organización sin ánimo de lucro que trabaja por la igualdad de oportunidades entre mujeres y hombres.'
+//   },
+//   {
+//     id: 2,
+//     name: 'Instituto de la Mujer',
+//     logo: '@/assets/placeholder-image.svg',
+//     description: 'Organismo autónomo que promueve y fomenta la igualdad de ambos sexos, facilitando las condiciones para la participación efectiva de las mujeres en la vida política, cultural, económica y social.'
+//   },
+//   {
+//     id: 3,
+//     name: 'ONU Mujeres',
+//     logo: '@/assets/placeholder-image.svg',
+//     description: 'Entidad de las Naciones Unidas para la Igualdad de Género y el Empoderamiento de las Mujeres.'
+//   }
+// ]
 
-const milestones = [
-  {
-    year: '2018',
-    title: 'Fundación del proyecto',
-    description: 'Inicio del proyecto con un pequeño grupo de voluntarias comprometidas con visibilizar las historias de mujeres trabajadoras.'
-  },
-  {
-    year: '2019',
-    title: 'Primera exposición',
-    description: 'Realización de la primera exposición fotográfica "Mujeres en el trabajo" que recorrió varias ciudades.'
-  },
-  {
-    year: '2020',
-    title: 'Lanzamiento de la plataforma digital',
-    description: 'Creación de la web para ampliar el alcance del proyecto y llegar a más personas.'
-  },
-  {
-    year: '2021',
-    title: 'Publicación del libro',
-    description: 'Edición del libro "Historias que inspiran" con una recopilación de las historias más destacadas.'
-  },
-  {
-    year: '2022',
-    title: 'Expansión internacional',
-    description: 'El proyecto comienza a recopilar historias de mujeres trabajadoras de diferentes países.'
-  }
-]
+// const milestones = [
+//   {
+//     year: '2018',
+//     title: 'Fundación del proyecto',
+//     description: 'Inicio del proyecto con un pequeño grupo de voluntarias comprometidas con visibilizar las historias de mujeres trabajadoras.'
+//   },
+//   {
+//     year: '2019',
+//     title: 'Primera exposición',
+//     description: 'Realización de la primera exposición fotográfica "Mujeres en el trabajo" que recorrió varias ciudades.'
+//   },
+//   {
+//     year: '2020',
+//     title: 'Lanzamiento de la plataforma digital',
+//     description: 'Creación de la web para ampliar el alcance del proyecto y llegar a más personas.'
+//   },
+//   {
+//     year: '2021',
+//     title: 'Publicación del libro',
+//     description: 'Edición del libro "Historias que inspiran" con una recopilación de las historias más destacadas.'
+//   },
+//   {
+//     year: '2022',
+//     title: 'Expansión internacional',
+//     description: 'El proyecto comienza a recopilar historias de mujeres trabajadoras de diferentes países.'
+//   }
+// ]
 </script>
 
 <template>
   <div class="organization-view">
     <section class="hero-section">
       <div class="container">
-        <h1>Nuestra Organización</h1>
+        <h1>{{ t('views.organization.title') }}</h1>
         <p class="hero-description">
-          Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.
+          {{ t('views.organization.description') }}
         </p>
       </div>
     </section>
@@ -95,14 +107,10 @@ const milestones = [
       <div class="container">
         <div class="mission-content">
           <div class="mission-text">
-            <h2 class="section-title">Misión y Visión</h2>
-            <p>
-              Nuestra misión es visibilizar y dar voz a las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones, contribuyendo a la construcción de una sociedad más igualitaria y justa.
+            <h2 class="section-title">{{ t('views.organization.mission_title') }}</h2>
+            <p>{{ t('views.organization.mission_text')}}
             </p>
-            <p>
-              Nuestra visión es crear un espacio de reconocimiento y valoración del trabajo femenino en todas sus formas, promoviendo la igualdad de oportunidades y el empoderamiento de las mujeres en el ámbito laboral.
-            </p>
-            <h3>Nuestros valores</h3>
+            <h3>{{ t('views.organization.values_title')}}</h3>
             <ul class="values-list">
               <li><strong>Respeto:</strong> Valoramos la diversidad de experiencias y perspectivas.</li>
               <li><strong>Inclusión:</strong> Trabajamos para representar a mujeres de todos los orígenes y condiciones.</li>
@@ -120,7 +128,7 @@ const milestones = [
 
     <section class="section team-section">
       <div class="container">
-        <h2 class="section-title">Nuestro Equipo</h2>
+        <h2 class="section-title">{{ t('views.organization.team_title')}}</h2>
 
         <div class="team-grid">
           <div
@@ -141,7 +149,7 @@ const milestones = [
       </div>
     </section>
 
-    <section class="section timeline-section">
+    <!-- <section class="section timeline-section">
       <div class="container">
         <h2 class="section-title">Nuestra Historia</h2>
 
@@ -189,7 +197,7 @@ const milestones = [
           <button class="btn btn-primary">Contactar</button>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 

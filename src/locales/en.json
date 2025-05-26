@@ -67,7 +67,7 @@
       "contact": "Contacto"
     },
     "admin": {
-      "title": "Panel de Administración",
+      "new": "Create new story",
       "stories": {
         "title": "Gestión de Historias",
         "new": "Nueva Historia",

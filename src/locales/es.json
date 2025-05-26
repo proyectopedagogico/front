@@ -60,26 +60,38 @@
     "organization": {
       "title": "Nuestra organización",
       "description": "Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.",
-      "about": "Sobre Nosotras",
-      "mission": "Nuestra Misión",
-      "vision": "Nuestra Visión",
-      "team": "Nuestro Equipo",
+      "mission_title": "Misión y Visión",
+      "mission_text": "Nuestra misión es visibilizar y dar voz a las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones, contribuyendo a la construcción de una sociedad más igualitaria y justa. Nuestra visión es crear un espacio de reconocimiento y valoración del trabajo femenino en todas sus formas, promoviendo la igualdad de oportunidades y el empoderamiento de las mujeres en el ámbito laboral.",
+      "values_title": "Nuestros Valores",
+      "values_text": "Nos guiamos por valores de igualdad, respeto, solidaridad, inclusión y empoderamiento. Creemos en la importancia de reconocer y valorar el trabajo de las mujeres en todas sus formas, promoviendo una cultura de igualdad y justicia social.",
+      "team_title": "Nuestro Equipo",
       "contact": "Contacto"
     },
     "admin": {
-      "title": "Panel de Administración",
-      "stories": {
-        "title": "Gestión de Historias",
-        "new": "Nueva Historia",
-        "edit": "Editar Historia",
-        "list": "Lista de Historias"
-      },
-      "users": {
+      "new": "Crear nueva historia",
+      "story_list": "Lista de Historias",
+      "origin": "Origen",
+      "birth": "Año de Nacimiento",
+      "profession": "Profesión",
+      "edit": "Editar",
+      "erase": "Borrar",
+      "form": {
         "title": "Gestión de Usuarios",
-        "new": "Nuevo Usuario",
-        "edit": "Editar Usuario",
-        "list": "Lista de Usuarios"
-      }
+        "name": "Nombre",
+        "image": "Imagen de perfil",
+        "birth": "Año de nacimiento",
+        "country": "País de origen",
+        "country_placeholder": "Selecciona un país",
+        "profession": "Profesión",
+        "color":"Color",
+        "story": "Historia",
+        "submit": "Guardar Historia",
+        "orange": "Naranja vibrante",
+        "blue": "Azul pastel",
+        "yellow": "Amarillo pastel",
+        "pink": "Rosa pastel",
+        "mint": "Menta pastel"
+           }
     }
   },
   "components": {
