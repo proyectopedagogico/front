@@ -71,39 +71,6 @@
             }
     }
   },
-  "components": {
-    "storyCard": {
-      "author": "Por",
-      "date": "Publicado el",
-      "category": "Categoría",
-      "readTime": "Tiempo de lectura"
-    },
-    "storyForm": {
-      "title": "Título",
-      "content": "Contenido",
-      "category": "Categoría",
-      "image": "Imagen",
-      "author": "Autora",
-      "submit": "Publicar Historia"
-    },
-    "contactForm": {
-      "name": "Nombre",
-      "email": "Correo electrónico",
-      "message": "Mensaje",
-      "submit": "Enviar"
-    },
-    "pagination": {
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "of": "de"
-    }
-  },
-  "sections": {
-    "organization": "Organización",
-    "latest_stories": "Últimas Historias",
-    "our_story": "Nuestra Historia",
-    "faq": "Preguntas Frecuentes"
-  },
   "faq": {
     "q1": "¿Qué es el proyecto \"Mujeres Trabajadoras\"?",
     "a1": "Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.",
