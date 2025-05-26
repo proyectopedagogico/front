@@ -1,45 +1,45 @@
+
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-// Asegúrate de que storyService esté correctamente definido e importe 'api' de api.js
-// y que la función getStories en storyService llame a api.get('/public/stories', false)
 import { storyService } from '../services/storyService'; 
 
 export const useStoryStore = defineStore('story', () => {
   // State
   const stories = ref([]);
-  const paginationInfo = ref({}); // To store pagination metadata (_meta)
+  const paginationInfo = ref({}); 
   const isLoading = ref(false);
   const error = ref(null);
+  
+  // State for filter options
+  const filterOptions = ref({ 
+    origins: [],
+    professions: [],
+    tags: [] 
+  });
 
   // Getters
   const getStoryById = computed(() => {
-    return (id) => stories.value.find(story => story.id_historias === parseInt(id)); // Ensure ID types match if comparing
+    return (id) => stories.value.find(story => story.id_historias === parseInt(id));
   });
 
   const getLatestStories = computed(() => {
-    // This will only show the latest from the currently fetched page
     return stories.value.slice(0, 3);
   });
 
   // Actions
-  async function fetchStories(language = 'es', page = 1, perPage = 10, filters = {}) {
+  async function fetchStories(language = 'es', page = 1, perPage = 10, activeFilters = {}) {
     isLoading.value = true;
     error.value = null;
     try {
-      // This function should call your storyService.getStories, 
-      // which in turn calls api.get('/public/stories?params...', false)
-      const response = await storyService.getStories(language, page, perPage, filters);
+      const response = await storyService.getStories(language, page, perPage, activeFilters);
       
       if (response && response.items && response._meta) {
         stories.value = response.items;
         paginationInfo.value = response._meta;
       } else {
-        // Fallback or error if the response structure is not as expected
         console.warn("fetchStories response was not in the expected paginated format. Received:", response);
-        stories.value = Array.isArray(response) ? response : []; // Assume it might be a simple array if not paginated
-        paginationInfo.value = {}; // Reset pagination
-        // Optionally set an error if the structure is mandatory
-        // error.value = 'Invalid data structure received for stories.';
+        stories.value = Array.isArray(response) ? response : []; 
+        paginationInfo.value = {};
       }
       
     } catch (err) {
@@ -52,69 +52,91 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  // Admin actions (these would call methods in storyService that require auth by default)
-  async function addStory(storyData) {
-    isLoading.value = true;
+  // Action to fetch filter options (example with static data)
+  async function fetchFilterOptions() {
+    isLoading.value = true; // Optional: set loading state if fetching from API
     error.value = null;
     try {
-      const newStory = await storyService.createAdminStory(storyData); // Assuming createAdminStory uses auth
-      // Add to the beginning of the list for immediate UI update
-      // Or re-fetch the current page: await fetchStories(currentLanguage, currentPage, currentPerPage, currentFilters);
-      if (newStory) {
-        stories.value.unshift(newStory); 
-      }
+      // In a real application, you would fetch these from an API endpoint
+      // For example: const options = await filterApiService.getOptions();
+      // filterOptions.value = options;
+
+      // Using static data for now as an example
+      filterOptions.value = {
+        origins: ['Rumanía', 'Colombia', 'Senegal', 'España', 'Siria', 'Nicaragua', 'Honduras', 'Bolivia', 'Marruecos', 'Pakistán', 'Polonia', 'Ucrania', 'Argelia'],
+        professions: ['Enfermera', 'Asistenta del hogar', 'Vendedora ambulante', 'Ama de casa', 'Estudiante', 'Profesora de biología', 'Paleoceanógrafa', 'Analista clínica', 'Tendera', 'Cuidadora de personas mayores', 'Profesora de inglés', 'Agente de seguros', 'Trabajadora de hotel', 'Camarera', 'Abogada', 'Auxiliar de geriatría', 'Educadora', 'Librera', 'Limpiadora', 'Modista', 'Pescadera', 'Cocinera', 'Integradora Social', 'Secretaria', 'Ingeniera'],
+        tags: ['Superación', 'Emprendimiento', 'Resiliencia', 'Familia', 'Comunidad', 'Migración', 'Educación', 'Liderazgo', 'Identidad cultural', 'Cambio social', 'Maternidad', 'Salud', 'Arte'] // These should match the 'name' from your 'etiquetas' table
+      };
+      console.log("Filter options loaded:", filterOptions.value);
     } catch (err) {
-      error.value = err.message || 'Error creating story';
+      console.error('Error fetching filter options:', err);
+      error.value = 'Error loading filter options';
+      filterOptions.value = { origins: [], professions: [], tags: [] }; // Reset on error
+    } finally {
+      isLoading.value = false; // Optional
+    }
+  }
+
+  // Admin actions (addStory, updateStory, deleteStory) ...
+  async function addStory(storyData) { 
+    isLoading.value = true; 
+    error.value = null; 
+    try { 
+      const newStory = await storyService.createStory(storyData); 
+      if (newStory) { 
+        stories.value.unshift(newStory);  
+      } 
+    } catch (err) { 
+      error.value = err.message || 'Error creating story'; 
+      throw err;  
+    } finally { 
+      isLoading.value = false; 
+    } 
+  } 
+
+  async function updateStory(id, updatedStoryData) { 
+    isLoading.value = true; 
+    error.value = null; 
+    try { 
+      const updated = await storyService.updateStory(id, updatedStoryData); 
+      const index = stories.value.findIndex(story => story.id_historias === id); 
+      if (index !== -1) { 
+        stories.value[index] = updated; 
+      } 
+    } catch (err) { 
+      error.value = err.message || 'Error updating story'; 
       throw err; 
-    } finally {
-      isLoading.value = false;
-    }
-  }
+    } finally { 
+      isLoading.value = false; 
+    } 
+  } 
 
-  async function updateStory(id, updatedStoryData) {
-    isLoading.value = true;
-    error.value = null;
-    try {
-      const updated = await storyService.updateAdminStory(id, updatedStoryData); // Assuming updateAdminStory uses auth
-      const index = stories.value.findIndex(story => story.id_historias === id);
-      if (index !== -1) {
-        stories.value[index] = updated;
-      }
-    } catch (err) {
-      error.value = err.message || 'Error updating story';
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  async function deleteStory(id) {
-    isLoading.value = true;
-    error.value = null;
-    try {
-      await storyService.deleteAdminStory(id); // Assuming deleteAdminStory uses auth
-      stories.value = stories.value.filter(story => story.id_historias !== id); 
-    } catch (err) {
-      error.value = err.message || 'Error deleting story';
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // It's generally better to call fetchStories from the component that needs the data (e.g., in onMounted),
-  // rather than calling it immediately when the store is defined.
-  // This gives more control over initial data loading and parameter passing.
-  // fetchStories(); // Consider removing this initial call from here.
+  async function deleteStory(id) { 
+    isLoading.value = true; 
+    error.value = null; 
+    try { 
+      await storyService.deleteStory(id); 
+      stories.value = stories.value.filter(story => story.id_historias !== id);  
+    } catch (err) { 
+      error.value = err.message || 'Error deleting story'; 
+      throw err; 
+    } finally { 
+      isLoading.value = false; 
+    } 
+  } 
+  // Removed initial call to fetchStories() from here
+  // It's called in your StoriesView.vue onMounted.
 
   return {
     stories,
     paginationInfo,
     isLoading,
     error,
-    filterOptions,
+    filterOptions, // Expose filterOptions
     getStoryById,
     getLatestStories,
+    fetchStories,
+    fetchFilterOptions, // Expose the action to fetch filter options
     addStory,
     updateStory,
     deleteStory
