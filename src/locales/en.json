@@ -1,0 +1,126 @@
+{
+  "common": {
+    "title": "Working Women",
+    "loading": "Loading...",
+    "error": "An error has occurred",
+    "success": "Operation successful",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "nav": {
+    "logo": "Working Women",
+    "menu": {
+      "home": "Home",
+      "stories": "Stories",
+      "organization": "Organization",
+      "admin": "Admin"
+    },
+    "languages": {
+      "select": "Select language",
+      "es": "Spanish",
+      "en": "English",
+      "fr": "French",
+      "ar": "Arabic",
+      "ur": "Urdu"
+    }
+  },
+  "views": {
+    "home": {
+      "headline": "Working Women: Stories That Inspire",
+      "description": "Discover the experiences, challenges, and achievements of working women from diverse backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+      "featured": "Featured Stories",
+      "latest": "Latest Stories"
+    },
+    "stories": {
+      "title": "Stories",
+      "filters": {
+        "category": "Category",
+        "date": "Date",
+        "search": "Search stories..."
+      },
+      "empty": "No stories found",
+      "readMore": "Read more"
+    },
+    "organization": {
+      "title": "Organization",
+      "about": "About Us",
+      "mission": "Our Mission",
+      "vision": "Our Vision",
+      "team": "Our Team",
+      "contact": "Contact"
+    },
+    "admin": {
+      "title": "Admin Panel",
+      "stories": {
+        "title": "Stories Management",
+        "new": "New Story",
+        "edit": "Edit Story",
+        "list": "Stories List"
+      },
+      "users": {
+        "title": "Users Management",
+        "new": "New User",
+        "edit": "Edit User",
+        "list": "Users List"
+      }
+    }
+  },
+  "components": {
+    "storyCard": {
+      "author": "By",
+      "date": "Published on",
+      "category": "Category",
+      "readTime": "Reading time"
+    },
+    "storyForm": {
+      "title": "Title",
+      "content": "Content",
+      "category": "Category",
+      "image": "Image",
+      "author": "Author",
+      "submit": "Publish Story"
+    },
+    "contactForm": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "of": "of"
+    }
+  },
+  "sections": {
+    "organization": "Organization",
+    "latest_stories": "Latest Stories",
+    "our_story": "Our Story",
+    "faq": "Frequently Asked Questions"
+  },
+  "faq": {
+    "q1": "What is the 'Working Women' project?",
+    "a1": "It is an initiative that seeks to highlight the stories and experiences of working women from diverse backgrounds, ages, and professions, emphasizing their contributions to society and the challenges they face.",
+    "q2": "How can I share my story?",
+    "a2": "You can contact us through the form on our website or send us an email. We will conduct an interview and work with you to shape your story.",
+    "q3": "Who can participate?",
+    "a3": "All working women, regardless of their profession, age, or background, can share their experiences. We aim to represent the diversity of the female workforce.",
+    "q4": "How can I support this project?",
+    "a4": "You can share the stories on social media, participate in our events, or volunteer in collecting and editing stories."
+  },
+  "footer": {
+    "slogan": "Stories that inspire",
+    "navigation": "Navigation",
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "social": "Social",
+    "copyright": "© 2025 Working Women. All rights reserved."
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "common": {
+    "title": "Femmes Travailleuses",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Opération réussie",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "nav": {
+    "logo": "Femmes Travailleuses",
+    "menu": {
+      "home": "ccueil",
+      "stories": "Histoires",
+      "organization": "Organisation",
+      "admin": "Admin"
+    },
+    "languages": {
+      "select": "Choisir la langue",
+      "es": "Espagnol",
+      "en": "Anglais",
+      "fr": "Français",
+      "ar": "Arabe",
+      "ur": "Ourdou"
+    }
+  },
+  "views": {
+    "home": {
+      "headline": "Femmes Travailleuses : Histoires qui Inspirent",
+      "description": "Découvrez les expériences, défis et réussites de femmes travailleuses de divers horizons, âges et professions. Un espace pour mettre en lumière et célébrer leurs contributions à la société.",
+      "featured": "Histoires en Vedette",
+      "latest": "Dernières Histoires"
+    },
+    "stories": {
+      "title": "Histoires",
+      "filters": {
+        "category": "Catégorie",
+        "date": "Date",
+        "search": "Rechercher des histoires..."
+      },
+      "empty": "Aucune histoire trouvée",
+      "readMore": "Lire la suite"
+    },
+    "organization": {
+      "title": "Organisation",
+      "about": "À propos de nous",
+      "mission": "Notre Mission",
+      "vision": "Notre Vision",
+      "team": "Notre Équipe",
+      "contact": "Contact"
+    },
+    "admin": {
+      "title": "Panneau d'Administration",
+      "stories": {
+        "title": "Gestion des Histoires",
+        "new": "Nouvelle Histoire",
+        "edit": "Modifier l'Histoire",
+        "list": "Liste des Histoires"
+      },
+      "users": {
+        "title": "Gestion des Utilisateurs",
+        "new": "Nouvel Utilisateur",
+        "edit": "Modifier l'Utilisateur",
+        "list": "Liste des Utilisateurs"
+      }
+    }
+  },
+  "components": {
+    "storyCard": {
+      "author": "Par",
+      "date": "Publié le",
+      "category": "Catégorie",
+      "readTime": "Temps de lecture"
+    },
+    "storyForm": {
+      "title": "Titre",
+      "content": "Contenu",
+      "category": "Catégorie",
+      "image": "Image",
+      "author": "Auteur",
+      "submit": "Publier l'Histoire"
+    },
+    "contactForm": {
+      "name": "Nom",
+      "email": "Courriel",
+      "message": "Message",
+      "submit": "Envoyer"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "of": "de"
+    }
+  },
+  "sections": {
+    "organization": "Organisation",
+    "latest_stories": "Dernières Histoires",
+    "our_story": "Notre Histoire",
+    "faq": "Questions Fréquentes"
+  },
+  "faq": {
+    "q1": "Qu'est-ce que le projet « Femmes Travailleuses » ?",
+    "a1": "C'est une initiative visant à mettre en lumière les histoires et expériences de femmes travailleuses de différents horizons, âges et professions, soulignant leurs contributions à la société et les défis qu'elles rencontrent.",
+    "q2": "Comment puis-je partager mon histoire ?",
+    "a2": "Vous pouvez nous contacter via le formulaire sur notre site web ou nous envoyer un courriel. Nous organiserons une interview et travaillerons avec vous pour façonner votre histoire.",
+    "q3": "Qui peut participer ?",
+    "a3": "Toutes les femmes travailleuses, quelle que soit leur profession, âge ou origine, peuvent partager leurs expériences. Nous cherchons à représenter la diversité du monde professionnel féminin.",
+    "q4": "Comment puis-je soutenir ce projet ?",
+    "a4": "Vous pouvez diffuser les histoires sur les réseaux sociaux, participer à nos événements ou collaborer en tant que bénévole dans la collecte et l'édition des histoires."
+  },
+  "footer": {
+    "slogan": "Des histoires qui inspirent",
+    "navigation": "Navigation",
+    "legal": {
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation"
+    },
+    "social": "Social",
+    "copyright": "© 2025 Femmes Travailleuses. Tous droits réservés."
+  }
+}
