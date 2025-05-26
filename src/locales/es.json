@@ -89,6 +89,12 @@
     "q4": "¿Cómo puedo apoyar este proyecto?",
     "a4": "Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias."
   },
+  "storiecard": {
+    "origin": "Origen",
+    "age": "Edad",
+    "years": "años",
+    "profession": "Profesión"
+  },
   "footer": {
     "title": "¿Quieres compartir tu historia?",
     "text": "Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.",

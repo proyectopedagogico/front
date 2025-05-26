@@ -30,29 +30,6 @@ function retryFetchStories() {
   storyStore.fetchStories()
 }
 
-// Datos de ejemplo para las secciones
-const faqs = [
-  {
-    id: 1,
-    question: '¿Qué es el proyecto "Mujeres Trabajadoras"?',
-    answer: 'Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.'
-  },
-  {
-    id: 2,
-    question: '¿Cómo puedo compartir mi historia?',
-    answer: 'Puedes contactarnos a través del formulario en nuestra web o enviarnos un correo electrónico. Realizaremos una entrevista y trabajaremos contigo para dar forma a tu historia.'
-  },
-  {
-    id: 3,
-    question: '¿Quiénes pueden participar?',
-    answer: 'Todas las mujeres trabajadoras, independientemente de su profesión, edad u origen, pueden compartir sus experiencias. Buscamos representar la diversidad del mundo laboral femenino.'
-  },
-  {
-    id: 4,
-    question: '¿Cómo puedo apoyar este proyecto?',
-    answer: 'Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias.'
-  }
-]
 </script>
 
 <template>
@@ -159,20 +136,30 @@ const faqs = [
     </section>
 
     <!-- FAQ Section -->
-    <section class="section faq-section">
-      <div class="container">
-        <h2 class="section-title">{{ t('views.home.faq') }}</h2>
+<section class="section faq-section">
+  <div class="container">
+    <h2 class="section-title">{{ t('views.home.faq') }}</h2>
 
-        <div class="faq-container">
-          <FaqItem
-            v-for="faq in faqs"
-            :key="faq.id"
-            :question="faq.question"
-            :answer="faq.answer"
-          />
-        </div>
-      </div>
-    </section>
+    <div class="faq-container">
+      <FaqItem
+        :question="t('faq.q1')"
+        :answer="t('faq.a1')"
+      />
+      <FaqItem
+        :question="t('faq.q2')"
+        :answer="t('faq.a2')"
+      />
+      <FaqItem
+        :question="t('faq.q3')"
+        :answer="t('faq.a3')"
+      />
+      <FaqItem
+        :question="t('faq.q4')"
+        :answer="t('faq.a4')"
+      />
+    </div>
+  </div>
+</section>
   </div>
 </template>
 
