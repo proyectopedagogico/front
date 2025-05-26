@@ -1,6 +1,15 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { onMounted } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
 
 const teamMembers = [
   {
@@ -113,11 +122,11 @@ const milestones = [
               {{ t('views.organization.values_title') }}
             </h3>
             <ul class="values-list">
-              <li><strong>Respeto:</strong> Valoramos la diversidad de experiencias y perspectivas.</li>
-              <li><strong>Inclusión:</strong> Trabajamos para representar a mujeres de todos los orígenes y condiciones.</li>
-              <li><strong>Empoderamiento:</strong> Creemos en la capacidad transformadora de las historias personales.</li>
-              <li><strong>Colaboración:</strong> Construimos redes de apoyo entre mujeres y organizaciones.</li>
-              <li><strong>Transparencia:</strong> Actuamos con honestidad y claridad en todas nuestras acciones.</li>
+              <li><strong>{{ t('views.values.v1_title') }}:</strong> {{ t('views.values.v1_text') }}</li>
+              <li><strong>{{ t('views.values.v2_title') }}:</strong> {{ t('views.values.v2_text') }}</li>
+              <li><strong>{{ t('views.values.v3_title') }}:</strong> {{ t('views.values.v3_text') }}</li>
+              <li><strong>{{ t('views.values.v4_title') }}:</strong> {{ t('views.values.v4_text') }}</li>
+              <li><strong>{{ t('views.values.v5_title') }}:</strong> {{ t('views.values.v5_text') }}</li>
             </ul>
           </div>
           <div class="mission-image">
@@ -150,6 +159,7 @@ const milestones = [
           </div>
         </div>
       </div>
+      
     </section>
 
     <section class="section timeline-section">

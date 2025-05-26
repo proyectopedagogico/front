@@ -46,6 +46,20 @@
       "team_title": "Our Team",
       "contact": "Contact"
     },
+    "values": {
+  "title": "Our Values",
+  "v1_title": "Respect",
+  "v1_text": "We value the diversity of experiences and perspectives.",
+  "v2_title": "Inclusion",
+  "v2_text": "We work to represent women from all backgrounds and conditions.",
+  "v3_title": "Empowerment",
+  "v3_text": "We believe in the transformative power of personal stories.",
+  "v4_title": "Collaboration",
+  "v4_text": "We build support networks among women and organizations.",
+  "v5_title": "Transparency",
+  "v5_text": "We act with honesty and clarity in all our actions."
+},
+
     "admin": {
       "new": "Create New Story",
       "story_list": "Stories List",

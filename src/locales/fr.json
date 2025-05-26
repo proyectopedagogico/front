@@ -46,6 +46,20 @@
       "team_title": "Notre Équipe",
       "contact": "Contact"
     },
+    "values": {
+  "title": "Nos Valeurs",
+  "v1_title": "Respect",
+  "v1_text": "Nous valorisons la diversité des expériences et des perspectives.",
+  "v2_title": "Inclusion",
+  "v2_text": "Nous travaillons pour représenter les femmes de tous horizons et conditions.",
+  "v3_title": "Autonomisation",
+  "v3_text": "Nous croyons au pouvoir transformateur des histoires personnelles.",
+  "v4_title": "Collaboration",
+  "v4_text": "Nous construisons des réseaux de soutien entre femmes et organisations.",
+  "v5_title": "Transparence",
+  "v5_text": "Nous agissons avec honnêteté et clarté dans toutes nos actions."
+},
+
     "admin": {
       "new": "Créer une nouvelle histoire",
       "story_list": "Liste des Histoires",
