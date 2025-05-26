@@ -45,6 +45,38 @@
       "team_title": "Nuestro Equipo",
       "contact": "Contacto"
     },
+    "values": {
+      "title": "Nuestros Valores",
+      "v1_title": "Respeto",
+      "v1_text": "Valoramos la diversidad de experiencias y perspectivas.",
+      "v2_title": "Inclusión",
+      "v2_text": "Trabajamos para representar a mujeres de todos los orígenes y condiciones.",
+      "v3_title": "Empoderamiento",
+      "v3_text": "Creemos en la capacidad transformadora de las historias personales.",
+      "v4_title": "Colaboración",
+      "v4_text": "Construimos redes de apoyo entre mujeres y organizaciones.",
+      "v5_title": "Transparencia",
+      "v5_text": "Actuamos con honestidad y claridad en todas nuestras acciones.",
+
+      "respect": "Respeto",
+      "solidarity": "Solidaridad",
+      "inclusion": "Inclusión",
+      "empowerment": "Empoderamiento",
+      "description": "Nos guiamos por estos valores para promover una cultura de igualdad y justicia social, reconociendo y valorando el trabajo de las mujeres en todas sus formas."
+    },
+    "team": {
+      "title": "Nuestro Equipo",
+      "member1": {
+        "name": "María González",
+        "role": "Directora",
+        "bio": "Fundadora del proyecto con más de 15 años de experiencia en el ámbito social y defensa de los derechos laborales de las mujeres."
+      },
+      "member2": {
+        "name": "Laura Rodríguez",
+        "role": "Coordinadora de Proyectos",
+        "bio": "Especialista en gestión de proyectos sociales con enfoque de género. Ha trabajado en diversas organizaciones internacionales."
+      }
+    },
     "stories": {
       "filter_title": "FILTRO",
       "origin": "Procedencia",
