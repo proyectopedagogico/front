@@ -99,7 +99,7 @@ function retryFetchStories() {
         <StoryCard
           v-for="story in stories"
           :key="story.id"
-          :title="story.name"
+          :title="story.nombre_persona"
           :color="story.color"
           :buttonText="story.buttonText"
           :icon="story.color === 'orange' ? 'sun' : story.color === 'black' ? 'bolt' : 'wave'"
