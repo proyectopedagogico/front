@@ -77,55 +77,6 @@ onMounted(() => {
   </div>
 </section>
 
-    <!-- <section class="section timeline-section">
-      <div class="container">
-        <h2 class="section-title">Nuestra Historia</h2>
-
-        <div class="timeline">
-          <div
-            v-for="(milestone, index) in milestones"
-            :key="index"
-            class="timeline-item"
-          >
-            <div class="timeline-year">{{ milestone.year }}</div>
-            <div class="timeline-content">
-              <h3>{{ milestone.title }}</h3>
-              <p>{{ milestone.description }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section partners-section">
-      <div class="container">
-        <h2 class="section-title">Colaboradores</h2>
-
-        <div class="partners-grid">
-          <div
-            v-for="partner in partners"
-            :key="partner.id"
-            class="partner-card"
-          >
-            <div class="partner-logo">
-              <img :src="partner.logo" :alt="partner.name" />
-            </div>
-            <h3>{{ partner.name }}</h3>
-            <p>{{ partner.description }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section contact-section">
-      <div class="container">
-        <div class="contact-content">
-          <h2>¿Quieres colaborar con nosotras?</h2>
-          <p>Si quieres formar parte de este proyecto o colaborar de alguna manera, no dudes en contactarnos.</p>
-          <button class="btn btn-primary">Contactar</button>
-        </div>
-      </div>
-    </section> -->
   </div>
 </template>
 
