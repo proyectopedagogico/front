@@ -1,37 +1,39 @@
 <script setup>
-// No se necesitan importaciones por ahora
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 </script>
 
 <template>
   <footer class="footer">
     <div class="footer-cta">
-      <h2>¿Quieres compartir tu historia?</h2>
-      <p>Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.</p>
-      <button class="btn btn-primary">Contactar</button>
+      <h2>{{ t('footer.title') }}</h2>
+      <p>{{ t('footer.text') }}</p>
+      <button class="btn btn-primary">{{ t('footer.contact') }}</button>
     </div>
 
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <span class="logo-text">Mujeres Trabajadoras</span>
-          <p>Historias que inspiran</p>
+          <span class="logo-text">{{ t('footer.logo_text') }}</span>
+          <p>{{ t('footer.logo_stories') }}</p>
         </div>
 
         <div class="footer-links">
           <div class="footer-links-column">
-            <h3>Navegación</h3>
+            <h3>{{ t('footer.navigation') }}</h3>
             <ul>
-              <li><a href="/">Inicio</a></li>
-              <li><a href="/historias">Historias</a></li>
-              <li><a href="/organizacion">Organización</a></li>
+              <li><a href="/">{{ t('footer.home') }}</a></li>
+              <li><a href="/historias">{{ t('footer.stories') }}</a></li>
+              <li><a href="/organizacion">{{ t('footer.organization') }}</a></li>
             </ul>
           </div>
 
           <div class="footer-links-column">
-            <h3>Legal</h3>
+            <h3>{{ t('footer.legal') }}</h3>
             <ul>
-              <li><a href="/privacidad">Política de privacidad</a></li>
-              <li><a href="/terminos">Términos de servicio</a></li>
+              <li><a href="/privacidad">{{ t('footer.privacy') }}</a></li>
+              <li><a href="/terminos">{{ t('footer.terms') }}</a></li>
             </ul>
           </div>
 
@@ -59,7 +61,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2025 Mujeres Trabajadoras. Todos los derechos reservados.</p>
+        <p>{{ t('footer.copyright') }}</p>
       </div>
     </div>
   </footer>

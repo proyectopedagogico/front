@@ -1,4 +1,8 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+
 import { useStoryStore } from '../stores/storyStore'
 import { ref, computed, onMounted } from 'vue'
 import countriesData from '../assets/countries.json'
@@ -136,12 +140,16 @@ function getCardClass(color) {
     <h1 class="dashboard-title">DASHBOARD</h1>
 
     <div class="create-story-container">
-      <button class="create-story-btn" @click="createNewStory">Crear nueva historia</button>
+      <button class="create-story-btn" @click="createNewStory">
+        {{ t('views.admin.new') }}
+      </button>
     </div>
 
     <!-- Componente 1: Lista de historias para editar/borrar -->
     <section class="story-list-section">
-      <h2 class="component-title">Lista de historias</h2>
+      <h2 class="component-title">
+        {{ t('views.admin.story_list') }}
+      </h2>
 
       <!-- Estado de carga -->
       <div v-if="isLoading" class="loading-container">
@@ -182,8 +190,12 @@ function getCardClass(color) {
             </div>
           </div>
           <div class="story-actions">
-            <button class="action-btn edit-btn" @click="editStory(story)">Editar</button>
-            <button class="action-btn delete-btn" @click="deleteStory(story.id)">Borrar</button>
+            <button class="action-btn edit-btn" @click="editStory(story)">
+              {{ t('views.admin.edit') }}
+            </button>
+            <button class="action-btn delete-btn" @click="deleteStory(story.id)">
+              {{ t('views.admin.erase') }}
+            </button>
           </div>
         </div>
       </div>
@@ -197,24 +209,34 @@ function getCardClass(color) {
 
       <form class="story-form" @submit.prevent="submitForm">
         <div class="form-group">
-          <label for="nombre">Nombre:</label>
+          <label for="nombre">
+            {{ t('views.admin.form.name') }}
+          </label>
           <input type="text" id="nombre" class="form-control" v-model="formData.name" required />
         </div>
 
         <div class="form-group">
-          <label for="imagen">Imagen perfil:</label>
+          <label for="imagen">
+            {{ t('views.admin.form.image') }}
+          </label>
           <input type="text" id="imagen" class="form-control" placeholder="URL de la imagen" />
         </div>
 
         <div class="form-group">
-          <label for="anioNacimiento">Año de nacimiento:</label>
+          <label for="anioNacimiento">
+            {{ t('views.admin.form.birth') }}
+          </label>
           <input type="number" id="anioNacimiento" class="form-control" v-model="formData.birthYear" min="1950" :max="new Date().getFullYear()" />
         </div>
 
         <div class="form-group">
-          <label for="procedencia">País de origen:</label>
+          <label for="procedencia">
+            {{ t('views.admin.form.country') }}
+          </label>
           <select id="procedencia" class="form-control" v-model="formData.origin">
-            <option value="">Selecciona un país</option>
+            <option value="">
+              {{ t('views.admin.form.country_placeholder') }}
+            </option>
             <option v-for="country in countries" :key="country.id" :value="country.name">
               {{ country.name }}
             </option>
@@ -222,23 +244,25 @@ function getCardClass(color) {
         </div>
 
         <div class="form-group">
-          <label for="profesion">Profesión:</label>
+          <label for="profesion">
+            {{ t('views.admin.form.profession') }}
+          </label>
           <input type="text" id="profesion" class="form-control" v-model="formData.profession" />
         </div>
 
         <div class="form-group">
-          <label for="color">Color:</label>
+          <label for="color">{{ t('views.admin.form.color') }}</label>
           <select id="color" class="form-control" v-model="formData.color">
-            <option value="orange">Naranja vibrante</option>
-            <option value="pink">Rosa pastel</option>
-            <option value="yellow">Amarillo pastel</option>
-            <option value="blue">Azul pastel</option>
-            <option value="mint">Menta pastel</option>
+            <option value="orange">{{ t('views.admin.form.orange') }}</option>
+            <option value="pink">{{ t('views.admin.form.pink') }}</option>
+            <option value="yellow">{{ t('views.admin.form.yellow') }}</option>
+            <option value="blue">{{ t('views.admin.form.blue') }}</option>
+            <option value="mint">{{ t('views.admin.form.mint') }}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="historia">Historia:</label>
+          <label for="historia">{{ t('views.admin.form.story') }}</label>
           <textarea id="historia" class="form-control textarea" v-model="formData.story"></textarea>
         </div>
 

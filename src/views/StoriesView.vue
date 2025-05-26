@@ -3,6 +3,8 @@ import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
 import { ref, onMounted, computed } from 'vue'
 import StoryModal from '../components/StoryModal.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const storyStore = useStoryStore()
 const stories = computed(() => storyStore.stories)
@@ -70,16 +72,16 @@ onMounted(async () => {
 
     <!-- Sección de Filtros -->
     <section class="filter-section">
-      <h2 class="section-title">FILTRO</h2>
+      <h2 class="section-title">{{ t('stories.filter_title') }}</h2>
       <div class="filters">
         <div class="filter-group">
-          <label for="origin">Procedencia</label>
+          <label for="origin">{{ t('stories.origin') }}</label>
           <select
             id="origin"
             v-model="activeFilters.origin"
             class="filter-select"
           >
-            <option value="">Todas</option>
+            <option value="">{{ t('stories.filter_value') }}</option>
             <option
               v-for="origin in storyStore.filterOptions.origins"
               :key="origin"
@@ -91,7 +93,7 @@ onMounted(async () => {
         </div>
 
         <div class="filter-group">
-          <label for="profession">Profesión</label>
+          <label for="profession">{{ t('stories.profession') }}</label>
           <select
             id="profession"
             v-model="activeFilters.profession"
@@ -109,7 +111,7 @@ onMounted(async () => {
         </div>
 
         <div class="filter-group">
-          <label for="tags">Etiquetas</label>
+          <label for="tags">{{ t('stories.tags') }}</label>
           <select
             id="tags"
             v-model="activeFilters.tags"

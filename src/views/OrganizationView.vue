@@ -1,4 +1,7 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 const teamMembers = [
   {
     id: 1,
@@ -84,9 +87,11 @@ const milestones = [
   <div class="organization-view">
     <section class="hero-section">
       <div class="container">
-        <h1>Nuestra Organización</h1>
+        <h1>
+          {{ t('views.organization.title') }}
+        </h1>
         <p class="hero-description">
-          Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.
+          {{ t('views.organization.description') }}
         </p>
       </div>
     </section>
@@ -95,14 +100,18 @@ const milestones = [
       <div class="container">
         <div class="mission-content">
           <div class="mission-text">
-            <h2 class="section-title">Misión y Visión</h2>
+            <h2 class="section-title">
+              {{ t('views.organization.mission_title') }}
+            </h2>
             <p>
-              Nuestra misión es visibilizar y dar voz a las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones, contribuyendo a la construcción de una sociedad más igualitaria y justa.
+              {{ t('views.organization.mission_text') }}
             </p>
             <p>
               Nuestra visión es crear un espacio de reconocimiento y valoración del trabajo femenino en todas sus formas, promoviendo la igualdad de oportunidades y el empoderamiento de las mujeres en el ámbito laboral.
             </p>
-            <h3>Nuestros valores</h3>
+            <h3>
+              {{ t('views.organization.values_title') }}
+            </h3>
             <ul class="values-list">
               <li><strong>Respeto:</strong> Valoramos la diversidad de experiencias y perspectivas.</li>
               <li><strong>Inclusión:</strong> Trabajamos para representar a mujeres de todos los orígenes y condiciones.</li>
@@ -120,7 +129,9 @@ const milestones = [
 
     <section class="section team-section">
       <div class="container">
-        <h2 class="section-title">Nuestro Equipo</h2>
+        <h2 class="section-title">
+          {{ t('views.organization.team_title') }}
+        </h2>
 
         <div class="team-grid">
           <div

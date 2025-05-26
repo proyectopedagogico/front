@@ -1,27 +1,16 @@
 {
-  "common": {
-    "title": "Working Women",
-    "loading": "Loading...",
-    "error": "An error has occurred",
-    "success": "Operation successful",
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous"
-  },
   "nav": {
     "logo": "Working Women",
     "menu": {
       "home": "Home",
       "stories": "Stories",
       "organization": "Organization",
-      "admin": "Admin"
+      "admin": "Admin",
+      "logout": "Log out"
+
     },
     "languages": {
-      "select": "Select language",
+      "select": "Select Language",
       "es": "Spanish",
       "en": "English",
       "fr": "French",
@@ -31,95 +20,111 @@
   },
   "views": {
     "home": {
+      "project": "Project",
       "headline": "Working Women: Stories That Inspire",
-      "description": "Discover the experiences, challenges, and achievements of working women from diverse backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+      "description": "Discover the experiences, challenges, and achievements of working women from different backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
       "featured": "Featured Stories",
-      "latest": "Latest Stories"
-    },
-    "stories": {
-      "title": "Stories",
-      "filters": {
-        "category": "Category",
-        "date": "Date",
-        "search": "Search stories..."
-      },
-      "empty": "No stories found",
-      "readMore": "Read more"
+      "latest": "Latest Stories",
+      "viewstories": "View Stories",
+      "contact": "Contact",
+      "organization": "Organization",
+      "organizationtext": "We are a social initiative entity, non-profit and declared of public utility since 1986, with a purpose focused on integrating people who are in or at risk of social exclusion due to various personal, academic or social circumstances. We promote professional qualification, with values and attitudes of responsibility and solidarity, so that people become sovereign and active protagonists in their own lives and society. At Peñascal Kooperatiba, our mission is to integrate people, especially those at a disadvantage, through training, professional qualification, labor activation, job creation, and fostering solidarity and citizenship values.",
+      "knowmore": "Learn More",
+      "latestStories": "Latest Stories",
+      "morestories": "More Stories",
+      "our_story": "Our Story",
+      "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
+      "faq": "Frequently Asked Questions"
     },
     "organization": {
-      "title": "Organization",
-      "about": "About Us",
-      "mission": "Our Mission",
-      "vision": "Our Vision",
-      "team": "Our Team",
+      "title": "Our Organization",
+      "description": "Learn more about who we are, our mission and vision, and how we work to highlight the stories of working women.",
+      "mission_title": "Mission and Vision",
+      "mission_text": "Our mission is to highlight and give voice to the experiences, challenges, and achievements of working women from different backgrounds, ages, and professions, contributing to the construction of a more equal and just society. Our vision is to create a space of recognition and appreciation of women’s work in all its forms, promoting equal opportunities and the empowerment of women in the workplace.",
+      "values_title": "Our Values",
+      "values_text": "We are guided by values of equality, respect, solidarity, inclusion, and empowerment. We believe in recognizing and valuing women’s work in all its forms, promoting a culture of equality and social justice.",
+      "team_title": "Our Team",
       "contact": "Contact"
     },
     "admin": {
-      "title": "Admin Panel",
-      "stories": {
-        "title": "Stories Management",
-        "new": "New Story",
-        "edit": "Edit Story",
-        "list": "Stories List"
-      },
-      "users": {
-        "title": "Users Management",
-        "new": "New User",
-        "edit": "Edit User",
-        "list": "Users List"
+      "new": "Create New Story",
+      "story_list": "Stories List",
+      "origin": "Origin",
+      "birth": "Year of Birth",
+      "profession": "Profession",
+      "edit": "Edit",
+      "erase": "Delete",
+      "form": {
+        "title": "User Management",
+        "name": "Name",
+        "image": "Profile Image",
+        "birth": "Year of Birth",
+        "country": "Country of Origin",
+        "country_placeholder": "Select a country",
+        "profession": "Profession",
+        "color": "Color",
+        "story": "Story",
+        "submit": "Save Story",
+        "orange": "Vibrant Orange",
+        "blue": "Pastel Blue",
+        "yellow": "Pastel Yellow",
+        "pink": "Pastel Pink",
+        "mint": "Pastel Mint"
       }
     }
   },
-  "components": {
-    "storyCard": {
-      "author": "By",
-      "date": "Published on",
-      "category": "Category",
-      "readTime": "Reading time"
-    },
-    "storyForm": {
-      "title": "Title",
-      "content": "Content",
-      "category": "Category",
-      "image": "Image",
-      "author": "Author",
-      "submit": "Publish Story"
-    },
-    "contactForm": {
-      "name": "Name",
-      "email": "Email",
-      "message": "Message",
-      "submit": "Send"
-    },
-    "pagination": {
-      "previous": "Previous",
-      "next": "Next",
-      "of": "of"
-    }
+"team": {
+  "title": "Our Team",
+  "member1": {
+    "name": "María González",
+    "role": "Director",
+    "bio": "Founder of the project with over 15 years of experience in the social field and in defending women's labor rights."
   },
-  "sections": {
-    "organization": "Organization",
-    "latest_stories": "Latest Stories",
-    "our_story": "Our Story",
-    "faq": "Frequently Asked Questions"
-  },
+  "member2": {
+    "name": "Laura Rodríguez",
+    "role": "Project Coordinator",
+    "bio": "Specialist in managing social projects with a gender focus. She has worked in various international organizations."
+  }
+},
+
+  "stories": {
+  "filter_title": "FILTER",
+  "origin": "Origin",
+  "profession": "Profession",
+  "filter_value": "All",
+  "tags": "Tags"
+},
+
   "faq": {
     "q1": "What is the 'Working Women' project?",
-    "a1": "It is an initiative that seeks to highlight the stories and experiences of working women from diverse backgrounds, ages, and professions, emphasizing their contributions to society and the challenges they face.",
+    "a1": "It is an initiative that aims to highlight the stories and experiences of working women from different backgrounds, ages, and professions, emphasizing their contributions to society and the challenges they face.",
     "q2": "How can I share my story?",
     "a2": "You can contact us through the form on our website or send us an email. We will conduct an interview and work with you to shape your story.",
     "q3": "Who can participate?",
-    "a3": "All working women, regardless of their profession, age, or background, can share their experiences. We aim to represent the diversity of the female workforce.",
+    "a3": "All working women, regardless of their profession, age, or origin, can share their experiences. We seek to represent the diversity of the female workforce.",
     "q4": "How can I support this project?",
-    "a4": "You can share the stories on social media, participate in our events, or volunteer in collecting and editing stories."
+    "a4": "You can spread the stories on social media, participate in our events, or volunteer to help collect and edit stories."
   },
+
+  "storiecard": {
+  "origin": "Origin",
+  "age": "Age",
+  "years": "years",
+  "profession": "Profession"
+},
   "footer": {
-    "slogan": "Stories that inspire",
+    "title": "Want to share your story?",
+    "text": "Join our project and help us highlight the experiences of working women.",
+    "contact": "Contact Us",
+    "logo_text": "Working Women",
+    "logo_stories": "Stories that Inspire",
     "navigation": "Navigation",
-    "legal": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service"
-    },
+    "home": "Home",
+    "stories": "Stories",
+    "organization": "Organization",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
     "social": "Social",
     "copyright": "© 2025 Working Women. All rights reserved."
   }
