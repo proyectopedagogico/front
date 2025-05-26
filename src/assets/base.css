@@ -1,4 +1,4 @@
-/* Base CSS para el proyecto de Mujeres Trabajadoras - Nuevo diseño */
+/* Base CSS para el proyecto de Mujeres Trabajadoras  */
 :root {
   /* Colores base */
   --white: #ffffff;
@@ -7,19 +7,19 @@
   --dark-gray: #333333;
   --black: #000000;
 
-  /* Paleta de colores vibrantes para tarjetas de proyectos */
+  /* Paleta de colores vibrantes para tarjetas de historias */
   --card-orange: #FF5C39;
   --card-black: #000000;
   --card-blue: #3B82F6;
 
-  /* Paleta de colores pastel para servicios y experiencia */
+  /* Colores pastel */
   --pastel-pink: #F8BBD0;
-  --pastel-yellow: #FFF9C4;
+  --pastel-yellow: #FCDF4A;
   --pastel-blue: #B3E5FC;
   --pastel-mint: #C1F0E6;
 
   /* Colores de acento */
-  --accent-yellow: #FFD600;
+  --accent-yellow: #FCDF4A;
   --accent-blue: #00B2FF;
 
   /* Espaciado */

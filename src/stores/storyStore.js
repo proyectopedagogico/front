@@ -112,9 +112,9 @@ export const useStoryStore = defineStore('story', () => {
     paginationInfo,
     isLoading,
     error,
+    filterOptions,
     getStoryById,
     getLatestStories,
-    fetchStories,
     addStory,
     updateStory,
     deleteStory

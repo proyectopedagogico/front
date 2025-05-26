@@ -124,5 +124,19 @@ export const api = {
       console.error('API DELETE request failed:', error.message, error.data || '');
       throw error;
     }
-  }
+  },
+
+  async upload(endpoint, formData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        body: formData, // FormData para subir archivos
+      });
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  },
 };

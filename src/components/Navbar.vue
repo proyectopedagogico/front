@@ -1,18 +1,27 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { ref } from 'vue'
 
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+import { ref, onMounted } from 'vue'
+import { useLanguageStore } from '@/stores/languageStore'
+import { useI18n } from 'vue-i18n'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+
+
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
 const isMenuOpen = ref(false)
 const isLanguageMenuOpen = ref(false)
-const currentLanguage = ref('es')
 
-const languages = [
-  { code: 'es', name: 'Español' },
-  { code: 'en', name: 'English' },
-  { code: 'fr', name: 'Français' },
-  { code: 'ar', name: 'العربية' },
-  { code: 'ur', name: 'اردو' }
-]
+// Inicializar el store y el idioma
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -23,15 +32,16 @@ function toggleLanguageMenu() {
 }
 
 function selectLanguage(langCode) {
-  currentLanguage.value = langCode
+  languageStore.setLanguage(langCode)
+  locale.value = langCode
   isLanguageMenuOpen.value = false
-  // Aquí se implementaría la lógica para cambiar el idioma de la aplicación
 }
 
-function getLanguageName(langCode) {
-  const lang = languages.find(l => l.code === langCode)
-  return lang ? lang.name : ''
+function handleLogout() {
+  authStore.logout()
+  router.push('/')
 }
+
 </script>
 
 <template>
@@ -41,7 +51,7 @@ function getLanguageName(langCode) {
         <div class="logo">
           <img src="@/assets/images/Logo.png" alt="Logo">
           <RouterLink to="/">
-            <span class="logo-text">Mujeres Trabajadoras</span>
+            <span class="logo-text">{{ t('nav.logo') }}</span>
           </RouterLink>
         </div>
 
@@ -51,16 +61,23 @@ function getLanguageName(langCode) {
           <span></span>
         </div>
 
-        <div class="nav-links" :class="{ 'active': isMenuOpen }">
-          <RouterLink to="/" @click="isMenuOpen = false">Inicio</RouterLink>
-          <RouterLink to="/historias" @click="isMenuOpen = false">Historias</RouterLink>
-          <RouterLink to="/organizacion" @click="isMenuOpen = false">Organización</RouterLink>
-          <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
-        </div>
+<div class="nav-links" :class="{ 'active': isMenuOpen }">
+  <RouterLink to="/" @click="isMenuOpen = false">{{ t('nav.menu.home') }}</RouterLink>
+  <RouterLink to="/historias" @click="isMenuOpen = false">{{ t('nav.menu.stories') }}</RouterLink>
+  <RouterLink to="/organizacion" @click="isMenuOpen = false">{{ t('nav.menu.organization') }}</RouterLink>
+  <RouterLink to="/admin" @click="isMenuOpen = false">{{ t('nav.menu.admin') }}</RouterLink>
+   <template v-if="authStore.isAuthenticated">
+            <RouterLink to="/admin" @click="isMenuOpen = false">Admin</RouterLink>
+            <a href="#" @click.prevent="handleLogout" class="logout-link">Cerrar sesión</a>
+          </template>
+          <template v-else>
+            <RouterLink to="/login" @click="isMenuOpen = false">Admin Login</RouterLink>
+</div>
+
 
         <div class="nav-actions">
           <button class="theme-toggle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -72,10 +89,11 @@ function getLanguageName(langCode) {
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
           </button>
-          <div class="language-selector" :class="{ 'active': isLanguageMenuOpen }">
-            <button class="language-btn" @click="toggleLanguageMenu">
-              <span class="current-language">{{ getLanguageName(currentLanguage) }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="language-icon">
+          <div class="language-selector" :class="{ 'active': isLanguageMenuOpen }">    <button class="language-btn" @click="toggleLanguageMenu">
+      <span class="current-language">
+        {{ languageStore.getLanguageName(languageStore.currentLanguage) }}
+      </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="language-icon">
                 <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
                 <path d="M2 12h20"></path>
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -83,17 +101,17 @@ function getLanguageName(langCode) {
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
-            </button>
-            <div class="language-dropdown">
-              <button
-                v-for="lang in languages"
-                :key="lang.code"
-                class="language-option"
-                :class="{ 'selected': currentLanguage === lang.code }"
-                @click="selectLanguage(lang.code)"
-              >
-                {{ lang.name }}
-              </button>
+    </button>
+    <div class="language-dropdown">
+      <button
+        v-for="lang in languageStore.availableLanguages"
+        :key="lang.code"
+        class="language-option"
+        :class="{ 'selected': languageStore.currentLanguage === lang.code }"
+        @click="selectLanguage(lang.code)"
+      >
+        {{ lang.name }}
+      </button>
             </div>
           </div>
         </div>
@@ -166,6 +184,14 @@ function getLanguageName(langCode) {
 .nav-links a:hover::after,
 .nav-links a.router-link-active::after {
   width: 100%;
+}
+
+.logout-link {
+  color: var(--secondary-color);
+}
+
+.logout-link:hover::after {
+  background-color: var(--secondary-color);
 }
 
 .nav-actions {
