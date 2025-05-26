@@ -3,6 +3,8 @@ import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue'
 import { ref, onMounted, computed } from 'vue'
 import StoryModal from '../components/StoryModal.vue'
+import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
 
 const storyStore = useStoryStore()
 const stories = computed(() => storyStore.stories)
@@ -22,6 +24,16 @@ const closeModal = () => {
   selectedStory.value = null
 }
 
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
+
+
+
 // Filtros
 const activeFilters = ref({
   origin: '',
@@ -35,7 +47,7 @@ const filteredStories = computed(() => {
     const matchOrigin = !activeFilters.value.origin || story.origin === activeFilters.value.origin;
     const matchProfession = !activeFilters.value.profession || story.profession === activeFilters.value.profession;
     const matchTags = !activeFilters.value.tags || (story.tags && story.tags.includes(activeFilters.value.tags));
-    
+
     return matchOrigin && matchProfession && matchTags;
   });
 });
@@ -70,16 +82,16 @@ onMounted(async () => {
 
     <!-- Sección de Filtros -->
     <section class="filter-section">
-      <h2 class="section-title">FILTRO</h2>
+      <h2 class="section-title">{{ t('views.stories.filter_title') }}</h2>
       <div class="filters">
         <div class="filter-group">
-          <label for="origin">Procedencia</label>
+          <label for="origin">{{ t('views.stories.origin') }}</label>
           <select
             id="origin"
             v-model="activeFilters.origin"
             class="filter-select"
           >
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option
               v-for="origin in storyStore.filterOptions.origins"
               :key="origin"
@@ -91,13 +103,13 @@ onMounted(async () => {
         </div>
 
         <div class="filter-group">
-          <label for="profession">Profesión</label>
+          <label for="profession">{{ t('views.stories.profession') }}</label>
           <select
             id="profession"
             v-model="activeFilters.profession"
             class="filter-select"
           >
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option
               v-for="profession in storyStore.filterOptions.professions"
               :key="profession"
@@ -109,13 +121,13 @@ onMounted(async () => {
         </div>
 
         <div class="filter-group">
-          <label for="tags">Etiquetas</label>
+          <label for="tags">{{ t('views.stories.tags') }}</label>
           <select
             id="tags"
             v-model="activeFilters.tags"
             class="filter-select"
           >
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option
               v-for="tag in storyStore.filterOptions.tags"
               :key="tag"

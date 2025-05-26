@@ -5,7 +5,8 @@
       "home": "Inicio",
       "stories": "Historias",
       "organization": "Organización",
-      "admin": "Admin"
+      "admin": "Admin",
+      "logout": "Cerrar sesión"
     },
     "languages": {
       "select": "Seleccionar idioma",
@@ -43,6 +44,13 @@
       "values_text": "Nos guiamos por valores de igualdad, respeto, solidaridad, inclusión y empoderamiento. Creemos en la importancia de reconocer y valorar el trabajo de las mujeres en todas sus formas, promoviendo una cultura de igualdad y justicia social.",
       "team_title": "Nuestro Equipo",
       "contact": "Contacto"
+    },
+    "stories": {
+      "filter_title": "FILTRO",
+      "origin": "Procedencia",
+      "profession": "Profesión",
+      "filter_value": "Todas",
+      "tags": "Etiquetas"
     },
     "admin": {
       "new": "Crear nueva historia",
