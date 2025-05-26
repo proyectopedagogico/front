@@ -1,17 +1,4 @@
 {
-  "common": {
-    "title": "Mujeres Trabajadoras",
-    "loading": "Cargando...",
-    "error": "Ha ocurrido un error",
-    "success": "Operación exitosa",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "edit": "Editar",
-    "delete": "Eliminar",
-    "back": "Volver",
-    "next": "Siguiente",
-    "previous": "Anterior"
-  },
   "nav": {
     "logo": "Mujeres Trabajadoras",
     "menu": {
@@ -47,16 +34,6 @@
       "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
       "faq": "Preguntas Frecuentes"
     },
-    "stories": {
-      "title": "Historias",
-      "filters": {
-        "category": "Categoría",
-        "date": "Fecha",
-        "search": "Buscar historias..."
-      },
-      "empty": "No se encontraron historias",
-      "readMore": "Leer más"
-    },
     "organization": {
       "title": "Nuestra organización",
       "description": "Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.",
@@ -91,7 +68,7 @@
         "yellow": "Amarillo pastel",
         "pink": "Rosa pastel",
         "mint": "Menta pastel"
-           }
+            }
     }
   },
   "components": {
@@ -138,12 +115,18 @@
     "a4": "Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias."
   },
   "footer": {
-    "slogan": "Historias que inspiran",
+    "title": "¿Quieres compartir tu historia?",
+    "text": "Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.",
+    "contact": "Contáctanos",
+    "logo_text": "Mujeres Trabajadoras",
+    "logo_stories": "Historias que inspiran",
     "navigation": "Navegación",
-    "legal": {
-      "privacy": "Política de privacidad",
-      "terms": "Términos de servicio"
-    },
+    "home": "Inicio",
+    "stories": "Historias",
+    "organization": "Organización",
+    "legal": "Legal",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
     "social": "Social",
     "copyright": "© 2025 Mujeres Trabajadoras. Todos los derechos reservados."
   }
