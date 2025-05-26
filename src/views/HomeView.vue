@@ -62,14 +62,14 @@ const faqs = [
       <div class="container">
         <div class="hero-content">
           <div class="hero-text">
-            <p class="intro-text">Proyecto</p>
-            <h1>{{ t('views.home.headline')}}</h1>
+            <p class="intro-text">{{ t('views.home.project') }}</p>
+            <h1>{{ t('views.home.headline') }}</h1>
             <p class="hero-description">
-              Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.
+              {{ t('views.home.description') }}
             </p>
             <div class="hero-buttons">
-              <button class="btn btn-primary" @click="$router.push('/historias')">Ver Historias</button>
-              <button class="btn btn-secondary">Contacto</button>
+              <button class="btn btn-primary" @click="$router.push('/historias')">{{ t('views.home.viewstories') }}</button>
+              <button class="btn btn-secondary">{{ t('views.home.contact') }}</button>
             </div>
 
           </div>
@@ -83,26 +83,14 @@ const faqs = [
     <!-- Sección de Organización -->
     <section class="section organization-section">
       <div class="container">
-        <h2 class="section-title">Organización</h2>
+        <h2 class="section-title">{{ t('views.home.organization')}}</h2>
 
         <div class="organization-content">
           <div class="organization-text">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
-              felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-              fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-              fermentum.
+              {{ t('views.home.organizationtext') }}
             </p>
-            <p>
-              Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
-              porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
-              enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
-              libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
-              porttitor nulla nec eros.
-            </p>
-            <button class="btn btn-primary" @click="$router.push('/organizacion')">Conocer más</button>
+            <button class="btn btn-primary" @click="$router.push('/organizacion')">{{ t('views.home.knowmore') }}</button>
           </div>
           <div class="organization-image">
             <img src="@/assets/images/Organizacion.png" alt="Organización Mujeres Trabajadoras" />
@@ -114,7 +102,7 @@ const faqs = [
     <!-- Sección de Últimas Historias -->
     <section class="section latest-stories-section">
       <div class="container">
-        <h2 class="section-title">Últimas Historias</h2>
+        <h2 class="section-title">{{ t('views.home.latestStories') }}</h2>
 
         <!-- Estado de carga -->
         <div v-if="isLoading" class="loading-container">
@@ -152,7 +140,7 @@ const faqs = [
         </div>
 
         <div class="section-footer">
-          <button class="btn btn-secondary" @click="$router.push('/historias')">Ver más historias</button>
+          <button class="btn btn-secondary" @click="$router.push('/historias')">{{ t('views.home.morestories') }}</button>
         </div>
       </div>
     </section>
@@ -160,23 +148,11 @@ const faqs = [
     <!-- Sección de Nuestra Historia -->
     <section class="section our-story-section">
       <div class="container">
-        <h2 class="section-title">Nuestra Historia</h2>
+        <h2 class="section-title"> {{ t('views.home.our_story') }}</h2>
 
         <div class="our-story-content">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
-            felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-            fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-            fermentum.
-          </p>
-          <p>
-            Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
-            porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
-            enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
-            libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
-            porttitor nulla nec eros.
+          {{ t('views.home.our_story_text') }}
           </p>
         </div>
       </div>
@@ -185,7 +161,7 @@ const faqs = [
     <!-- FAQ Section -->
     <section class="section faq-section">
       <div class="container">
-        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <h2 class="section-title">{{ t('views.home.faq') }}</h2>
 
         <div class="faq-container">
           <FaqItem

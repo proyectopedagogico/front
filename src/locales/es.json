@@ -31,10 +31,21 @@
   },
   "views": {
     "home": {
+      "project": "Proyecto",
       "headline": "Mujeres Trabajadoras: Historias que Inspiran",
       "description": "Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.",
       "featured": "Historias Destacadas",
-      "latest": "Últimas Historias"
+      "latest": "Últimas Historias",
+      "viewstories": "Ver Historias",
+      "contact": "Contacto",
+      "organization": "Organización",
+      "organizationtext": "Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986 y cuyo propósito se centra en integrar en la sociedad a personas que están en situación o en riesgo de exclusión por diversas circunstancias personales, académicas o sociales. Promovemos una cualificación profesional, con valores y actitudes de responsabilidad y solidaridad, para que las personas sean soberanas y protagonistas activas, en sus propias vidas y en la sociedad. En Peñascal Kooperatiba tenemos como misión la integración de las personas, especialmente aquellas en situación de desventaja y para ello trabajamos en su formación y cualificación profesional, activación laboral, la creación de empleo, fomentando actitudes y valores solidarios y de ciudadanía.",
+      "knowmore": "Conocer más",
+      "latestStories": "Últimas Historias",
+      "morestories": "Más Historias",
+      "our_story": "Nuestra Historia",
+      "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
+      "faq": "Preguntas Frecuentes"
     },
     "stories": {
       "title": "Historias",
@@ -47,7 +58,8 @@
       "readMore": "Leer más"
     },
     "organization": {
-      "title": "Organización",
+      "title": "Nuestra organización",
+      "description": "Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.",
       "about": "Sobre Nosotras",
       "mission": "Nuestra Misión",
       "vision": "Nuestra Visión",
