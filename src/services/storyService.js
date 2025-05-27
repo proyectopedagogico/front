@@ -15,23 +15,17 @@ export const storyService = {
     });
 
     // Add filter parameters if they exist and are not empty
-    console.log("DEBUG: Filters received in storyService.getStories:", JSON.parse(JSON.stringify(filters))); // Log received filters
+    // console.log("DEBUG: Filters received in storyService.getStories:", JSON.parse(JSON.stringify(filters))); 
     for (const key in filters) {
       if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
-        // The 'key' from the filters object (e.g., 'origin', 'profession', 'tags')
-        // will be used directly as the query parameter name.
-        // This matches the backend expectation from your provided Flask code:
-        // request.args.get('origin'), request.args.get('profession'), request.args.get('tags')
         let backendKey = key; 
-        
         queryParams.append(backendKey, filters[key]);
       }
     }
     
     const finalUrl = `/public/stories?${queryParams.toString()}`;
-    console.log("DEBUG: Final URL for getStories:", finalUrl); // Log the final URL
+    // console.log("DEBUG: Final URL for getStories:", finalUrl); 
 
-    // Call the public endpoint, explicitly stating requireAuth = false
     return api.get(finalUrl, false); 
   },
 
@@ -40,7 +34,6 @@ export const storyService = {
    * This function calls the public endpoint and does NOT require authentication.
    */
   async getPublicStoryById(id, language = 'es') {
-    // Call the public endpoint, explicitly stating requireAuth = false
     return api.get(`/public/stories/${id}?lang=${language}`, false);
   },
 
@@ -60,11 +53,29 @@ export const storyService = {
   // --- Admin Endpoints (These WILL require authentication by default via api.js) ---
 
   /**
+   * Fetches all stories for the admin panel (protected endpoint).
+   * Handles pagination, language, and filters.
+   */
+  async getAdminStories(language = 'es', page = 1, perPage = 10, filters = {}) {
+    const queryParams = new URLSearchParams({
+      lang: language,
+      page: page,
+      per_page: perPage,
+    });
+     for (const key in filters) {
+      if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+        queryParams.append(key, filters[key]);
+      }
+    }
+    // Calls protected endpoint /api/stories. Token will be attached by api.js
+    return api.get(`/stories?${queryParams.toString()}`); 
+  },
+
+  /**
    * Creates a new story (Admin operation).
    * @param {object} storyData - The data for the new story.
    */
   async createStory(storyData) {
-    // Token will be attached by api.js if user is logged in (requireAuth defaults to true)
     return api.post('/stories', storyData);
   },
 
@@ -84,16 +95,14 @@ export const storyService = {
   async deleteStory(storyId) {
     return api.delete(`/stories/${storyId}`);
   },
-
+  
   /**
-   * Fetches details of a specific story for admin purposes (if different from public).
-   * This would call the protected /api/stories/:id endpoint.
+   * Fetches details of a specific story for admin purposes.
+   * This calls the protected /api/stories/:id endpoint.
    * @param {number|string} storyId - The ID of the story.
    * @param {string} language - The language code for the content.
    */
-  async getAdminStoryById(storyId, language = 'es') {
-    // Token will be attached by api.js (requireAuth defaults to true)
-    // Corrected to use storyId in the URL
-    return api.get(`/stories/${storyId}?lang=${language}`); 
+  async getAdminStoryById(storyId, language = 'es') { 
+    return api.get(`/stories/${storyId}?lang=${language}`);
   }
 };
