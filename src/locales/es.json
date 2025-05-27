@@ -32,7 +32,7 @@
       "latestStories": "Últimas Historias",
       "morestories": "Más Historias",
       "our_story": "Nuestra Historia",
-      "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
+      "our_story_text": "En torno a la celebración del 8M el alumnado de Grado Básico de Moda, Tapicería y Comercio ha trabajado en el proyecto MUJERES TRABAJADORAS DE NUESTRAS VIDAS. Mujeres trabajadoras de nuestras vidas son un conjunto de relatos biográficos que pretenden realzar y poner en valor el trabajo  diario  que  desempeñan  las  mujeres  de  nuestro  entorno.  Cada  alumno  ha  realizado la biografía de una mujer de su vida con el objetivo final de dar a conocer sus historias de vida y agradecer el trabajo que han realizado tanto fuera como dentro del hogar. ",
       "faq": "Preguntas Frecuentes"
     },
     "organization": {
@@ -83,22 +83,22 @@
         "pink": "Rosa pastel",
         "mint": "Menta pastel"
             }
-    }
-  },
-  "team": {
+    },
+    "team": {
       "title": "Nuestro Equipo",
       "member1": {
-        "name": "María González",
-        "role": "Directora",
-        "bio": "Fundadora del proyecto con más de 15 años de experiencia en el ámbito social y defensa de los derechos laborales de las mujeres."
+        "name": "Irati",
+        "role": " ",
+        "bio": "Estudié educación social en UPV. También grado superior de integración social. Llevo trabajando en Peñascal desde 2017. Tengo 37 años."
       },
       "member2": {
-        "name": "Laura Rodríguez",
-        "role": "Coordinadora de Proyectos",
-        "bio": "Especialista en gestión de proyectos sociales con enfoque de género. Ha trabajado en diversas organizaciones internacionales."
+        "name": "Aixa",
+        "role": " ",
+        "bio": "Estudié sociología en la UPV. También máster en Juventud y Sociedad en Girona y Migraciones Forzosas y Acompañamiento Psicosocial en Madrid. Llevo trabajando en Peñascal desde el año 2020. Tengo 29 años."
       }
+    }
     },
-  "stories": {
+      "stories": {
       "filter_title": "FILTRO",
       "origin": "Procedencia",
       "profession": "Profesión",

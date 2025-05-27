@@ -33,7 +33,7 @@
       "latestStories": "Latest Stories",
       "morestories": "More Stories",
       "our_story": "Our Story",
-      "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
+      "our_story_text": "As part of the 8M (March 8th) celebration, the students of Basic Vocational Training in Fashion, Upholstery, and Commerce have worked on the project 'WORKING WOMEN OF OUR LIVES'. 'Working Women of Our Lives' is a collection of biographical stories that aim to highlight and give value to the daily work carried out by the women in our surroundings. Each student has written the biography of a woman from their life, with the final goal of sharing their life stories and expressing gratitude for the work they have done both inside and outside the home.",
       "faq": "Frequently Asked Questions"
     },
     "organization": {
@@ -85,21 +85,21 @@
         "pink": "Pastel Pink",
         "mint": "Pastel Mint"
       }
-    }
-  },
+    },
 "team": {
   "title": "Our Team",
   "member1": {
-    "name": "María González",
-    "role": "Director",
-    "bio": "Founder of the project with over 15 years of experience in the social field and in defending women's labor rights."
+    "name": "Irati",
+    "role": "",
+    "bio": "I studied Social Education at UPV. I also completed a higher degree in Social Integration. I have been working at Peñascal since 2017. I am 37 years old."
   },
   "member2": {
-    "name": "Laura Rodríguez",
-    "role": "Project Coordinator",
-    "bio": "Specialist in managing social projects with a gender focus. She has worked in various international organizations."
+    "name": "Aixa",
+    "role": "",
+    "bio": "I studied Sociology at UPV. I also completed a Master's in Youth and Society in Girona and in Forced Migration and Psychosocial Support in Madrid. I have been working at Peñascal since 2020. I am 29 years old."
   }
-},
+}
+  },
 
   "stories": {
   "filter_title": "FILTER",
