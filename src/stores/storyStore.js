@@ -10,9 +10,12 @@ import { storyService } from '../services/storyService';
 export const useStoryStore = defineStore('story', () => {
   // State
   const stories = ref([]);
-  const paginationInfo = ref({}); 
+  const adminStories = ref([]); // Separate state for stories in admin view
+  const currentStory = ref(null); // For viewing/editing a single story detail if needed
   const isLoading = ref(false);
   const error = ref(null);
+  const paginationInfo = ref({});
+  const adminPaginationInfo = ref({}); // Pagination for admin
   
   // State for filter options - will be populated from API
   const filterOptions = ref({ 
@@ -20,12 +23,11 @@ export const useStoryStore = defineStore('story', () => {
     professions: [],
     tags: [] 
   });
+  const availableTags = ref([]); // State for all tags (ID and Name) for dropdowns
 
   // Getters
   const getStoryById = computed(() => {
-    // This might need to be adjusted if adminStories and public stories are fetched separately
-    // and you need to find a story that might only be in one list.
-    return (id) => stories.value.find(story => story.id_historias === parseInt(id));
+    return (id) => adminStories.value.find(story => story.id_historias === parseInt(id)) || stories.value.find(story => story.id_historias === parseInt(id));
   });
 
   const getLatestStories = computed(() => {
@@ -38,7 +40,6 @@ export const useStoryStore = defineStore('story', () => {
     isLoading.value = true;
     error.value = null;
     try {
-      // Calls storyService.getStories, which should target the public, unauthenticated endpoint
       const response = await storyService.getStories(language, page, perPage, activeFilters);
       
       if (response && response.items && response._meta) {
@@ -60,55 +61,17 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  // Action to fetch filter options dynamically from the API
-  async function fetchFilterOptions() {
-    // Consider a separate loading/error state for filter options if needed
-    // For simplicity, using the global isLoading and error for now.
+  async function fetchAdminStories(language = 'es', page = 1, perPage = 10, activeFilters = {}) {
     isLoading.value = true; 
     error.value = null; 
     try {
-      // Fetch options dynamically from the API using storyService
-      const [originsData, professionsData, tagsData] = await Promise.all([
-        storyService.getOriginOptions(),    // Calls GET /public/filter-options/origins
-        storyService.getProfessionOptions(),// Calls GET /public/filter-options/professions
-        storyService.getTagOptions()        // Calls GET /public/filter-options/tags
-      ]);
-
-      filterOptions.value = {
-        origins: originsData || [], 
-        professions: professionsData || [],
-        tags: tagsData || [] // Assuming the API returns an array of tag names for this
-      };
-      console.log("Dynamic filter options loaded from API:", filterOptions.value);
-    } catch (err) {
-      console.error('Error fetching dynamic filter options from API:', err);
-      error.value = (err.data && (err.data.message || err.data.error)) || err.message || 'Error loading filter options';
-      // Reset to empty arrays on error to prevent issues in templates
-      filterOptions.value = { origins: [], professions: [], tags: [] }; 
-    } finally {
-      isLoading.value = false; 
-    }
-  }
-
-  // Admin-specific actions (These call protected endpoints via storyService)
-  // It's assumed storyService methods like createStory, updateStory, deleteStory, getAdminStories
-  // will call the appropriate /api/stories endpoints where api.js handles token attachment.
-
-  const adminStories = ref([]); // Separate state for stories in admin view
-  const adminPaginationInfo = ref({}); // Separate pagination for admin view
-
-  async function fetchAdminStories(language = 'es', page = 1, perPage = 10, activeFilters = {}) {
-    isLoading.value = true; // Or a separate isLoadingAdmin
-    error.value = null; // Or a separate errorAdmin
-    try {
       const response = await storyService.getAdminStories(language, page, perPage, activeFilters);
-      // Adjust based on whether admin endpoint /api/stories returns pagination
-      if (response && response.items && response._meta) { // If paginated
-        adminStories.value = response.items;
-        adminPaginationInfo.value = response._meta;
-      } else if (response && Array.isArray(response)) { // If a simple array
+      if (response && Array.isArray(response)) { // If admin endpoint returns a simple array
         adminStories.value = response;
         adminPaginationInfo.value = {}; // Reset if not paginated
+      } else if (response && response.items && response._meta) { // If admin endpoint is paginated
+        adminStories.value = response.items;
+        adminPaginationInfo.value = response._meta;
       } else {
         console.warn("fetchAdminStories response was not in expected format. Received:", response);
         adminStories.value = [];
@@ -124,16 +87,52 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
   
+  async function fetchFilterOptions() { // This is for public filter dropdowns (tag names)
+      isLoading.value = true;
+      error.value = null;
+      try {
+          // Assuming storyService.getFilterOptions bundles the calls to get origins, professions, and public tag names
+          const options = await storyService.getFilterOptions(); 
+          filterOptions.value = {
+            origins: options.origins || [],
+            professions: options.professions || [],
+            tags: options.tags || [] // These are typically tag names for public filters
+          };
+          console.log("Dynamic public filter options loaded from API:", filterOptions.value);
+      } catch (err) {
+          console.error("Error fetching dynamic public filter options from API:", err);
+          error.value = (err.data && (err.data.message || err.data.error)) || err.message || 'Error loading public filter options';
+          filterOptions.value = { origins: [], professions: [], tags: [] }; 
+      } finally {
+          isLoading.value = false;
+      }
+  }
+
+  // Action to fetch all tags (ID and Name) for admin forms
+  async function fetchTags() {
+    isLoading.value = true; 
+    error.value = null;
+    try {
+      const tagsData = await storyService.getTags(); // Calls GET /api/tags (or your equivalent endpoint)
+      // Ensure tagsData is an array of objects like { etiqueta_id: 1, name: 'Superación' }
+      availableTags.value = tagsData || []; 
+      console.log("Fetched available tags for admin forms:", availableTags.value);
+    } catch (err) {
+      error.value = (err.data && (err.data.message || err.data.error)) || err.message || 'Failed to fetch tags';
+      console.error("Error fetching tags:", err);
+      availableTags.value = [];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   async function addStory(storyData) { 
     isLoading.value = true; 
     error.value = null; 
     try { 
       const newStory = await storyService.createStory(storyData); 
       if (newStory) { 
-        // Add to adminStories list for immediate UI update in admin panel
         adminStories.value.unshift(newStory);  
-        // Optionally, re-fetch the current page of admin stories to ensure consistency
-        // await fetchAdminStories(currentLanguage, adminPaginationInfo.value.page || 1, ...);
       } 
     } catch (err) { 
       error.value = err.message || 'Error creating story'; 
@@ -174,21 +173,43 @@ export const useStoryStore = defineStore('story', () => {
     } 
   } 
 
+  // Action to create a person (placeholder, needs full implementation)
+  async function createPersonAndGetId(personData) {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      console.log("Store: Attempting to create person:", personData);
+      const newPerson = await storyService.createPerson(personData); // Assumes createPerson exists in storyService
+      console.log("Store: Person created:", newPerson);
+      return newPerson; // Return the whole person object (which should include id_persona)
+    } catch (err) {
+      error.value = (err.data && (err.data.message || err.data.error)) || err.message || 'Failed to create person';
+      console.error("Error creating person:", err);
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
-    stories, // For public view
-    adminStories, // For admin view
-    paginationInfo, // For public view pagination
-    adminPaginationInfo, // For admin view pagination
+    stories, 
+    adminStories, 
+    currentStory,
     isLoading,
     error,
-    filterOptions, 
+    paginationInfo,
+    adminPaginationInfo,
+    filterOptions, // For public view filters
+    availableTags, // For admin form tag selection
     getStoryById,
     getLatestStories,
-    fetchStories, // For public view
-    fetchAdminStories, // For admin view
-    fetchFilterOptions, 
+    fetchStories, 
+    fetchAdminStories,
+    fetchFilterOptions,
+    fetchTags, // Expose fetchTags
     addStory,
     updateStory,
-    deleteStory
+    deleteStory,
+    createPersonAndGetId
   };
 });
