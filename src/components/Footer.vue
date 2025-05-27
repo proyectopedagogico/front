@@ -1,42 +1,61 @@
 <script setup>
+import { useStoryStore } from '../stores/storyStore'
+import { ref, computed, onMounted } from 'vue'
+import countriesData from '../assets/countries.json'
+import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
+
+const storyStore = useStoryStore()
+const stories = computed(() => storyStore.stories)
+const isLoading = computed(() => storyStore.isLoading)
+const error = computed(() => storyStore.error)
+const countries = computed(() => countriesData)
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
+
 // No se necesitan importaciones por ahora
 </script>
 
 <template>
   <footer class="footer">
     <div class="footer-cta">
-      <h2>¿Quieres compartir tu historia?</h2>
-      <p>Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.</p>
-      <button class="btn btn-primary">Contactar</button>
+      <h2>{{ t('footer.title')}}</h2>
+      <p>{{ t('footer.text')}}</p>
+      <button class="btn btn-primary">{{ t('footer.contact')}}</button>
     </div>
 
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <span class="logo-text">Mujeres Trabajadoras</span>
-          <p>Historias que inspiran</p>
+          <span class="logo-text">{{ t('footer.logo_text')}}</span>
+          <p>{{ t('footer.logo_stories')}}</p>
         </div>
 
         <div class="footer-links">
           <div class="footer-links-column">
-            <h3>Navegación</h3>
+            <h3>{{ t('footer.navigation')}}</h3>
             <ul>
-              <li><a href="/">Inicio</a></li>
-              <li><a href="/historias">Historias</a></li>
-              <li><a href="/organizacion">Organización</a></li>
+              <li><a href="/">{{ t('footer.home')}}</a></li>
+              <li><a href="/historias">{{ t('footer.stories')}}</a></li>
+              <li><a href="/organizacion">{{ t('footer.oganization')}}</a></li>
             </ul>
           </div>
 
           <div class="footer-links-column">
-            <h3>Legal</h3>
+            <h3>{{ t('footer.legal')}}</h3>
             <ul>
-              <li><a href="/privacidad">Política de privacidad</a></li>
-              <li><a href="/terminos">Términos de servicio</a></li>
+              <li><a href="/privacidad">{{ t('footer.privacy')}}</a></li>
+              <li><a href="/terminos">{{ t('footer.legal')}}</a></li>
             </ul>
           </div>
 
           <div class="footer-links-column">
-            <h3>Social</h3>
+            <h3>{{ t('footer.social')}}</h3>
             <div class="social-icons">
               <a href="#" class="social-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -59,7 +78,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2025 Mujeres Trabajadoras. Todos los derechos reservados.</p>
+        <p>&copy; {{ t('footer.copyright')}}</p>
       </div>
     </div>
   </footer>

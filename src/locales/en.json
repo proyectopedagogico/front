@@ -31,10 +31,21 @@
   },
   "views": {
     "home": {
+      "project": "Project",
       "headline": "Working women: Spiring stories",
-      "description": "Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.",
-      "featured": "Historias Destacadas",
-      "latest": "Últimas Historias"
+      "description": "Discover the experiences, challenges, and achievements of working women from different backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+      "featured": "Main stories",
+      "latest": "Latest stories",
+      "viewstories": "View stories",
+      "contact": "Contact",
+      "organization": "Organization",
+      "organizationtext": "We are a social initiative, non-profit and declared of public utility since 1986 and whose purpose focuses on integrating into society people who are in a situation or at risk of exclusion for various personal, academic or social circumstances. We promote professional qualification, with values and attitudes of responsibility and solidarity, so that people are sovereign and active protagonists in their own lives and in society. In Peñascal Kooperatiba we have as mission the integration of people, especially those in a situation of disadvantage and for this we work in their training and professional qualification, labor activation, job creation, promoting attitudes and values of solidarity and citizenship.",
+      "knowmore": "Know more",
+      "latestStories": "Latest stories",
+      "morestories": "Mores Stories",
+      "our_story": "Our story",
+      "our_story_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien. Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit ermentum.",
+      "faq": "Frequently asked questions"
     },
     "stories": {
       "title": "Historias",
@@ -47,7 +58,8 @@
       "readMore": "Leer más"
     },
     "organization": {
-      "title": "Organización",
+      "title": "Organization",
+      "description": "Learn more about who we are, our mission and vision, and how we work to highlight the stories of working women.",
       "about": "Sobre Nosotras",
       "mission": "Nuestra Misión",
       "vision": "Nuestra Visión",
@@ -55,7 +67,7 @@
       "contact": "Contacto"
     },
     "admin": {
-      "title": "Panel de Administración",
+      "new": "Create new story",
       "stories": {
         "title": "Gestión de Historias",
         "new": "Nueva Historia",

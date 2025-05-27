@@ -30,29 +30,6 @@ function retryFetchStories() {
   storyStore.fetchStories()
 }
 
-// Datos de ejemplo para las secciones
-const faqs = [
-  {
-    id: 1,
-    question: '¿Qué es el proyecto "Mujeres Trabajadoras"?',
-    answer: 'Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.'
-  },
-  {
-    id: 2,
-    question: '¿Cómo puedo compartir mi historia?',
-    answer: 'Puedes contactarnos a través del formulario en nuestra web o enviarnos un correo electrónico. Realizaremos una entrevista y trabajaremos contigo para dar forma a tu historia.'
-  },
-  {
-    id: 3,
-    question: '¿Quiénes pueden participar?',
-    answer: 'Todas las mujeres trabajadoras, independientemente de su profesión, edad u origen, pueden compartir sus experiencias. Buscamos representar la diversidad del mundo laboral femenino.'
-  },
-  {
-    id: 4,
-    question: '¿Cómo puedo apoyar este proyecto?',
-    answer: 'Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias.'
-  }
-]
 </script>
 
 <template>
@@ -62,14 +39,14 @@ const faqs = [
       <div class="container">
         <div class="hero-content">
           <div class="hero-text">
-            <p class="intro-text">Proyecto</p>
-            <h1>{{ t('views.home.headline')}}</h1>
+            <p class="intro-text">{{ t('views.home.project') }}</p>
+            <h1>{{ t('views.home.headline') }}</h1>
             <p class="hero-description">
-              Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.
+              {{ t('views.home.description') }}
             </p>
             <div class="hero-buttons">
-              <button class="btn btn-primary" @click="$router.push('/historias')">Ver Historias</button>
-              <button class="btn btn-secondary">Contacto</button>
+              <button class="btn btn-primary" @click="$router.push('/historias')">{{ t('views.home.viewstories') }}</button>
+              <button class="btn btn-secondary">{{ t('views.home.contact') }}</button>
             </div>
 
           </div>
@@ -83,26 +60,14 @@ const faqs = [
     <!-- Sección de Organización -->
     <section class="section organization-section">
       <div class="container">
-        <h2 class="section-title">Organización</h2>
+        <h2 class="section-title">{{ t('views.home.organization')}}</h2>
 
         <div class="organization-content">
           <div class="organization-text">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
-              felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-              fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-              Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-              fermentum.
+              {{ t('views.home.organizationtext') }}
             </p>
-            <p>
-              Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
-              porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
-              enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
-              libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
-              porttitor nulla nec eros.
-            </p>
-            <button class="btn btn-primary" @click="$router.push('/organizacion')">Conocer más</button>
+            <button class="btn btn-primary" @click="$router.push('/organizacion')">{{ t('views.home.knowmore') }}</button>
           </div>
           <div class="organization-image">
             <img src="@/assets/images/Organizacion.png" alt="Organización Mujeres Trabajadoras" />
@@ -114,7 +79,7 @@ const faqs = [
     <!-- Sección de Últimas Historias -->
     <section class="section latest-stories-section">
       <div class="container">
-        <h2 class="section-title">Últimas Historias</h2>
+        <h2 class="section-title">{{ t('views.home.latestStories') }}</h2>
 
         <!-- Estado de carga -->
         <div v-if="isLoading" class="loading-container">
@@ -152,7 +117,7 @@ const faqs = [
         </div>
 
         <div class="section-footer">
-          <button class="btn btn-secondary" @click="$router.push('/historias')">Ver más historias</button>
+          <button class="btn btn-secondary" @click="$router.push('/historias')">{{ t('views.home.morestories') }}</button>
         </div>
       </div>
     </section>
@@ -160,43 +125,41 @@ const faqs = [
     <!-- Sección de Nuestra Historia -->
     <section class="section our-story-section">
       <div class="container">
-        <h2 class="section-title">Nuestra Historia</h2>
+        <h2 class="section-title"> {{ t('views.home.our_story') }}</h2>
 
         <div class="our-story-content">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed vulputate
-            felis. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-            fermentum. Ut amet tempus dui. Maurya et velit posuere erat, at aliquet sapien.
-            Praesent varius torttitor commodo. Praesent eget elit in ipsum suscipit
-            fermentum.
-          </p>
-          <p>
-            Aenean hendrerit dolor vitae. Fusce a tempor erat. Vivamus pulvinar vel. Fusce
-            porttitor libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra
-            enim. Proin porttitor nulla nec eros. Vivamus pulvinar vel. Fusce porttitor
-            libero vel lorem rhoncus, at tempor diam rhoncus. Etiam et pharetra enim. Proin
-            porttitor nulla nec eros.
+          {{ t('views.home.our_story_text') }}
           </p>
         </div>
       </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="section faq-section">
-      <div class="container">
-        <h2 class="section-title">Preguntas Frecuentes</h2>
+<section class="section faq-section">
+  <div class="container">
+    <h2 class="section-title">{{ t('views.home.faq') }}</h2>
 
-        <div class="faq-container">
-          <FaqItem
-            v-for="faq in faqs"
-            :key="faq.id"
-            :question="faq.question"
-            :answer="faq.answer"
-          />
-        </div>
-      </div>
-    </section>
+    <div class="faq-container">
+      <FaqItem
+        :question="t('faq.q1')"
+        :answer="t('faq.a1')"
+      />
+      <FaqItem
+        :question="t('faq.q2')"
+        :answer="t('faq.a2')"
+      />
+      <FaqItem
+        :question="t('faq.q3')"
+        :answer="t('faq.a3')"
+      />
+      <FaqItem
+        :question="t('faq.q4')"
+        :answer="t('faq.a4')"
+      />
+    </div>
+  </div>
+</section>
   </div>
 </template>
 
