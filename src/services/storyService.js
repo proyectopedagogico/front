@@ -31,8 +31,10 @@ export const storyService = {
 
   /**
    * Fetches a single story detail for public view by its ID.
+   * This function calls the public endpoint and does NOT require authentication.
    */
   async getPublicStoryById(id, language = 'es') {
+    // Call the public endpoint, explicitly stating requireAuth = false
     return api.get(`/public/stories/${id}?lang=${language}`, false);
   },
 

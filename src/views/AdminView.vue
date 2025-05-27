@@ -1,26 +1,21 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
-// import { usePersonStore } from '../stores/personStore'; // Example if you create a separate person store
 import { ref, computed, onMounted } from 'vue'
-import countriesData from '../assets/countries.json' // For the origin dropdown in the form
+import countriesData from '../assets/countries.json'
 
 const storyStore = useStoryStore()
 // const personStore = usePersonStore(); // Example
 
-// Use adminStories for this view, which should be populated by fetchAdminStories
 const storiesForAdmin = computed(() => storyStore.adminStories) 
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
-const adminPagination = computed(() => storyStore.adminPaginationInfo) // For admin pagination
-
-// Fetch available tags for dropdowns
-const availableTags = computed(() => storyStore.availableTags || []) 
+const adminPagination = computed(() => storyStore.adminPaginationInfo)
+const availableTags = computed(() => storyStore.availableTags || [])
 
 onMounted(async () => {
   console.log("AdminView.vue onMounted: Fetching admin stories and tags...");
   await storyStore.fetchAdminStories(); 
-  // Fetch tags when component mounts, if not already loaded
   if (!storyStore.availableTags || storyStore.availableTags.length === 0) { 
     await storyStore.fetchTags();
   }
@@ -110,53 +105,66 @@ async function deleteStoryFromAdminView(id_historias) {
 }
 
 async function submitForm() {
-  let personaIdForStoryPayload;
+  isLoading.value = true; 
+  error.value = null; 
+  let final_Personas_id_persona;
 
   if (formMode.value === 'create') {
-    if (!formData.value.name.trim() || !formData.value.origin.trim()) {
+    // --- CREATE STORY MODE: Always create a new person first ---
+    if (!formData.value.name || !formData.value.origin) { 
       alert("Para una nueva historia, el nombre y el país de origen de la persona son obligatorios.");
+      isLoading.value = false;
       return;
     }
     try {
-      const personDataForApi = {
-        nombre: formData.value.name || null,
+      const personDataToCreate = {
+        nombre: formData.value.name,
         procedencia: formData.value.origin, 
         profesion: formData.value.profession || null,
         anio: formData.value.birthYear ? parseInt(formData.value.birthYear) : null 
       };
       
-      console.log("AdminView: Attempting to create new person with data:", personDataForApi);
+      console.log("AdminView: Attempting to create new person with data:", personDataToCreate);
       
-      const newPerson = await storyStore.createPersonAndGetId(personDataForApi); 
+      // Call the store action to create the person and get their ID
+      // This assumes 'createPersonAndGetId' is implemented in your storyStore (or a personStore)
+      // and that it calls a service which POSTs to '/api/persons'
+      const newPerson = await storyStore.createPersonAndGetId(personDataToCreate); 
       
       if (newPerson && newPerson.id_persona) {
-        personaIdForStoryPayload = newPerson.id_persona;
-        console.log("AdminView: New person created with ID:", personaIdForStoryPayload);
+        final_Personas_id_persona = newPerson.id_persona;
+        console.log("AdminView: New person created with ID:", final_Personas_id_persona);
       } else {
-        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido.");
+        // This error means the store action didn't return the expected person object with an ID
+        // or the API call failed and the store action re-threw the error.
+        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido desde el store/API. Respuesta recibida: " + JSON.stringify(newPerson));
       }
 
     } catch (personError) {
       console.error("AdminView: Error creating new person:", personError);
-      alert(`Error al crear la nueva persona: ${personError.message || 'Error desconocido al crear persona.'}`);
+      const errorMessage = (personError.data && (personError.data.message || personError.data.error)) || personError.message || 'Error desconocido al crear persona.';
+      alert(`Error al crear la nueva persona: ${errorMessage}`);
+      isLoading.value = false;
       return; 
     }
   } else { // Edit mode
-    personaIdForStoryPayload = formData.value.Personas_id_persona ? parseInt(formData.value.Personas_id_persona) : null;
-    if (!personaIdForStoryPayload) {
+    final_Personas_id_persona = formData.value.Personas_id_persona ? parseInt(formData.value.Personas_id_persona) : null;
+    if (!final_Personas_id_persona) {
       alert('Error: No se encontró el ID de la persona para editar la historia.');
+      isLoading.value = false;
       return;
     }
   }
   
-  if (!formData.value.story.trim()) {
-    alert("El contenido de la historia no puede estar vacío.");
+  if (!formData.value.story || !formData.value.story.trim()) {
+    alert("El contenido de la historia (campo 'Historia') no puede estar vacío.");
+    isLoading.value = false;
     return;
   }
 
   const traduccionesPayload = [{
     codigo_idioma: formData.value.current_lang_code || 'es',
-    contenido_traducido: formData.value.story
+    contenido_traducido: formData.value.story 
   }];
 
   const tag_ids_payload = Array.isArray(formData.value.tag_ids) 
@@ -164,7 +172,8 @@ async function submitForm() {
     : [];
 
   const storyApiPayload = {
-    Personas_id_persona: personaIdForStoryPayload,
+    Personas_id_persona: final_Personas_id_persona,
+    // Administrador_id_admin is set by the backend using current_user from JWT
     etiqueta_id_principal: formData.value.etiqueta_id_principal ? parseInt(formData.value.etiqueta_id_principal) : null,
     traducciones: traduccionesPayload,
     tag_ids: tag_ids_payload
@@ -184,6 +193,8 @@ async function submitForm() {
   } catch (err) {
     console.error("AdminView: Error saving story:", err);
     alert(`Error al guardar la historia: ${err.data ? (err.data.error || err.data.message) : err.message}`);
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -192,7 +203,7 @@ function retryFetchAdminStories() {
 }
 
 function getCardClass(story) {
-  return story.color_card || 'card-pink'; 
+  return `card-${story.color_card || formData.value.color || 'pink'}`; 
 }
 </script>
 
@@ -233,7 +244,8 @@ function getCardClass(story) {
             </div>
              <div class="story-tags" v-if="story.tags && story.tags.length > 0">
               <strong>Etiquetas:</strong>
-              <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span> </div>
+              <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
+            </div>
             <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
               <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
             </div>
@@ -260,39 +272,43 @@ function getCardClass(story) {
         <p v-if="formMode === 'create'"><strong>Datos de la Nueva Persona (Obligatorio para nueva historia):</strong></p>
         
         <div class="form-group">
-          <label for="form-nombre-persona-nueva">Nombre Persona:</label>
-          <input type="text" id="form-nombre-persona-nueva" class="form-control" v-model="formData.name" :required="formMode === 'create'" />
+          <label for="nombre">Nombre Persona:</label>
+          <input type="text" id="nombre" class="form-control" v-model="formData.name" :required="formMode === 'create'" />
         </div>
+        
         <div class="form-group">
-          <label for="form-anioNacimiento-nuevo">Año Nacimiento Persona:</label>
-          <input type="number" id="form-anioNacimiento-nuevo" class="form-control" v-model.number="formData.birthYear" />
+          <label for="anioNacimiento">Año Nacimiento Persona:</label>
+          <input type="number" id="anioNacimiento" class="form-control" v-model.number="formData.birthYear" />
         </div>
+
         <div class="form-group">
-          <label for="form-procedencia-nueva">País Origen Persona (Obligatorio si es nueva):</label>
-          <select id="form-procedencia-nueva" class="form-control" v-model="formData.origin" :required="formMode === 'create'">
+          <label for="procedencia">País Origen Persona (Obligatorio si es nueva):</label>
+          <select id="procedencia" class="form-control" v-model="formData.origin" :required="formMode === 'create'">
             <option value="">Selecciona un país</option>
             <option v-for="country in countries" :key="country.id" :value="country.name">
               {{ country.name }}
             </option>
           </select>
         </div>
+
         <div class="form-group">
-          <label for="form-profesion-nueva">Profesión Persona:</label>
-          <input type="text" id="form-profesion-nueva" class="form-control" v-model="formData.profession" />
+          <label for="profesion">Profesión Persona:</label>
+          <input type="text" id="profesion" class="form-control" v-model="formData.profession" />
         </div>
         
         <hr> 
         <p><strong>Datos de la Historia:</strong></p>
         <div class="form-group">
-          <label for="form-contenido-historia">Historia (Contenido en {{ formData.current_lang_code }}):</label>
-          <textarea id="form-contenido-historia" class="form-control textarea" v-model="formData.story" required></textarea>
+          <label for="historia">Historia (Contenido en {{ formData.current_lang_code }}):</label>
+          <textarea id="historia" class="form-control textarea" v-model="formData.story" required></textarea>
         </div>
 
         <div class="form-group">
             <label for="form-etiqueta-principal">Etiqueta Principal (opcional):</label>
             <select id="form-etiqueta-principal" class="form-control" v-model="formData.etiqueta_id_principal">
                 <option :value="null">-- Ninguna --</option>
-                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id"> {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
+                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
+                    {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
                 </option>
             </select>
         </div>
@@ -300,7 +316,8 @@ function getCardClass(story) {
         <div class="form-group">
             <label for="form-tag-ids">Etiquetas Adicionales (opcional, mantén Ctrl/Cmd para seleccionar varias):</label>
             <select id="form-tag-ids" class="form-control" v-model="formData.tag_ids" multiple>
-                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id"> {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
+                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
+                    {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
                 </option>
             </select>
         </div>
