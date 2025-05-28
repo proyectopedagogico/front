@@ -2,11 +2,11 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useLanguageStore = defineStore('language', () => {
-  const currentLanguage = ref('es')
+  const currentLanguage = ref('eu')
   const availableLanguages = [
     { code: 'es', name: 'Español' },
     { code: 'en', name: 'English' },
-    { code: 'fr', name: 'Français' },
+    { code: 'eu', name: 'Euskera' },
     { code: 'ar', name: 'العربية' },
     { code: 'ur', name: 'اردو' }
   ]

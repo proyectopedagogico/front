@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "logo": "Emakume Langileak",
+    "menu": {
+      "home": "Hasiera",
+      "stories": "Istorioak",
+      "organization": "Erakundea",
+      "admin": "Admin",
+      "logout": "Saioa itxi"
+    },
+    "languages": {
+      "select": "Hautatu hizkuntza",
+      "es": "Español",
+      "en": "English",
+      "fr": "Français",
+      "ar": "العربية",
+      "ur": "اردو"
+    }
+  },
+  "views": {
+    "home": {
+      "project": "Proiektua",
+      "headline": "Emakume Langileak: Inspiraziozko Istorioak",
+      "description": "Ezagutu jatorri, adin eta lanbide desberdinetako emakume langileen esperientziak, erronkak eta lorpenak. Haien gizarte-ekarpenak ikusarazteko eta ospatzeko espazio bat.",
+      "featured": "Nabarmendutako Istorioak",
+      "latest": "Azken Istorioak",
+      "viewstories": "Ikusi Istorioak",
+      "contact": "Kontaktua",
+      "organization": "Erakundea",
+      "organizationtext": "Gizarte ekimenetako erakunde bat gara, irabazi asmorik gabea eta 1986tik utilitate publikokotzat jotakoa, eta gure helburua pertsona batzuk gizartean integratzea da, egoera edo bazterketa-arriskuan daudenak hainbat testuinguru pertsonal, akademiko edo sozialengatik. Baliabide profesionalak sustatzen ditugu, erantzukizun eta elkartasun balio eta jarrerarekin, pertsona burujabeak eta aktiboak izan daitezen, beren bizitzetan eta gizartean. Peñascal Kooperatiban, pertsonen integrazioa dugu gure misioa, bereziki desabantailan daudenak, eta horretarako beren prestakuntza eta baliabide profesionaletan, lan-aktibazioan, lanpostuen sorreran lan egiten dugu, elkartasun eta herritartasun jarrerak eta balioak sustatuz.",
+      "knowmore": "Gehiago jakin",
+      "latestStories": "Azken Istorioak",
+      "morestories": "Istorio gehiago",
+      "our_story": "Gure Istorioa",
+      "our_story_text": "8M ospatzeko inguruan, Moda, Tapizeria eta Merkataritzako Oinarrizko Mailako ikasleek GURE BIZITZETAKO EMAKUME LANGILEAK proiektuan lan egin dute. Gure bizitzetako emakume langileak biografia istorio multzo bat dira, gure inguruko emakumeek egunero egiten duten lana nabarmendu eta balioztatzeko asmoz. Ikasle bakoitzak bere bizitzako emakume baten biografia egin du, haien bizitza-istorioak ezagutarazteko eta etxean zein kanpoan egindako lana eskertzeko helburuarekin.",
+      "faq": "Ohiko Galderak"
+    },
+    "organization": {
+      "title": "Gure erakundea",
+      "description": "Ezagutu gehiago nor garen, gure misioa eta ikuspegia, eta nola lan egiten dugun emakume langileen istorioak ikusarazteko.",
+      "mission_title": "Misioa eta Ikuspegia",
+      "mission_text": "Gure misioa jatorri, adin eta lanbide desberdinetako emakume langileen esperientziak, erronkak eta lorpenak ikusaraztea eta ahotsa ematea da, gizarte berdintsuago eta justuago bat eraikitzeko lagunduz. Gure ikuspegia emakumeen lana bere forma guztietan aitortzeko eta baloratzeko espazio bat sortzea da, aukera-berdintasuna eta emakumeen ahalduntzea sustatuz lan arloan.",
+      "values_title": "Gure Balioak",
+      "values_text": "Berdintasun, errespetu, elkartasun, inklusio eta ahalduntze balioek gidatzen gaituzte. Emakumeen lana bere forma guztietan aitortzea eta baloratzea garrantzitsua dela sinisten dugu, berdintasun eta gizarte justiziako kultura bat sustatuz.",
+      "team_title": "Gure Taldea",
+      "contact": "Kontaktua"
+    },
+    "values": {
+      "title": "Gure Balioak",
+      "v1_title": "Errespetua",
+      "v1_text": "Esperientzia eta ikuspegi aniztasuna baloratzen dugu.",
+      "v2_title": "Inklusioa",
+      "v2_text": "Jatorri eta egoera guztietako emakumeak ordezkatzeko lan egiten dugu.",
+      "v3_title": "Ahalduntzea",
+      "v3_text": "Istorio pertsonalen eraldaketa ahalmenean sinisten dugu.",
+      "v4_title": "Lankidetza",
+      "v4_text": "Emakumeen eta erakundeen arteko laguntza-sareak eraikitzen ditugu.",
+      "v5_title": "Gardentasuna",
+      "v5_text": "Egin guztietan zintzotasunez eta argitasunez jokatzen dugu."
+    },
+    "admin": {
+      "new": "Istorio berria sortu",
+      "story_list": "Istorioen Zerrenda",
+      "origin": "Jatorria",
+      "birth": "Jaiotze Urtea",
+      "profession": "Lanbidea",
+      "edit": "Editatu",
+      "erase": "Ezabatu",
+      "form": {
+        "title": "Erabiltzaileen Kudeaketa",
+        "name": "Izena",
+        "image": "Profilaren irudia",
+        "birth": "Jaiotze urtea",
+        "country": "Jatorriko herrialdea",
+        "country_placeholder": "Hautatu herrialde bat",
+        "profession": "Lanbidea",
+        "color":"Kolorea",
+        "story": "Istorioa",
+        "submit": "Gorde Istorioa",
+        "orange": "Laranja bizi",
+        "blue": "Pastel urdina",
+        "yellow": "Pastel horia",
+        "pink": "Pastel arrosa",
+        "mint": "Pastel menta"
+      }
+    },
+    "team": {
+      "title": "Gure Taldea",
+      "member1": {
+        "name": "Irati",
+        "role": " ",
+        "bio": "Gizarte heziketa ikasi nuen UPVn. Gizarte integrazioaren goi mailako titulua ere badut. 2017tik Peñascalen lanean ari naiz. 37 urte ditut."
+      },
+      "member2": {
+        "name": "Aixa",
+        "role": " ",
+        "bio": "Soziologia ikasi nuen UPVn. Gainera, Gazteria eta Gizarte masterra Gironan eta Migrazio Behartuak eta Laguntza Psikosoziala Madrilen. 2020tik Peñascalen lanean ari naiz. 29 urte ditut."
+      }
+    }
+  },
+  "stories": {
+    "filter_title": "FILTROA",
+    "origin": "Jatorria",
+    "profession": "Lanbidea",
+    "filter_value": "Denak",
+    "tags": "Etiketak"
+  },
+  "faq": {
+    "q1": "Zer da \"Emakume Langileak\" proiektua?",
+    "a1": "Jatorri, adin eta lanbide desberdinetako emakume langileen istorioak eta esperientziak ikusarazteko ekimena da, haien gizarte-ekarpenak eta aurre egiten dituzten erronkak nabarmenduz.",
+    "q2": "Nola partekatu dezaket nire istorioa?",
+    "a2": "Gure webeko formularioaren bidez harremanetan jarri zaitezke edo mezu elektroniko bat bidali. Elkarrizketa bat egingo dugu eta zurekin lan egingo dugu zure istorioa osatzeko.",
+    "q3": "Nork parte har dezake?",
+    "a3": "Lanbidea, adina edo jatorria edozein dela ere, emakume langile guztiek parte har dezakete beren esperientziak partekatuz. Emakumeen lan munduaren aniztasuna ordezkatzen saiatzen gara.",
+    "q4": "Nola lagun dezaket proiektu honi?",
+    "a4": "Istorioak sare sozialetan zabaldu ditzakezu, gure ekitaldietan parte hartu edo boluntario gisa lagundu istorioak biltzen eta editatzen."
+  },
+  "storiecard": {
+    "origin": "Jatorria",
+    "age": "Adina",
+    "years": "urte",
+    "profession": "Lanbidea"
+  },
+  "footer": {
+    "title": "Zure istorioa partekatu nahi duzu?",
+    "text": "Batu gure proiektura eta lagundu emakume langileen esperientziak ikusarazten.",
+    "contact": "Jarri gurekin harremanetan",
+    "logo_text": "Emakume Langileak",
+    "logo_stories": "Inspiraziozko Istorioak",
+    "navigation": "Nabigazioa",
+    "home": "Hasiera",
+    "stories": "Istorioak",
+    "organization": "Erakundea",
+    "legal": "Legea",
+    "privacy": "Pribatutasun Politika",
+    "terms": "Zerbitzu Baldintzak",
+    "social": "Soziala",
+    "copyright": "© 2025 Emakume Langileak. Eskubide guztiak erreserbatuta."
+  }
+}
