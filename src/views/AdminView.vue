@@ -1,9 +1,14 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
 import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '../stores/authStore' // Import authStore
+import { useRouter } from 'vue-router' // Import useRouter for navigation
 import countriesData from '../assets/countries.json'
 
 const storyStore = useStoryStore()
+const authStore = useAuthStore() // Initialize authStore
+const router = useRouter() // Initialize router
+
 
 const storiesForAdmin = computed(() => storyStore.adminStories) 
 const isLoading = computed(() => storyStore.isLoading)
@@ -221,6 +226,18 @@ function getCardClassForStoryItem(story) {
   }
   return 'card-pink'; // Default if no story or ID
 }
+
+async function handleLogout() {
+  try {
+    await authStore.logout(); // Call the logout action from your auth store
+    router.push({ name: 'login' }); // Redirect to login page after logout
+    // Or router.push('/'); to redirect to home page
+  } catch (error) {
+    console.error("Error during logout:", error);
+    // Handle any errors during logout if necessary, though authStore.logout should also handle errors
+    alert("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
+  }
+}
 </script>
 
 <template>
@@ -230,7 +247,7 @@ function getCardClassForStoryItem(story) {
     <div class="create-story-container">
       <button class="create-story-btn" @click="createNewStory">Crear nueva historia</button>
     </div>
-
+<button @click="handleLogout" class="logout-btn">Cerrar Sesión</button>
     <section class="story-list-section">
       <h2 class="component-title">Lista de historias</h2>
       <div v-if="isLoading && !showForm" class="loading-container">Cargando...</div>
