@@ -125,7 +125,8 @@
   "origin": "Origin",
   "age": "Age",
   "years": "years",
-  "profession": "Profession"
+  "profession": "Profession",
+  "readStory": "  Read Story"
 },
   "footer": {
     "title": "Want to share your story?",

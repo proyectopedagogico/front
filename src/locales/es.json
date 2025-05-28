@@ -121,7 +121,8 @@
     "origin": "Origen",
     "age": "Edad",
     "years": "años",
-    "profession": "Profesión"
+    "profession": "Profesión",
+    "readStory": "Leer Historia"
   },
   "footer": {
     "title": "¿Quieres compartir tu historia?",

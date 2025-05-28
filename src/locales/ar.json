@@ -120,7 +120,9 @@
     "origin": "\u202Bالأصل\u202C",
     "age": "\u202Bالعمر\u202C",
     "years": "\u202Bسنة\u202C",
-    "profession": "\u202Bالمهنة\u202C"
+    "profession": "\u202Bالمهنة\u202C",
+    "readStory": "اقرأ القصة"
+
   },
   "footer": {
     "title": "\u202Bهل تريدين مشاركة قصتك؟\u202C",

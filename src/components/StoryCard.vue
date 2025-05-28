@@ -121,10 +121,10 @@ const getCardClass = (color) => {
       </div>
 
       <p v-if="description" class="card-description">{{ description }}</p>
+      <button @click="$emit('readStory')" class="card-button" :aria-label="$t('storiecard.readStory')">
+  {{ $t('storiecard.readStory') }}
+</button>
 
-      <button @click="$emit('readStory')" class="card-button">
-        {{ buttonText }}
-      </button>
     </div>
   </div>
 </template>
