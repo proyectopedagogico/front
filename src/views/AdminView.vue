@@ -1,11 +1,13 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
-// import { usePersonStore } from '../stores/personStore'; // Example if you create a separate person store
+import { useAuthStore } from '../stores/authStore' // Import authStore
+import { useRouter } from 'vue-router' // Import useRouter for navigation
 import { ref, computed, onMounted } from 'vue'
 import countriesData from '../assets/countries.json'
 
 const storyStore = useStoryStore()
-// const personStore = usePersonStore(); // Example
+const authStore = useAuthStore() // Initialize authStore
+const router = useRouter() // Initialize router
 
 const storiesForAdmin = computed(() => storyStore.adminStories) 
 const isLoading = computed(() => storyStore.isLoading)
@@ -13,12 +15,10 @@ const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
 const availableTags = computed(() => storyStore.availableTags || [])
 
-// Define the languages supported in the form for story content
 const supportedLanguages = ref([
   { code: 'es', name: 'Español' },
   { code: 'eu', name: 'Euskara' },
   { code: 'en', name: 'English' },
-  // Add other languages your application will support
 ]);
 
 onMounted(async () => {
@@ -32,26 +32,17 @@ onMounted(async () => {
 const formMode = ref('create') 
 const currentStoryId = ref(null) 
 
-// formData structure based on your existing v-models in the template,
-// plus fields needed for API interaction.
 const initialFormData = () => ({
-  // Person details from form (v-model="formData.name", etc.)
   name: '',       
   birthYear: '',  
   origin: '',     
   profession: '', 
-  // Story content from form (v-model="formData.story")
   story: '',      
-  // UI specific from form (v-model="formData.color")
-  color: 'pink',
-  
-  // Fields for Story API payload
   Personas_id_persona: null, 
   etiqueta_id_principal: null, 
-  tag_ids: [], // For v-model with select multiple
-  current_lang_code: 'es', // Default language for new story content
-  
-  // Image related
+  tag_ids: [], 
+  current_lang_code: 'es', 
+  color: 'pink',
   profileImageFile: null, 
   profileImageDescription: '' 
 });
@@ -101,37 +92,19 @@ function editStory(story) {
   formMode.value = 'edit';
   currentStoryId.value = story.id_historias;
   
-  // When editing, the story.contenido is already in the language fetched for the list.
-  // We'll set current_lang_code to 'es' by default or to the language of the first translation if available.
-  // A more advanced setup would allow choosing which existing translation to edit.
-  let langCodeForForm = 'es';
-  let contentForForm = story.contenido || '';
-
-  // If your story object had an array of all_translations:
-  // if (story.all_translations && story.all_translations.length > 0) {
-  //   const esTranslation = story.all_translations.find(t => t.codigo_idioma === 'es');
-  //   if (esTranslation) {
-  //     contentForForm = esTranslation.contenido_traducido;
-  //     langCodeForForm = 'es';
-  //   } else {
-  //     contentForForm = story.all_translations[0].contenido_traducido;
-  //     langCodeForForm = story.all_translations[0].codigo_idioma;
-  //   }
-  // }
-
   formData.value = {
     name: story.nombre_persona || '', 
     birthYear: story.persona_anio_nacimiento || '',
     origin: story.persona_procedencia || '',
     profession: story.persona_profesion || '',
-    story: contentForForm, 
+    story: story.contenido || '', 
     Personas_id_persona: story.Personas_id_persona, 
     etiqueta_id_principal: story.etiqueta_id_principal || null,
     tag_ids: story.tags ? story.tags.map(tag => tag.etiqueta_id) : [], 
-    current_lang_code: langCodeForForm, 
+    current_lang_code: 'es', 
     color: story.color_card || 'pink', 
     profileImageFile: null, 
-    profileImageDescription: '' 
+    profileImageDescription: story.persona_info?.profile_image_description || '' 
   };
   showForm.value = true;
   scrollToForm();
@@ -200,7 +173,7 @@ async function submitForm() {
     }
 
     const traduccionesPayload = [{
-      codigo_idioma: formData.value.current_lang_code || 'es', // Use selected language
+      codigo_idioma: formData.value.current_lang_code || 'es',
       contenido_traducido: formData.value.story 
     }];
 
@@ -218,8 +191,6 @@ async function submitForm() {
     if (formMode.value === 'create') {
       await storyStore.addStory(storyApiPayload);
     } else {
-      // For editing, this payload will replace all translations with the current one.
-      // Backend needs to be adjusted for more granular translation updates.
       await storyStore.updateStory(currentStoryId.value, storyApiPayload);
     }
     showForm.value = false;
@@ -242,15 +213,30 @@ function retryFetchAdminStories() {
 function getCardClass(story) {
   return `card-${story.color_card || formData.value.color || 'pink'}`; 
 }
+
+// --- NEW: Logout Function ---
+async function handleLogout() {
+  try {
+    await authStore.logout(); // Call the logout action from your auth store
+    router.push({ name: 'login' }); // Redirect to login page after logout
+    // Or router.push('/'); to redirect to home page
+  } catch (error) {
+    console.error("Error during logout:", error);
+    // Handle any errors during logout if necessary, though authStore.logout should also handle errors
+    alert("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
+  }
+}
 </script>
 
 <template>
   <div class="admin-view">
-    <h1 class="dashboard-title">DASHBOARD</h1>
+    <div class="admin-header">
+      <h1 class="dashboard-title">DASHBOARD</h1>
 
     <div class="create-story-container">
       <button class="create-story-btn" @click="createNewStory">Crear nueva historia</button>
     </div>
+    <button @click="handleLogout" class="logout-btn">Cerrar Sesión</button> </div>
 
     <section class="story-list-section">
       <h2 class="component-title">Lista de historias</h2>
@@ -685,6 +671,19 @@ function getCardClass(story) {
   padding: 8px 24px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.logout-btn { /* NEW STYLE for logout button */
+  background-color: white;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.logout-btn:hover {
+  background-color: #d32f2f; /* Darker red */
 }
 
 @media (max-width: 768px) {
