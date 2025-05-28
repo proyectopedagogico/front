@@ -73,7 +73,8 @@ The application connects to a backend API. The base URL for this API can be conf
 
 ## Project Structure
 
-.
+
+```
 ├── .vscode/         # VS Code settings and recommendations
 ├── public/          # Static assets (like favicon)
 ├── src/
@@ -94,7 +95,7 @@ The application connects to a backend API. The base URL for this API can be conf
 ├── README.md        # This file
 └── vite.config.js   # Vite configuration
 └── vitest.config.js # Vitest configuration
-
+```
 
 ## Customize Configuration
 
