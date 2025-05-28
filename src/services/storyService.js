@@ -2,43 +2,26 @@
 import { api } from './api'; // Your base API service
 
 export const storyService = {
-  /**
-   * Fetches public stories with pagination, language, and filters.
-   * This function calls the public endpoint and does NOT require authentication.
-   */
+  // ... (getStories, getPublicStoryById, getOriginOptions, getProfessionOptions, getTagOptions, getTags) ...
+  
   async getStories(language = 'es', page = 1, perPage = 10, filters = {}) {
-    // Construct query parameters
     const queryParams = new URLSearchParams({
       lang: language,
       page: page.toString(),
       per_page: perPage.toString(),
     });
-
-    // Add filter parameters if they exist and are not empty
-    // console.log("DEBUG: Filters received in storyService.getStories:", JSON.parse(JSON.stringify(filters))); 
     for (const key in filters) {
       if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
-        let backendKey = key; 
-        queryParams.append(backendKey, filters[key]);
+        queryParams.append(key, filters[key]);
       }
     }
-    
-    const finalUrl = `/public/stories?${queryParams.toString()}`;
-    // console.log("DEBUG: Final URL for getPublicStories:", finalUrl); 
-
-    return api.get(finalUrl, false); 
+    return api.get(`/public/stories?${queryParams.toString()}`, false); 
   },
 
-  /**
-   * Fetches a single story detail for public view by its ID.
-   * This function calls the public endpoint and does NOT require authentication.
-   */
   async getPublicStoryById(id, language = 'es') {
-    // Call the public endpoint, explicitly stating requireAuth = false
     return api.get(`/public/stories/${id}?lang=${language}`, false);
   },
 
-  // --- Methods for fetching filter options (public, no auth needed) ---
   async getOriginOptions() {
     return api.get('/public/filter-options/origins', false);
   },
@@ -47,19 +30,15 @@ export const storyService = {
     return api.get('/public/filter-options/professions', false);
   },
 
-  async getTagOptions() { // This fetches tag *names* for public filters
+  async getTagOptions() { 
     return api.get('/public/filter-options/tags', false);
   },
 
-  // --- Method to fetch all tags (ID and Name) for Admin Forms ---
   async getTags() {
-    // This endpoint should return a list of tag objects [{etiqueta_id: 1, name: 'Tag1'}, ...]
-    // Your backend has GET /api/tags for this.
-    return api.get('/tags', false); // Assuming /api/tags is public or admin already logged in
-                                   // If /api/tags is protected, change 'false' to 'true' or remove it
+    return api.get('/tags', false); 
   },
 
-  // --- Admin Endpoints (These WILL require authentication by default via api.js) ---
+  // --- Admin Endpoints ---
   async getAdminStories(language = 'es', page = 1, perPage = 10, filters = {}) {
     const queryParams = new URLSearchParams({
       lang: language,
@@ -90,9 +69,18 @@ export const storyService = {
     return api.get(`/stories/${storyId}?lang=${language}`);
   },
 
-  // --- Method to create a person (Needed for AdminView's new person flow) ---
   async createPerson(personData) {
-    // Admin endpoint, requires auth
     return api.post('/persons', personData); 
+  },
+
+  // --- NEW: Method to upload an image for a person ---
+  async uploadPersonImage(personId, imageFile, description = '') {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    if (description) {
+      formData.append('descripcion', description);
+    }
+    // Uses api.postFormData which handles FormData and Authorization token
+    return api.postFormData(`/persons/${personId}/images`, formData);
   }
 };

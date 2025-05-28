@@ -1,5 +1,6 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
+// import { usePersonStore } from '../stores/personStore'; // Example if you create a separate person store
 import { ref, computed, onMounted } from 'vue'
 import countriesData from '../assets/countries.json'
 
@@ -10,7 +11,6 @@ const storiesForAdmin = computed(() => storyStore.adminStories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
-const adminPagination = computed(() => storyStore.adminPaginationInfo)
 const availableTags = computed(() => storyStore.availableTags || [])
 
 onMounted(async () => {
@@ -24,21 +24,39 @@ onMounted(async () => {
 const formMode = ref('create') 
 const currentStoryId = ref(null) 
 
-const formData = ref({
+const initialFormData = () => ({
+  // Person details from form
   name: '',       
   birthYear: '',  
   origin: '',     
   profession: '', 
+  // Story content from form
   story: '',      
+  // Story specific API fields
   Personas_id_persona: null, 
   etiqueta_id_principal: null, 
   tag_ids: [], 
   current_lang_code: 'es', 
-  color: 'pink', 
+  // UI specific
+  color: 'pink',
+  // Image related
+  profileImageFile: null, 
+  profileImageDescription: '' 
 });
+
+const formData = ref(initialFormData());
 
 const showForm = ref(false)
 const formSection = ref(null)
+
+function handleImageFileChange(event) {
+  const file = event.target.files[0];
+  if (file) {
+    formData.value.profileImageFile = file;
+  } else {
+    formData.value.profileImageFile = null;
+  }
+}
 
 function scrollToForm() {
   setTimeout(() => {
@@ -51,20 +69,13 @@ function scrollToForm() {
 }
 
 function resetForm() {
-  formData.value = {
-    name: '',
-    birthYear: '',
-    origin: '',
-    profession: '',
-    story: '',     
-    Personas_id_persona: null, 
-    etiqueta_id_principal: null,
-    tag_ids: [], 
-    current_lang_code: 'es',
-    color: 'pink', 
-  };
+  formData.value = initialFormData();
   currentStoryId.value = null;
   formMode.value = 'create';
+  const fileInput = document.getElementById('form-profile-image'); // Assuming your file input has this ID
+  if (fileInput) {
+    fileInput.value = null;
+  }
 }
 
 function createNewStory() {
@@ -89,6 +100,8 @@ function editStory(story) {
     tag_ids: story.tags ? story.tags.map(tag => tag.etiqueta_id) : [], 
     current_lang_code: 'es', 
     color: story.color_card || 'pink', 
+    profileImageFile: null, 
+    profileImageDescription: '' // Or load existing image description if available
   };
   showForm.value = true;
   scrollToForm();
@@ -107,16 +120,16 @@ async function deleteStoryFromAdminView(id_historias) {
 async function submitForm() {
   isLoading.value = true; 
   error.value = null; 
-  let final_Personas_id_persona;
+  let final_Personas_id_persona = formData.value.Personas_id_persona ? parseInt(formData.value.Personas_id_persona) : null;
 
-  if (formMode.value === 'create') {
-    // --- CREATE STORY MODE: Always create a new person first ---
-    if (!formData.value.name || !formData.value.origin) { 
-      alert("Para una nueva historia, el nombre y el país de origen de la persona son obligatorios.");
-      isLoading.value = false;
-      return;
-    }
-    try {
+  try {
+    if (formMode.value === 'create') {
+      // --- CREATE STORY MODE: Always create a new person first ---
+      if (!formData.value.name || !formData.value.origin) { 
+        alert("Para una nueva historia, el NOMBRE y el PAÍS DE ORIGEN de la persona son obligatorios.");
+        isLoading.value = false;
+        return;
+      }
       const personDataToCreate = {
         nombre: formData.value.name,
         procedencia: formData.value.origin, 
@@ -126,62 +139,68 @@ async function submitForm() {
       
       console.log("AdminView: Attempting to create new person with data:", personDataToCreate);
       
-      // Call the store action to create the person and get their ID
-      // This assumes 'createPersonAndGetId' is implemented in your storyStore (or a personStore)
-      // and that it calls a service which POSTs to '/api/persons'
+      // This action needs to be fully implemented in your store and service
       const newPerson = await storyStore.createPersonAndGetId(personDataToCreate); 
       
       if (newPerson && newPerson.id_persona) {
         final_Personas_id_persona = newPerson.id_persona;
         console.log("AdminView: New person created with ID:", final_Personas_id_persona);
+
+        // Upload image for the NEW person if a file was selected
+        if (formData.value.profileImageFile && final_Personas_id_persona) {
+          console.log(`AdminView: Uploading image for new person ID ${final_Personas_id_persona}`);
+          await storyStore.uploadImageForPerson(
+            final_Personas_id_persona, 
+            formData.value.profileImageFile, 
+            formData.value.profileImageDescription
+          );
+          console.log("AdminView: Image uploaded for new person.");
+        }
       } else {
-        // This error means the store action didn't return the expected person object with an ID
-        // or the API call failed and the store action re-threw the error.
         throw new Error("No se pudo crear la persona o no se obtuvo un ID válido desde el store/API. Respuesta recibida: " + JSON.stringify(newPerson));
       }
-
-    } catch (personError) {
-      console.error("AdminView: Error creating new person:", personError);
-      const errorMessage = (personError.data && (personError.data.message || personError.data.error)) || personError.message || 'Error desconocido al crear persona.';
-      alert(`Error al crear la nueva persona: ${errorMessage}`);
-      isLoading.value = false;
-      return; 
+    } else { // Edit mode
+      if (!final_Personas_id_persona) {
+        alert('Error: No se encontró el ID de la persona para editar la historia.');
+        isLoading.value = false;
+        return;
+      }
+      // Upload image if a NEW file was selected during edit
+      if (formData.value.profileImageFile && final_Personas_id_persona) {
+        console.log(`AdminView: Uploading new image for existing person ID ${final_Personas_id_persona}`);
+        await storyStore.uploadImageForPerson(
+          final_Personas_id_persona, 
+          formData.value.profileImageFile, 
+          formData.value.profileImageDescription
+        );
+        console.log("AdminView: New image uploaded for existing person.");
+      }
     }
-  } else { // Edit mode
-    final_Personas_id_persona = formData.value.Personas_id_persona ? parseInt(formData.value.Personas_id_persona) : null;
-    if (!final_Personas_id_persona) {
-      alert('Error: No se encontró el ID de la persona para editar la historia.');
+    
+    if (!formData.value.story || !formData.value.story.trim()) {
+      alert("El contenido de la historia (campo 'Historia') no puede estar vacío.");
       isLoading.value = false;
       return;
     }
-  }
-  
-  if (!formData.value.story || !formData.value.story.trim()) {
-    alert("El contenido de la historia (campo 'Historia') no puede estar vacío.");
-    isLoading.value = false;
-    return;
-  }
 
-  const traduccionesPayload = [{
-    codigo_idioma: formData.value.current_lang_code || 'es',
-    contenido_traducido: formData.value.story 
-  }];
+    const traduccionesPayload = [{
+      codigo_idioma: formData.value.current_lang_code || 'es',
+      contenido_traducido: formData.value.story 
+    }];
 
-  const tag_ids_payload = Array.isArray(formData.value.tag_ids) 
-    ? formData.value.tag_ids.map(id => parseInt(id)).filter(n => !isNaN(n)) 
-    : [];
+    const tag_ids_payload = Array.isArray(formData.value.tag_ids) 
+      ? formData.value.tag_ids.map(id => parseInt(id)).filter(n => !isNaN(n)) 
+      : [];
 
-  const storyApiPayload = {
-    Personas_id_persona: final_Personas_id_persona,
-    // Administrador_id_admin is set by the backend using current_user from JWT
-    etiqueta_id_principal: formData.value.etiqueta_id_principal ? parseInt(formData.value.etiqueta_id_principal) : null,
-    traducciones: traduccionesPayload,
-    tag_ids: tag_ids_payload
-  };
+    const storyApiPayload = {
+      Personas_id_persona: final_Personas_id_persona,
+      etiqueta_id_principal: formData.value.etiqueta_id_principal ? parseInt(formData.value.etiqueta_id_principal) : null,
+      traducciones: traduccionesPayload,
+      tag_ids: tag_ids_payload
+    };
 
-  console.log("AdminView: Submitting story to API with payload:", storyApiPayload);
+    console.log("AdminView: Submitting story to API with payload:", storyApiPayload);
 
-  try {
     if (formMode.value === 'create') {
       await storyStore.addStory(storyApiPayload);
     } else {
@@ -190,9 +209,11 @@ async function submitForm() {
     showForm.value = false;
     resetForm();
     await storyStore.fetchAdminStories(); 
+
   } catch (err) {
-    console.error("AdminView: Error saving story:", err);
-    alert(`Error al guardar la historia: ${err.data ? (err.data.error || err.data.message) : err.message}`);
+    console.error("AdminView: Error in submitForm:", err);
+    const errorMessage = (err.data && (err.data.message || err.data.error)) || err.message || 'Error desconocido al procesar el formulario.';
+    alert(`Error: ${errorMessage}`);
   } finally {
     isLoading.value = false;
   }
@@ -203,7 +224,7 @@ function retryFetchAdminStories() {
 }
 
 function getCardClass(story) {
-  return `card-${story.color_card || formData.value.color || 'pink'}`; 
+  return `card-${story.color || formData.value.color || 'pink'}`; 
 }
 </script>
 
@@ -217,13 +238,13 @@ function getCardClass(story) {
 
     <section class="story-list-section">
       <h2 class="component-title">Lista de historias</h2>
-      <div v-if="isLoading" class="loading-container">Cargando...</div>
-      <div v-else-if="error" class="error-container">
+      <div v-if="isLoading && !showForm" class="loading-container">Cargando...</div>
+      <div v-else-if="error && !showForm" class="error-container">
         <p class="error-message">{{ error }}</p>
         <button @click="retryFetchAdminStories" class="retry-btn">Intentar de nuevo</button>
       </div>
       <div v-else class="story-list">
-        <div v-if="storiesForAdmin.length === 0" class="no-stories-message">
+        <div v-if="storiesForAdmin.length === 0 && !isLoading" class="no-stories-message">
           <p>No hay historias disponibles. Crea una nueva historia para comenzar.</p>
         </div>
         <div
@@ -233,21 +254,30 @@ function getCardClass(story) {
           :class="getCardClass(story)" 
         >
           <div class="story-info">
-            <h3>{{ story.nombre_persona || 'Historia sin nombre de persona' }}</h3>
-            <div class="story-details">
-              <span v-if="story.persona_procedencia"><strong>Origen:</strong> {{ story.persona_procedencia }}</span>
-              <span v-if="story.persona_anio_nacimiento"><strong>Año:</strong> {{ story.persona_anio_nacimiento }}</span>
-              <span v-if="story.persona_profesion"><strong>Profesión:</strong> {{ story.persona_profesion }}</span>
-            </div>
-            <div class="story-text">
-              <p>{{ story.contenido || 'Contenido no disponible en este idioma.' }}</p>
-            </div>
-             <div class="story-tags" v-if="story.tags && story.tags.length > 0">
-              <strong>Etiquetas:</strong>
-              <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
-            </div>
-            <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
-              <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
+            <img 
+              v-if="story.persona_profile_image_url" 
+              :src="story.persona_profile_image_url" 
+              :alt="story.nombre_persona || 'Imagen de perfil'" 
+              class="story-item-profile-image"
+            />
+            <div v-else class="story-item-no-image">Sin Imagen</div>
+            
+            <div> <h3>{{ story.nombre_persona || 'Historia sin nombre de persona' }}</h3>
+              <div class="story-details">
+                <span v-if="story.persona_procedencia"><strong>Origen:</strong> {{ story.persona_procedencia }}</span>
+                <span v-if="story.persona_anio_nacimiento"><strong>Año:</strong> {{ story.persona_anio_nacimiento }}</span>
+                <span v-if="story.persona_profesion"><strong>Profesión:</strong> {{ story.persona_profesion }}</span>
+              </div>
+              <div class="story-text">
+                <p>{{ story.contenido || 'Contenido no disponible en este idioma.' }}</p>
+              </div>
+              <div class="story-tags" v-if="story.tags && story.tags.length > 0">
+                <strong>Etiquetas:</strong>
+                <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
+              </div>
+              <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
+                <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
+              </div>
             </div>
           </div>
           <div class="story-actions">
@@ -296,6 +326,15 @@ function getCardClass(story) {
           <input type="text" id="profesion" class="form-control" v-model="formData.profession" />
         </div>
         
+        <div class="form-group">
+          <label for="form-profile-image">Imagen de Perfil (opcional):</label>
+          <input type="file" id="form-profile-image" class="form-control" @change="handleImageFileChange" accept="image/png, image/jpeg, image/gif, image/webp" />
+        </div>
+        <div class="form-group">
+          <label for="form-image-description">Descripción de la Imagen (opcional):</label>
+          <input type="text" id="form-image-description" class="form-control" v-model="formData.profileImageDescription" />
+        </div>
+        
         <hr> 
         <p><strong>Datos de la Historia:</strong></p>
         <div class="form-group">
@@ -308,7 +347,7 @@ function getCardClass(story) {
             <select id="form-etiqueta-principal" class="form-control" v-model="formData.etiqueta_id_principal">
                 <option :value="null">-- Ninguna --</option>
                 <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
-                    {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
+                    {{ tag_option.name }}
                 </option>
             </select>
         </div>
@@ -317,7 +356,7 @@ function getCardClass(story) {
             <label for="form-tag-ids">Etiquetas Adicionales (opcional, mantén Ctrl/Cmd para seleccionar varias):</label>
             <select id="form-tag-ids" class="form-control" v-model="formData.tag_ids" multiple>
                 <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
-                    {{ tag_option.name }} (ID: {{tag_option.etiqueta_id}})
+                    {{ tag_option.name }}
                 </option>
             </select>
         </div>
