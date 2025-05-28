@@ -96,15 +96,16 @@
         "role": " ",
         "bio": "Soziologia ikasi nuen UPVn. Gainera, Gazteria eta Gizarte masterra Gironan eta Migrazio Behartuak eta Laguntza Psikosoziala Madrilen. 2020tik Peñascalen lanean ari naiz. 29 urte ditut."
       }
-    }
-  },
+    },
   "stories": {
     "filter_title": "FILTROA",
     "origin": "Jatorria",
     "profession": "Lanbidea",
     "filter_value": "Denak",
     "tags": "Etiketak"
+  }
   },
+
   "faq": {
     "q1": "Zer da \"Emakume Langileak\" proiektua?",
     "a1": "Jatorri, adin eta lanbide desberdinetako emakume langileen istorioak eta esperientziak ikusarazteko ekimena da, haien gizarte-ekarpenak eta aurre egiten dituzten erronkak nabarmenduz.",

@@ -98,16 +98,17 @@
     "role": "",
     "bio": "I studied Sociology at UPV. I also completed a Master's in Youth and Society in Girona and in Forced Migration and Psychosocial Support in Madrid. I have been working at Peñascal since 2020. I am 29 years old."
   }
-}
-  },
-
+},
   "stories": {
   "filter_title": "FILTER",
   "origin": "Origin",
   "profession": "Profession",
   "filter_value": "All",
   "tags": "Tags"
-},
+}
+  },
+
+
 
   "faq": {
     "q1": "What is the 'Working Women' project?",
