@@ -13,6 +13,14 @@ const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
 const availableTags = computed(() => storyStore.availableTags || [])
 
+// Define the languages supported in the form for story content
+const supportedLanguages = ref([
+  { code: 'es', name: 'Español' },
+  { code: 'eu', name: 'Euskara' },
+  { code: 'en', name: 'English' },
+  // Add other languages your application will support
+]);
+
 onMounted(async () => {
   console.log("AdminView.vue onMounted: Fetching admin stories and tags...");
   await storyStore.fetchAdminStories(); 
@@ -24,21 +32,25 @@ onMounted(async () => {
 const formMode = ref('create') 
 const currentStoryId = ref(null) 
 
+// formData structure based on your existing v-models in the template,
+// plus fields needed for API interaction.
 const initialFormData = () => ({
-  // Person details from form
+  // Person details from form (v-model="formData.name", etc.)
   name: '',       
   birthYear: '',  
   origin: '',     
   profession: '', 
-  // Story content from form
+  // Story content from form (v-model="formData.story")
   story: '',      
-  // Story specific API fields
+  // UI specific from form (v-model="formData.color")
+  color: 'pink',
+  
+  // Fields for Story API payload
   Personas_id_persona: null, 
   etiqueta_id_principal: null, 
-  tag_ids: [], 
-  current_lang_code: 'es', 
-  // UI specific
-  color: 'pink',
+  tag_ids: [], // For v-model with select multiple
+  current_lang_code: 'es', // Default language for new story content
+  
   // Image related
   profileImageFile: null, 
   profileImageDescription: '' 
@@ -72,7 +84,7 @@ function resetForm() {
   formData.value = initialFormData();
   currentStoryId.value = null;
   formMode.value = 'create';
-  const fileInput = document.getElementById('form-profile-image'); // Assuming your file input has this ID
+  const fileInput = document.getElementById('form-profile-image'); 
   if (fileInput) {
     fileInput.value = null;
   }
@@ -89,19 +101,37 @@ function editStory(story) {
   formMode.value = 'edit';
   currentStoryId.value = story.id_historias;
   
+  // When editing, the story.contenido is already in the language fetched for the list.
+  // We'll set current_lang_code to 'es' by default or to the language of the first translation if available.
+  // A more advanced setup would allow choosing which existing translation to edit.
+  let langCodeForForm = 'es';
+  let contentForForm = story.contenido || '';
+
+  // If your story object had an array of all_translations:
+  // if (story.all_translations && story.all_translations.length > 0) {
+  //   const esTranslation = story.all_translations.find(t => t.codigo_idioma === 'es');
+  //   if (esTranslation) {
+  //     contentForForm = esTranslation.contenido_traducido;
+  //     langCodeForForm = 'es';
+  //   } else {
+  //     contentForForm = story.all_translations[0].contenido_traducido;
+  //     langCodeForForm = story.all_translations[0].codigo_idioma;
+  //   }
+  // }
+
   formData.value = {
     name: story.nombre_persona || '', 
     birthYear: story.persona_anio_nacimiento || '',
     origin: story.persona_procedencia || '',
     profession: story.persona_profesion || '',
-    story: story.contenido || '', 
+    story: contentForForm, 
     Personas_id_persona: story.Personas_id_persona, 
     etiqueta_id_principal: story.etiqueta_id_principal || null,
     tag_ids: story.tags ? story.tags.map(tag => tag.etiqueta_id) : [], 
-    current_lang_code: 'es', 
+    current_lang_code: langCodeForForm, 
     color: story.color_card || 'pink', 
     profileImageFile: null, 
-    profileImageDescription: '' // Or load existing image description if available
+    profileImageDescription: '' 
   };
   showForm.value = true;
   scrollToForm();
@@ -124,7 +154,6 @@ async function submitForm() {
 
   try {
     if (formMode.value === 'create') {
-      // --- CREATE STORY MODE: Always create a new person first ---
       if (!formData.value.name || !formData.value.origin) { 
         alert("Para una nueva historia, el NOMBRE y el PAÍS DE ORIGEN de la persona son obligatorios.");
         isLoading.value = false;
@@ -137,54 +166,41 @@ async function submitForm() {
         anio: formData.value.birthYear ? parseInt(formData.value.birthYear) : null 
       };
       
-      console.log("AdminView: Attempting to create new person with data:", personDataToCreate);
-      
-      // This action needs to be fully implemented in your store and service
       const newPerson = await storyStore.createPersonAndGetId(personDataToCreate); 
       
       if (newPerson && newPerson.id_persona) {
         final_Personas_id_persona = newPerson.id_persona;
-        console.log("AdminView: New person created with ID:", final_Personas_id_persona);
-
-        // Upload image for the NEW person if a file was selected
         if (formData.value.profileImageFile && final_Personas_id_persona) {
-          console.log(`AdminView: Uploading image for new person ID ${final_Personas_id_persona}`);
           await storyStore.uploadImageForPerson(
             final_Personas_id_persona, 
             formData.value.profileImageFile, 
             formData.value.profileImageDescription
           );
-          console.log("AdminView: Image uploaded for new person.");
         }
       } else {
-        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido desde el store/API. Respuesta recibida: " + JSON.stringify(newPerson));
+        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido desde el store/API.");
       }
     } else { // Edit mode
       if (!final_Personas_id_persona) {
         alert('Error: No se encontró el ID de la persona para editar la historia.');
-        isLoading.value = false;
-        return;
+        isLoading.value = false; return;
       }
-      // Upload image if a NEW file was selected during edit
       if (formData.value.profileImageFile && final_Personas_id_persona) {
-        console.log(`AdminView: Uploading new image for existing person ID ${final_Personas_id_persona}`);
         await storyStore.uploadImageForPerson(
           final_Personas_id_persona, 
           formData.value.profileImageFile, 
           formData.value.profileImageDescription
         );
-        console.log("AdminView: New image uploaded for existing person.");
       }
     }
     
     if (!formData.value.story || !formData.value.story.trim()) {
-      alert("El contenido de la historia (campo 'Historia') no puede estar vacío.");
-      isLoading.value = false;
-      return;
+      alert("El contenido de la historia no puede estar vacío.");
+      isLoading.value = false; return;
     }
 
     const traduccionesPayload = [{
-      codigo_idioma: formData.value.current_lang_code || 'es',
+      codigo_idioma: formData.value.current_lang_code || 'es', // Use selected language
       contenido_traducido: formData.value.story 
     }];
 
@@ -199,11 +215,11 @@ async function submitForm() {
       tag_ids: tag_ids_payload
     };
 
-    console.log("AdminView: Submitting story to API with payload:", storyApiPayload);
-
     if (formMode.value === 'create') {
       await storyStore.addStory(storyApiPayload);
     } else {
+      // For editing, this payload will replace all translations with the current one.
+      // Backend needs to be adjusted for more granular translation updates.
       await storyStore.updateStory(currentStoryId.value, storyApiPayload);
     }
     showForm.value = false;
@@ -224,7 +240,7 @@ function retryFetchAdminStories() {
 }
 
 function getCardClass(story) {
-  return `card-${story.color || formData.value.color || 'pink'}`; 
+  return `card-${story.color_card || formData.value.color || 'pink'}`; 
 }
 </script>
 
@@ -262,7 +278,8 @@ function getCardClass(story) {
             />
             <div v-else class="story-item-no-image">Sin Imagen</div>
             
-            <div> <h3>{{ story.nombre_persona || 'Historia sin nombre de persona' }}</h3>
+            <div> 
+              <h3>{{ story.nombre_persona || 'Historia sin nombre de persona' }}</h3>
               <div class="story-details">
                 <span v-if="story.persona_procedencia"><strong>Origen:</strong> {{ story.persona_procedencia }}</span>
                 <span v-if="story.persona_anio_nacimiento"><strong>Año:</strong> {{ story.persona_anio_nacimiento }}</span>
@@ -271,14 +288,14 @@ function getCardClass(story) {
               <div class="story-text">
                 <p>{{ story.contenido || 'Contenido no disponible en este idioma.' }}</p>
               </div>
-              <div class="story-tags" v-if="story.tags && story.tags.length > 0">
-                <strong>Etiquetas:</strong>
-                <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
-              </div>
-              <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
-                <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
-              </div>
+             <div class="story-tags" v-if="story.tags && story.tags.length > 0">
+              <strong>Etiquetas:</strong>
+              <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
             </div>
+            <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
+              <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
+            </div>
+          </div>
           </div>
           <div class="story-actions">
             <button class="action-btn edit-btn" @click="editStory(story)">Editar</button>
@@ -337,8 +354,18 @@ function getCardClass(story) {
         
         <hr> 
         <p><strong>Datos de la Historia:</strong></p>
+
         <div class="form-group">
-          <label for="historia">Historia (Contenido en {{ formData.current_lang_code }}):</label>
+            <label for="form-story-language">Idioma del Contenido:</label>
+            <select id="form-story-language" class="form-control" v-model="formData.current_lang_code">
+                <option v-for="lang in supportedLanguages" :key="lang.code" :value="lang.code">
+                    {{ lang.name }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label for="historia">Historia (Contenido en {{ formData.current_lang_code.toUpperCase() }}):</label>
           <textarea id="historia" class="form-control textarea" v-model="formData.story" required></textarea>
         </div>
 

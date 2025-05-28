@@ -180,12 +180,9 @@ const cardColorClass = computed(() => {
   font-size: 0.9rem;
 }
 .tag-item-modal {
-  background-color: #e9ecef;
   padding: 0.2em 0.6em;
   border-radius: 0.25rem;
   margin-right: 0.5em;
-  font-size: 0.85em;
-  color: #495057;
   display: inline-block;
   margin-bottom: 0.3em;
 }
