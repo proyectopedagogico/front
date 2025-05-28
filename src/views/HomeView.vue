@@ -88,6 +88,7 @@ function retryFetchStories() {
 
         <!-- Estado de carga -->
         <div v-if="isLoading" class="loading-container">
+        
           <div class="loader"></div>
           <p class="loading-text">Cargando historias...</p>
         </div>
