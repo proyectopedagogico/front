@@ -231,6 +231,8 @@ const faqs = [
 /* Hero Section */
 .hero-section {
   padding: var(--spacing-xl) 0;
+  margin-top: var(--spacing-xxl);
+  margin-bottom: var(--spacing-xxxl);
 }
 
 .hero-content {
@@ -241,13 +243,14 @@ const faqs = [
 
 .hero-text {
   flex: 1;
+  color: var(--text-color);
 }
 
 .intro-text {
   font-size: var(--font-size-lg);
   font-weight: 500;
   margin-bottom: var(--spacing-sm);
-  color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .hero-text h1 {
@@ -258,7 +261,7 @@ const faqs = [
 
 .hero-description {
   font-size: var(--font-size-lg);
-  color: var(--secondary-color);
+  color: var(--text-color);
   margin-bottom: var(--spacing-lg);
   max-width: 600px;
 }
@@ -303,6 +306,10 @@ const faqs = [
 .organization-section {
   background-color: var(--light-gray);
   padding: var(--spacing-xl) 0;
+  margin-bottom: var(--spacing-xxxl); 
+}
+.organization-section h2 {
+  margin-bottom: 3px;
 }
 
 .organization-content {
