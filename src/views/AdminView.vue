@@ -1,13 +1,9 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
-import { useAuthStore } from '../stores/authStore' // Import authStore
-import { useRouter } from 'vue-router' // Import useRouter for navigation
 import { ref, computed, onMounted } from 'vue'
 import countriesData from '../assets/countries.json'
 
 const storyStore = useStoryStore()
-const authStore = useAuthStore() // Initialize authStore
-const router = useRouter() // Initialize router
 
 const storiesForAdmin = computed(() => storyStore.adminStories) 
 const isLoading = computed(() => storyStore.isLoading)
@@ -42,7 +38,7 @@ const initialFormData = () => ({
   etiqueta_id_principal: null, 
   tag_ids: [], 
   current_lang_code: 'es', 
-  color: 'pink',
+  color: 'pink', // Default color for the form's select input
   profileImageFile: null, 
   profileImageDescription: '' 
 });
@@ -102,7 +98,10 @@ function editStory(story) {
     etiqueta_id_principal: story.etiqueta_id_principal || null,
     tag_ids: story.tags ? story.tags.map(tag => tag.etiqueta_id) : [], 
     current_lang_code: 'es', 
-    color: story.color_card || 'pink', 
+    // The 'color' in formData is for the form's select.
+    // If the story object from API had a 'color_card', you would use it here.
+    // For now, we default the form's color selector.
+    color: story.color_ui_from_api || 'pink', // Example if API sent a color for the story
     profileImageFile: null, 
     profileImageDescription: story.persona_info?.profile_image_description || '' 
   };
@@ -129,8 +128,7 @@ async function submitForm() {
     if (formMode.value === 'create') {
       if (!formData.value.name || !formData.value.origin) { 
         alert("Para una nueva historia, el NOMBRE y el PAÍS DE ORIGEN de la persona son obligatorios.");
-        isLoading.value = false;
-        return;
+        isLoading.value = false; return;
       }
       const personDataToCreate = {
         nombre: formData.value.name,
@@ -138,20 +136,14 @@ async function submitForm() {
         profesion: formData.value.profession || null,
         anio: formData.value.birthYear ? parseInt(formData.value.birthYear) : null 
       };
-      
       const newPerson = await storyStore.createPersonAndGetId(personDataToCreate); 
-      
       if (newPerson && newPerson.id_persona) {
         final_Personas_id_persona = newPerson.id_persona;
         if (formData.value.profileImageFile && final_Personas_id_persona) {
-          await storyStore.uploadImageForPerson(
-            final_Personas_id_persona, 
-            formData.value.profileImageFile, 
-            formData.value.profileImageDescription
-          );
+          await storyStore.uploadImageForPerson(final_Personas_id_persona, formData.value.profileImageFile, formData.value.profileImageDescription);
         }
       } else {
-        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido desde el store/API.");
+        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido.");
       }
     } else { // Edit mode
       if (!final_Personas_id_persona) {
@@ -159,11 +151,7 @@ async function submitForm() {
         isLoading.value = false; return;
       }
       if (formData.value.profileImageFile && final_Personas_id_persona) {
-        await storyStore.uploadImageForPerson(
-          final_Personas_id_persona, 
-          formData.value.profileImageFile, 
-          formData.value.profileImageDescription
-        );
+        await storyStore.uploadImageForPerson(final_Personas_id_persona, formData.value.profileImageFile, formData.value.profileImageDescription);
       }
     }
     
@@ -186,6 +174,7 @@ async function submitForm() {
       etiqueta_id_principal: formData.value.etiqueta_id_principal ? parseInt(formData.value.etiqueta_id_principal) : null,
       traducciones: traduccionesPayload,
       tag_ids: tag_ids_payload
+      // We are NOT sending formData.color to the backend, as it's UI only.
     };
 
     if (formMode.value === 'create') {
@@ -210,33 +199,37 @@ function retryFetchAdminStories() {
   storyStore.fetchAdminStories();
 }
 
-function getCardClass(story) {
-  return `card-${story.color_card || formData.value.color || 'pink'}`; 
-}
+// --- UPDATED getCardClass function for UI display only ---
+const availableCardUiColors = ['pink', 'yellow', 'blue', 'mint', 'orange'];
 
-// --- NEW: Logout Function ---
-async function handleLogout() {
-  try {
-    await authStore.logout(); // Call the logout action from your auth store
-    router.push({ name: 'login' }); // Redirect to login page after logout
-    // Or router.push('/'); to redirect to home page
-  } catch (error) {
-    console.error("Error during logout:", error);
-    // Handle any errors during logout if necessary, though authStore.logout should also handle errors
-    alert("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
+function getCardClassForStoryItem(story) {
+  if (story && story.id_historias) {
+    // Generate a consistent color based on the story's ID
+    // This ensures the same story always gets the same color from the list
+    // The color is determined purely on the frontend for display purposes.
+    const colorIndex = story.id_historias % availableCardUiColors.length;
+    const colorName = availableCardUiColors[colorIndex];
+    
+    switch (colorName) {
+      case 'pink': return 'card-pink';
+      case 'yellow': return 'card-yellow';
+      case 'blue': return 'card-blue';
+      case 'mint': return 'card-mint';
+      case 'orange': return 'card-orange'; // Ensure you have .card-orange style
+      default: return 'card-pink';
+    }
   }
+  return 'card-pink'; // Default if no story or ID
 }
 </script>
 
 <template>
   <div class="admin-view">
-    <div class="admin-header">
-      <h1 class="dashboard-title">DASHBOARD</h1>
+    <h1 class="dashboard-title">DASHBOARD</h1>
 
     <div class="create-story-container">
       <button class="create-story-btn" @click="createNewStory">Crear nueva historia</button>
     </div>
-    <button @click="handleLogout" class="logout-btn">Cerrar Sesión</button> </div>
 
     <section class="story-list-section">
       <h2 class="component-title">Lista de historias</h2>
@@ -253,8 +246,7 @@ async function handleLogout() {
           v-for="story in storiesForAdmin"
           :key="story.id_historias"
           class="story-item"
-          :class="getCardClass(story)" 
-        >
+          :class="getCardClassForStoryItem(story)" >
           <div class="story-info">
             <img 
               v-if="story.persona_profile_image_url" 
@@ -683,7 +675,7 @@ async function handleLogout() {
   margin-bottom: 20px;
 }
 .logout-btn:hover {
-  background-color: #d32f2f; /* Darker red */
+  background-color: #d32f2f8a; /* Darker red */
 }
 
 @media (max-width: 768px) {

@@ -28,9 +28,9 @@ const closeModal = () => {
 }
 
 const activeFilters = ref({
-  origin: '',      // Corresponds to 'persona_procedencia' in story object
-  profession: '',  // Corresponds to 'persona_profesion' in story object
-  tags: ''         // Corresponds to tag names in story.tags array
+  origin: '',      
+  profession: '',  
+  tags: ''         
 })
 
 const filteredStories = computed(() => {
@@ -43,7 +43,6 @@ const filteredStories = computed(() => {
   const currentTagFilter = activeFilters.value?.tags?.toLowerCase() || '';
 
   return stories.value.filter(story => {
-    // Access person details directly from the story object as per your console.log
     const originMatch = !currentOriginFilter || 
                         (story.persona_procedencia && story.persona_procedencia.toLowerCase().includes(currentOriginFilter));
     
@@ -60,14 +59,11 @@ const filteredStories = computed(() => {
 async function loadData(page = 1, lang = languageStore.currentLanguage) { 
   try {
     console.log(`StoriesView: Loading data - Lang: ${lang}, Page: ${page}, Filters:`, JSON.parse(JSON.stringify(activeFilters.value)));
-    // Pass filter keys that the backend expects: 'origin', 'profession', 'tags'
-    // The values come from activeFilters.
-    // If activeFilters uses 'origin', 'profession', 'tags', it's already correct.
     await storyStore.fetchStories(
       lang,
       page,    
       paginationInfo.value.per_page || 10, 
-      { // Ensure keys match backend: origin, profession, tags
+      { 
         origin: activeFilters.value.origin,
         profession: activeFilters.value.profession,
         tags: activeFilters.value.tags
@@ -97,6 +93,20 @@ onMounted(async () => {
 const retryFetchStories = () => {
   loadData(paginationInfo.value.page || 1); 
 }
+
+// --- NEW: Logic for Dynamic Card Colors (Frontend Only) ---
+const availableCardUiColors = ['pink', 'yellow', 'blue', 'mint', 'orange'];
+
+function getStoryCardColorName(story) {
+  if (story && story.id_historias) {
+    // Generate a consistent color name based on the story's ID
+    const colorIndex = story.id_historias % availableCardUiColors.length;
+    return availableCardUiColors[colorIndex];
+  }
+  return 'pink'; // Default color if no story or ID
+}
+// --- END NEW ---
+
 </script>
 
 <template>
@@ -112,7 +122,8 @@ const retryFetchStories = () => {
       <h2 class="section-title">FILTRO</h2>
       <div class="filters">
         <div class="filter-group">
-          <label for="origin-filter">Procedencia</label> <select id="origin-filter" v-model="activeFilters.origin" class="filter-select">
+          <label for="origin-filter">Procedencia</label>
+          <select id="origin-filter" v-model="activeFilters.origin" class="filter-select">
             <option value="">Todas</option>
             <option v-for="origin_option in storyStore.filterOptions.origins" :key="origin_option" :value="origin_option">
               {{ origin_option }}
@@ -120,7 +131,8 @@ const retryFetchStories = () => {
           </select>
         </div>
         <div class="filter-group">
-          <label for="profession-filter">Profesión</label> <select id="profession-filter" v-model="activeFilters.profession" class="filter-select">
+          <label for="profession-filter">Profesión</label>
+          <select id="profession-filter" v-model="activeFilters.profession" class="filter-select">
             <option value="">Todas</option>
             <option v-for="profession_option in storyStore.filterOptions.professions" :key="profession_option" :value="profession_option">
               {{ profession_option }}
@@ -128,7 +140,8 @@ const retryFetchStories = () => {
           </select>
         </div>
         <div class="filter-group">
-          <label for="tags-filter">Etiquetas</label> <select id="tags-filter" v-model="activeFilters.tags" class="filter-select">
+          <label for="tags-filter">Etiquetas</label>
+          <select id="tags-filter" v-model="activeFilters.tags" class="filter-select">
             <option value="">Todas</option>
             <option v-for="tag_name in storyStore.filterOptions.tags" :key="tag_name" :value="tag_name">
               {{ tag_name }}
@@ -152,9 +165,14 @@ const retryFetchStories = () => {
           v-for="story in filteredStories"
           :key="story.id_historias" 
           :title="story.nombre_persona || 'Sin Título'"
-          :color="story.color_card || 'pink'" :buttonText="'Leer historia'" 
-          :icon="story.icon_name || 'sun'" :origin="story.persona_procedencia || ''" :profession="story.persona_profesion || ''" :age="story.persona_anio_nacimiento || null" :description="story.contenido || 'Contenido no disponible.'"
-          :profileImage="story.persona_profile_image_url || null" class="show-details"
+          :color="getStoryCardColorName(story)" :buttonText="'Leer historia'" 
+          :icon="story.icon_name || 'sun'" 
+          :origin="story.persona_procedencia || ''" 
+          :profession="story.persona_profesion || ''" 
+          :age="story.persona_anio_nacimiento || null" 
+          :description="story.contenido || 'Contenido no disponible.'"
+          :profileImage="story.persona_profile_image_url || null"
+          class="show-details"
           @readStory="openStoryModal(story)"
         />
         <div v-if="!isLoading && filteredStories.length === 0" class="no-stories-message">
@@ -171,8 +189,7 @@ const retryFetchStories = () => {
     <StoryModal
       v-if="selectedStory"
       :show="showModal"
-      :story="selectedStory"
-      @close="closeModal"
+      :story="selectedStory" @close="closeModal"
     />
   </div>
 </template>
