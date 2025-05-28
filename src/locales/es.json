@@ -96,15 +96,16 @@
         "role": " ",
         "bio": "Estudié sociología en la UPV. También máster en Juventud y Sociedad en Girona y Migraciones Forzosas y Acompañamiento Psicosocial en Madrid. Llevo trabajando en Peñascal desde el año 2020. Tengo 29 años."
       }
-    }
     },
-      "stories": {
+    "stories": {
       "filter_title": "FILTRO",
       "origin": "Procedencia",
       "profession": "Profesión",
       "filter_value": "Todas",
       "tags": "Etiquetas"
+    }
     },
+    
   "faq": {
     "q1": "¿Qué es el proyecto \"Mujeres Trabajadoras\"?",
     "a1": "Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.",
