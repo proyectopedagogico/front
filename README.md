@@ -147,9 +147,7 @@ npm run lint
 ```
 
 ## Screenshots
-![logo del equipo](src/imagenes/log.png)
-![logo](./src/imagenes/logo2.png)
-![logo](src/imagenes/logo3.png)
+![logo](./src/imagenes/logo3.png)
 ![Home page](src/imagenes/home.png)
 ![Organization](src/imagenes/organization1.png)
 ![Map](src/imagenes/story.png)
