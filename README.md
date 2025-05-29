@@ -73,7 +73,8 @@ The application connects to a backend API. The base URL for this API can be conf
 
 ## Project Structure
 
-.
+
+```
 ├── .vscode/         # VS Code settings and recommendations
 ├── public/          # Static assets (like favicon)
 ├── src/
@@ -94,7 +95,7 @@ The application connects to a backend API. The base URL for this API can be conf
 ├── README.md        # This file
 └── vite.config.js   # Vite configuration
 └── vitest.config.js # Vitest configuration
-
+```
 
 ## Customize Configuration
 
@@ -144,3 +145,17 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+## Screenshots
+![logo del equipo](src/imagenes/log.png)
+![logo](src/imagenes/logo2.png)
+![logo](src/imagenes/logo3.png)
+![Home page](src/imagenes/home.png)
+![Organization](src/imagenes/organization1.png)
+![Map](src/imagenes/story.png)
+![stories](src/imagenes/story1.png)
+![laststories](src/imagenes/laststories.png)
+![Organization](src/imagenes/organization.png)
+![Admin](src/imagenes/admin.png)
+![Dashboard](src/imagenes/dashboard.png)
+![faq](src/imagenes/faq.png)
