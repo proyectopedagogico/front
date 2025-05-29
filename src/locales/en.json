@@ -1,0 +1,147 @@
+{
+  "nav": {
+    "logo": "Working Women",
+    "menu": {
+      "home": "Home",
+      "stories": "Stories",
+      "organization": "Organization",
+      "admin": "Admin",
+      "logout": "Log out"
+
+    },
+    "languages": {
+      "select": "Select Language",
+      "es": "Spanish",
+      "en": "English",
+      "fr": "French",
+      "ar": "Arabic",
+      "ur": "Urdu"
+    }
+  },
+  "views": {
+    "home": {
+      "project": "Project",
+      "headline": "Working Women: Stories That Inspire",
+      "description": "Discover the experiences, challenges, and achievements of working women from different backgrounds, ages, and professions. A space to highlight and celebrate their contributions to society.",
+      "featured": "Featured Stories",
+      "latest": "Latest Stories",
+      "viewstories": "View Stories",
+      "contact": "Contact",
+      "organization": "Organization",
+      "organizationtext": "We are a social initiative entity, non-profit and declared of public utility since 1986, with a purpose focused on integrating people who are in or at risk of social exclusion due to various personal, academic or social circumstances. We promote professional qualification, with values and attitudes of responsibility and solidarity, so that people become sovereign and active protagonists in their own lives and society. At Peñascal Kooperatiba, our mission is to integrate people, especially those at a disadvantage, through training, professional qualification, labor activation, job creation, and fostering solidarity and citizenship values.",
+      "knowmore": "Learn More",
+      "latestStories": "Latest Stories",
+      "morestories": "More Stories",
+      "our_story": "Our Story",
+      "our_story_text": "As part of the 8M (March 8th) celebration, the students of Basic Vocational Training in Fashion, Upholstery, and Commerce have worked on the project 'WORKING WOMEN OF OUR LIVES'. 'Working Women of Our Lives' is a collection of biographical stories that aim to highlight and give value to the daily work carried out by the women in our surroundings. Each student has written the biography of a woman from their life, with the final goal of sharing their life stories and expressing gratitude for the work they have done both inside and outside the home.",
+      "faq": "Frequently Asked Questions"
+    },
+    "organization": {
+      "title": "Our Organization",
+      "description": "Learn more about who we are, our mission and vision, and how we work to highlight the stories of working women.",
+      "mission_title": "Mission and Vision",
+      "mission_text": "Our mission is to highlight and give voice to the experiences, challenges, and achievements of working women from different backgrounds, ages, and professions, contributing to the construction of a more equal and just society. Our vision is to create a space of recognition and appreciation of women’s work in all its forms, promoting equal opportunities and the empowerment of women in the workplace.",
+      "values_title": "Our Values",
+      "values_text": "We are guided by values of equality, respect, solidarity, inclusion, and empowerment. We believe in recognizing and valuing women’s work in all its forms, promoting a culture of equality and social justice.",
+      "team_title": "Our Team",
+      "contact": "Contact"
+    },
+    "values": {
+  "title": "Our Values",
+  "v1_title": "Respect",
+  "v1_text": "We value the diversity of experiences and perspectives.",
+  "v2_title": "Inclusion",
+  "v2_text": "We work to represent women from all backgrounds and conditions.",
+  "v3_title": "Empowerment",
+  "v3_text": "We believe in the transformative power of personal stories.",
+  "v4_title": "Collaboration",
+  "v4_text": "We build support networks among women and organizations.",
+  "v5_title": "Transparency",
+  "v5_text": "We act with honesty and clarity in all our actions."
+},
+
+    "admin": {
+      "new": "Create New Story",
+      "story_list": "Stories List",
+      "origin": "Origin",
+      "birth": "Year of Birth",
+      "profession": "Profession",
+      "edit": "Edit",
+      "erase": "Delete",
+      "form": {
+        "title": "User Management",
+        "name": "Name",
+        "image": "Profile Image",
+        "birth": "Year of Birth",
+        "country": "Country of Origin",
+        "country_placeholder": "Select a country",
+        "profession": "Profession",
+        "color": "Color",
+        "story": "Story",
+        "submit": "Save Story",
+        "orange": "Vibrant Orange",
+        "blue": "Pastel Blue",
+        "yellow": "Pastel Yellow",
+        "pink": "Pastel Pink",
+        "mint": "Pastel Mint"
+      }
+    },
+"team": {
+  "title": "Our Team",
+  "member1": {
+    "name": "Irati",
+    "role": "",
+    "bio": "I studied Social Education at UPV. I also completed a higher degree in Social Integration. I have been working at Peñascal since 2017. I am 37 years old."
+  },
+  "member2": {
+    "name": "Aixa",
+    "role": "",
+    "bio": "I studied Sociology at UPV. I also completed a Master's in Youth and Society in Girona and in Forced Migration and Psychosocial Support in Madrid. I have been working at Peñascal since 2020. I am 29 years old."
+  }
+},
+  "stories": {
+  "filter_title": "FILTER",
+  "origin": "Origin",
+  "profession": "Profession",
+  "filter_value": "All",
+  "tags": "Tags"
+}
+  },
+
+
+
+  "faq": {
+    "q1": "What is the 'Working Women' project?",
+    "a1": "It is an initiative that aims to highlight the stories and experiences of working women from different backgrounds, ages, and professions, emphasizing their contributions to society and the challenges they face.",
+    "q2": "How can I share my story?",
+    "a2": "You can contact us through the form on our website or send us an email. We will conduct an interview and work with you to shape your story.",
+    "q3": "Who can participate?",
+    "a3": "All working women, regardless of their profession, age, or origin, can share their experiences. We seek to represent the diversity of the female workforce.",
+    "q4": "How can I support this project?",
+    "a4": "You can spread the stories on social media, participate in our events, or volunteer to help collect and edit stories."
+  },
+
+  "storiecard": {
+  "origin": "Origin",
+  "age": "Age",
+  "years": "years",
+  "profession": "Profession",
+  "readStory": "  Read Story"
+},
+  "footer": {
+    "title": "Want to share your story?",
+    "text": "Join our project and help us highlight the experiences of working women.",
+    "contact": "Contact Us",
+    "logo_text": "Working Women",
+    "logo_stories": "Stories that Inspire",
+    "navigation": "Navigation",
+    "home": "Home",
+    "stories": "Stories",
+    "organization": "Organization",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "social": "Social",
+    "copyright": "© 2025 Working Women. All rights reserved."
+  }
+}

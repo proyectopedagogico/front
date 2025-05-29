@@ -145,3 +145,15 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+## Screenshots
+![logo](./src/imagenes/logo3.png) <br><br>
+![Home page](src/imagenes/home.png)<br><br>
+![Organization](src/imagenes/organization1.png)<br><br>
+![Map](src/imagenes/story.png)<br><br>
+![stories](src/imagenes/story1.png)<br><br>
+![laststories](src/imagenes/laststories.png)<br><br>
+![Organization](src/imagenes/organization.png)<br><br>
+![Admin](src/imagenes/admin.png)<br><br>
+![Dashboard](src/imagenes/dashboard.png)<br><br>
+![faq](src/imagenes/faq.png)<br><br>

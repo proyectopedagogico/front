@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#ffcce6" stroke="#00c2cb" stroke-width="10" rx="20" ry="20"/>
+  <text x="200" y="100" font-family="Arial" font-size="24" text-anchor="middle" fill="#333">Mujeres trabajadoras</text>
+  <text x="200" y="130" font-family="Arial" font-size="24" text-anchor="middle" fill="#333">de nuestras vidas</text>
+  <text x="200" y="180" font-family="Arial" font-size="36" text-anchor="middle" fill="#00c2cb">#MujeresTrabajaoras</text>
+</svg>
