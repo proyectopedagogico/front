@@ -4,6 +4,8 @@ import StoryCard from '../components/StoryCard.vue'
 import { ref, onMounted, computed, watch } from 'vue'
 import StoryModal from '../components/StoryModal.vue' 
 import { useLanguageStore } from '@/stores/languageStore'; 
+import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
 
 const storyStore = useStoryStore()
 const languageStore = useLanguageStore(); 
@@ -26,6 +28,26 @@ const closeModal = () => {
   showModal.value = false
   selectedStory.value = null
 }
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
+
+
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
+
+
 
 const activeFilters = ref({
   origin: '',      
@@ -114,35 +136,52 @@ function getStoryCardColorName(story) {
     <section class="world-map-section">
       <h2 class="section-title">MAPA MUNDI</h2>
       <div class="map-container">
-        <img src="@/assets/images/Mapamundi.png" alt="Mapa mundial" class="world-map" />
+      <img src="../assets/images/Mapamundi.png" usemap="#image-map">
+
+      <map name="image-map">
+    <area target="" alt="colombia" title="colombia" href="" coords="564,869,593,891,596,910,586,931,547,912,550,887" shape="poly">
+    <area target="" alt="bolivia" title="bolivia" href="" coords="610,974,648,1021,600,1041,587,1013,589,981" shape="poly">
+    <area target="" alt="nicaragua" title="nicaragua" href="" coords="517,866,511,845,499,855,504,868" shape="poly">
+    <area target="" alt="honduras" title="honduras" href="" coords="511,839,499,848,487,846,492,834" shape="poly">
+    <area target="" alt="espana" title="espana" href="" coords="902,672,962,682,937,714,921,719,909,714" shape="poly">
+    <area target="" alt="marruecos" title="marruecos" href="" coords="916,725,937,728,937,747,900,770,887,741" shape="poly">
+    <area target="" alt="argelia" title="argelia" href="" coords="943,728,941,747,902,772,967,825,1004,795,987,719" shape="poly">
+    <area target="" alt="senegal" title="senegal" href="" coords="867,834,886,854,867,857,875,845,858,839,837,1000" shape="poly">
+    <area target="" alt="polonia" title="polonia" href="" coords="1022,590,1066,587,1066,613,1056,622,1026,613" shape="poly">
+    <area target="" alt="ucrania" title="ucrania" href="" coords="1072,606,1068,631,1091,634,1100,647,1119,652,1144,641,1148,627,1123,613,1109,604,1100,613" shape="poly">
+    <area target="" alt="rumania" title="rumania" href="" coords="1063,636,1086,640,1100,657,1089,672,1073,677,1050,657,1054,647" shape="poly">
+    <area target="" alt="siria" title="siria" href="" coords="1135,719,1156,714,1155,730,1133,740" shape="poly">
+    <area target="" alt="pakistan" title="pakistan" href="" coords="1314,725,1301,747,1280,765,1262,758,1266,781,1303,792,1314,770,1333,747,1307,735" shape="poly">
+    <area target="" alt="gambia" title="gambia" href="" coords="860,848,872,848" shape="poly">
+</map>
       </div>
-    </section>
+</section>
 
     <section class="filter-section">
-      <h2 class="section-title">FILTRO</h2>
+      <h2 class="section-title">{{ t('views.stories.filter_title') }}</h2>
       <div class="filters">
         <div class="filter-group">
-          <label for="origin-filter">Procedencia</label>
+          <label for="origin-filter">{{ t('views.stories.origin') }}</label>
           <select id="origin-filter" v-model="activeFilters.origin" class="filter-select">
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option v-for="origin_option in storyStore.filterOptions.origins" :key="origin_option" :value="origin_option">
               {{ origin_option }}
             </option>
           </select>
         </div>
         <div class="filter-group">
-          <label for="profession-filter">Profesión</label>
+          <label for="profession-filter">{{ t('views.stories.profession') }}</label>
           <select id="profession-filter" v-model="activeFilters.profession" class="filter-select">
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option v-for="profession_option in storyStore.filterOptions.professions" :key="profession_option" :value="profession_option">
               {{ profession_option }}
             </option>
           </select>
         </div>
         <div class="filter-group">
-          <label for="tags-filter">Etiquetas</label>
+          <label for="tags-filter">{{ t('views.stories.tags') }}</label>
           <select id="tags-filter" v-model="activeFilters.tags" class="filter-select">
-            <option value="">Todas</option>
+            <option value="">{{ t('views.stories.filter_value') }}</option>
             <option v-for="tag_name in storyStore.filterOptions.tags" :key="tag_name" :value="tag_name">
               {{ tag_name }}
             </option>
@@ -225,8 +264,7 @@ function getStoryCardColorName(story) {
 background-color: black;
 }
 
-.world-map {
-  width: 100%;
+.map-container img {
   border-radius: 10px;
   object-fit: contain;
 }

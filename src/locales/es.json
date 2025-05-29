@@ -1,24 +1,12 @@
 {
-  "common": {
-    "title": "Mujeres Trabajadoras",
-    "loading": "Cargando...",
-    "error": "Ha ocurrido un error",
-    "success": "Operación exitosa",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "edit": "Editar",
-    "delete": "Eliminar",
-    "back": "Volver",
-    "next": "Siguiente",
-    "previous": "Anterior"
-  },
   "nav": {
     "logo": "Mujeres Trabajadoras",
     "menu": {
       "home": "Inicio",
       "stories": "Historias",
       "organization": "Organización",
-      "admin": "Admin"
+      "admin": "Admin",
+      "logout": "Cerrar sesión"
     },
     "languages": {
       "select": "Seleccionar idioma",
@@ -31,78 +19,93 @@
   },
   "views": {
     "home": {
+      "project": "Proyecto",
       "headline": "Mujeres Trabajadoras: Historias que Inspiran",
       "description": "Descubre las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones. Un espacio para visibilizar y celebrar sus contribuciones a la sociedad.",
       "featured": "Historias Destacadas",
-      "latest": "Últimas Historias"
-    },
-    "stories": {
-      "title": "Historias",
-      "filters": {
-        "category": "Categoría",
-        "date": "Fecha",
-        "search": "Buscar historias..."
-      },
-      "empty": "No se encontraron historias",
-      "readMore": "Leer más"
+      "latest": "Últimas Historias",
+      "viewstories": "Ver Historias",
+      "contact": "Contacto",
+      "organization": "Organización",
+      "organizationtext": "Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986 y cuyo propósito se centra en integrar en la sociedad a personas que están en situación o en riesgo de exclusión por diversas circunstancias personales, académicas o sociales. Promovemos una cualificación profesional, con valores y actitudes de responsabilidad y solidaridad, para que las personas sean soberanas y protagonistas activas, en sus propias vidas y en la sociedad. En Peñascal Kooperatiba tenemos como misión la integración de las personas, especialmente aquellas en situación de desventaja y para ello trabajamos en su formación y cualificación profesional, activación laboral, la creación de empleo, fomentando actitudes y valores solidarios y de ciudadanía.",
+      "knowmore": "Conocer más",
+      "latestStories": "Últimas Historias",
+      "morestories": "Más Historias",
+      "our_story": "Nuestra Historia",
+      "our_story_text": "En torno a la celebración del 8M el alumnado de Grado Básico de Moda, Tapicería y Comercio ha trabajado en el proyecto MUJERES TRABAJADORAS DE NUESTRAS VIDAS. Mujeres trabajadoras de nuestras vidas son un conjunto de relatos biográficos que pretenden realzar y poner en valor el trabajo  diario  que  desempeñan  las  mujeres  de  nuestro  entorno.  Cada  alumno  ha  realizado la biografía de una mujer de su vida con el objetivo final de dar a conocer sus historias de vida y agradecer el trabajo que han realizado tanto fuera como dentro del hogar. ",
+      "faq": "Preguntas Frecuentes"
     },
     "organization": {
-      "title": "Organización",
-      "about": "Sobre Nosotras",
-      "mission": "Nuestra Misión",
-      "vision": "Nuestra Visión",
-      "team": "Nuestro Equipo",
+      "title": "Nuestra organización",
+      "description": "Conoce más sobre quiénes somos, nuestra misión y visión, y cómo trabajamos para visibilizar las historias de mujeres trabajadoras.",
+      "mission_title": "Misión y Visión",
+      "mission_text": "Nuestra misión es visibilizar y dar voz a las experiencias, desafíos y logros de mujeres trabajadoras de diferentes orígenes, edades y profesiones, contribuyendo a la construcción de una sociedad más igualitaria y justa. Nuestra visión es crear un espacio de reconocimiento y valoración del trabajo femenino en todas sus formas, promoviendo la igualdad de oportunidades y el empoderamiento de las mujeres en el ámbito laboral.",
+      "values_title": "Nuestros Valores",
+      "values_text": "Nos guiamos por valores de igualdad, respeto, solidaridad, inclusión y empoderamiento. Creemos en la importancia de reconocer y valorar el trabajo de las mujeres en todas sus formas, promoviendo una cultura de igualdad y justicia social.",
+      "team_title": "Nuestro Equipo",
       "contact": "Contacto"
     },
+    "values": {
+      "title": "Nuestros Valores",
+      "v1_title": "Respeto",
+      "v1_text": "Valoramos la diversidad de experiencias y perspectivas.",
+      "v2_title": "Inclusión",
+      "v2_text": "Trabajamos para representar a mujeres de todos los orígenes y condiciones.",
+      "v3_title": "Empoderamiento",
+      "v3_text": "Creemos en la capacidad transformadora de las historias personales.",
+      "v4_title": "Colaboración",
+      "v4_text": "Construimos redes de apoyo entre mujeres y organizaciones.",
+      "v5_title": "Transparencia",
+      "v5_text": "Actuamos con honestidad y claridad en todas nuestras acciones."
+    },
     "admin": {
-      "title": "Panel de Administración",
-      "stories": {
-        "title": "Gestión de Historias",
-        "new": "Nueva Historia",
-        "edit": "Editar Historia",
-        "list": "Lista de Historias"
-      },
-      "users": {
+      "new": "Crear nueva historia",
+      "story_list": "Lista de Historias",
+      "origin": "Origen",
+      "birth": "Año de Nacimiento",
+      "profession": "Profesión",
+      "edit": "Editar",
+      "erase": "Borrar",
+      "form": {
         "title": "Gestión de Usuarios",
-        "new": "Nuevo Usuario",
-        "edit": "Editar Usuario",
-        "list": "Lista de Usuarios"
+        "name": "Nombre",
+        "image": "Imagen de perfil",
+        "birth": "Año de nacimiento",
+        "country": "País de origen",
+        "country_placeholder": "Selecciona un país",
+        "profession": "Profesión",
+        "color":"Color",
+        "story": "Historia",
+        "submit": "Guardar Historia",
+        "orange": "Naranja vibrante",
+        "blue": "Azul pastel",
+        "yellow": "Amarillo pastel",
+        "pink": "Rosa pastel",
+        "mint": "Menta pastel"
+            }
+    },
+    "team": {
+      "title": "Nuestro Equipo",
+      "member1": {
+        "name": "Irati",
+        "role": " ",
+        "bio": "Estudié educación social en UPV. También grado superior de integración social. Llevo trabajando en Peñascal desde 2017. Tengo 37 años."
+      },
+      "member2": {
+        "name": "Aixa",
+        "role": " ",
+        "bio": "Estudié sociología en la UPV. También máster en Juventud y Sociedad en Girona y Migraciones Forzosas y Acompañamiento Psicosocial en Madrid. Llevo trabajando en Peñascal desde el año 2020. Tengo 29 años."
       }
+    },
+    "stories": {
+      "filter_title": "FILTRO",
+      "origin": "Procedencia",
+      "profession": "Profesión",
+      "filter_value": "Todas",
+      "tags": "Etiquetas"
     }
-  },
-  "components": {
-    "storyCard": {
-      "author": "Por",
-      "date": "Publicado el",
-      "category": "Categoría",
-      "readTime": "Tiempo de lectura"
     },
-    "storyForm": {
-      "title": "Título",
-      "content": "Contenido",
-      "category": "Categoría",
-      "image": "Imagen",
-      "author": "Autora",
-      "submit": "Publicar Historia"
-    },
-    "contactForm": {
-      "name": "Nombre",
-      "email": "Correo electrónico",
-      "message": "Mensaje",
-      "submit": "Enviar"
-    },
-    "pagination": {
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "of": "de"
-    }
-  },
-  "sections": {
-    "organization": "Organización",
-    "latest_stories": "Últimas Historias",
-    "our_story": "Nuestra Historia",
-    "faq": "Preguntas Frecuentes"
-  },
+    
   "faq": {
     "q1": "¿Qué es el proyecto \"Mujeres Trabajadoras\"?",
     "a1": "Es una iniciativa que busca visibilizar las historias y experiencias de mujeres trabajadoras de diferentes orígenes, edades y profesiones, destacando sus contribuciones a la sociedad y los desafíos que enfrentan.",
@@ -113,13 +116,26 @@
     "q4": "¿Cómo puedo apoyar este proyecto?",
     "a4": "Puedes difundir las historias en redes sociales, participar en nuestros eventos o colaborar como voluntaria en la recopilación y edición de historias."
   },
+
+  "storiecard": {
+    "origin": "Origen",
+    "age": "Edad",
+    "years": "años",
+    "profession": "Profesión"
+  },
   "footer": {
-    "slogan": "Historias que inspiran",
+    "title": "¿Quieres compartir tu historia?",
+    "text": "Únete a nuestro proyecto y ayúdanos a visibilizar las experiencias de las mujeres trabajadoras.",
+    "contact": "Contáctanos",
+    "logo_text": "Mujeres Trabajadoras",
+    "logo_stories": "Historias que inspiran",
     "navigation": "Navegación",
-    "legal": {
-      "privacy": "Política de privacidad",
-      "terms": "Términos de servicio"
-    },
+    "home": "Inicio",
+    "stories": "Historias",
+    "organization": "Organización",
+    "legal": "Legal",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
     "social": "Social",
     "copyright": "© 2025 Mujeres Trabajadoras. Todos los derechos reservados."
   }

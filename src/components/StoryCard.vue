@@ -1,4 +1,18 @@
 <script setup>
+import { useStoryStore } from '../stores/storyStore'
+import { ref, computed, onMounted } from 'vue'
+import countriesData from '../assets/countries.json'
+import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
+
+
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
 defineProps({
   title: {
     type: String,
@@ -114,15 +128,15 @@ const getCardClass = (color) => {
       <!-- En la vista de historias (show-details) se muestra todo -->
       <div class="card-details" v-if="origin || age || profession">
         <div class="detail-item" v-if="origin">
-          <span class="detail-label">Origen:</span>
+          <span class="detail-label">{{ t('storiecard.origin')}}:</span>
           <span class="detail-value">{{ origin }}</span>
         </div>
         <div class="detail-item" v-if="age">
-          <span class="detail-label">Edad:</span>
+          <span class="detail-label">{{ t('storiecard.age')}}:</span>
           <span class="detail-value">{{ age }} años</span>
         </div>
         <div class="detail-item" v-if="profession">
-          <span class="detail-label">Profesión:</span>
+          <span class="detail-label">{{ t('storiecard.profession')}}:</span>
           <span class="detail-value">{{ profession }}</span>
         </div>
       </div>

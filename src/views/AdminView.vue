@@ -4,6 +4,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/authStore' // Import authStore
 import { useRouter } from 'vue-router' // Import useRouter for navigation
 import countriesData from '../assets/countries.json'
+import { useI18n } from 'vue-i18n'
+import { useLanguageStore } from '@/stores/languageStore'
 
 const storyStore = useStoryStore()
 const authStore = useAuthStore() // Initialize authStore
@@ -14,6 +16,13 @@ const storiesForAdmin = computed(() => storyStore.adminStories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
+const { t, locale } = useI18n()
+const languageStore = useLanguageStore()
+
+onMounted(() => {
+  languageStore.init()
+  locale.value = languageStore.currentLanguage
+})
 const availableTags = computed(() => storyStore.availableTags || [])
 
 const supportedLanguages = ref([
@@ -245,11 +254,11 @@ async function handleLogout() {
     <h1 class="dashboard-title">DASHBOARD</h1>
 
     <div class="create-story-container">
-      <button class="create-story-btn" @click="createNewStory">Crear nueva historia</button>
+      <button class="create-story-btn" @click="createNewStory">{{ t('views.admin.new') }}</button>
     </div>
 <button @click="handleLogout" class="logout-btn">Cerrar Sesión</button>
     <section class="story-list-section">
-      <h2 class="component-title">Lista de historias</h2>
+      <h2 class="component-title">{{ t('views.admin.story_list') }}</h2>
       <div v-if="isLoading && !showForm" class="loading-container">Cargando...</div>
       <div v-else-if="error && !showForm" class="error-container">
         <p class="error-message">{{ error }}</p>
