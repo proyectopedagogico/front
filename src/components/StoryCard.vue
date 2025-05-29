@@ -140,8 +140,6 @@ const getCardClass = (color) => {
           <span class="detail-value">{{ profession }}</span>
         </div>
       </div>
-
-<p v-if="description" class="card-description">{{ description }}</p>
       <button @click="$emit('readStory')" class="card-button" :aria-label="$t('storiecard.readStory')">
   {{ $t('storiecard.readStory') }}
 </button>
