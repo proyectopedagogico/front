@@ -3,12 +3,12 @@ import { useStoryStore } from '../stores/storyStore'
 import StoryCard from '../components/StoryCard.vue' 
 import { ref, onMounted, computed, watch } from 'vue'
 import StoryModal from '../components/StoryModal.vue' 
-import { useLanguageStore } from '@/stores/languageStore'; 
-import { useI18n } from 'vue-i18n'
 import { useLanguageStore } from '@/stores/languageStore'
+import { useI18n } from 'vue-i18n'
 
 const storyStore = useStoryStore()
 const languageStore = useLanguageStore(); 
+const { t, locale } = useI18n()
 
 const stories = computed(() => storyStore.stories)
 const isLoading = computed(() => storyStore.isLoading)
@@ -28,19 +28,6 @@ const closeModal = () => {
   showModal.value = false
   selectedStory.value = null
 }
-
-const { t, locale } = useI18n()
-const languageStore = useLanguageStore()
-
-onMounted(() => {
-  languageStore.init()
-  locale.value = languageStore.currentLanguage
-})
-
-
-
-const { t, locale } = useI18n()
-const languageStore = useLanguageStore()
 
 onMounted(() => {
   languageStore.init()
@@ -84,7 +71,7 @@ async function loadData(page = 1, lang = languageStore.currentLanguage) {
     await storyStore.fetchStories(
       lang,
       page,    
-      paginationInfo.value.per_page || 10, 
+      paginationInfo.value.per_page || 9, 
       { 
         origin: activeFilters.value.origin,
         profession: activeFilters.value.profession,

@@ -475,7 +475,12 @@ async function handleLogout() {
   margin-bottom: 15px;
   min-height: 120px;
 }
-
+.story-item-profile-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 /* Clases para los colores de las tarjetas */
 .card-orange {
   background-color: var(--card-orange);
