@@ -54,7 +54,7 @@ onMounted(() => {
     <div class="team-grid">
       <div class="team-card">
         <div class="member-image">
-          <img src="@/assets/placeholder-image.svg" :alt="t('views.team.member1.name')" />
+          <img src="../assets/images/Irati.png" :alt="t('views.team.member1.name')" />
         </div>
         <div class="member-info">
           <h3>{{ t('views.team.member1.name') }}</h3>
@@ -65,7 +65,7 @@ onMounted(() => {
 
       <div class="team-card">
         <div class="member-image">
-          <img src="@/assets/placeholder-image.svg" :alt="t('views.team.member2.name')" />
+          <img src="../assets/images/Aixa.png" :alt="t('views.team.member2.name')" />
         </div>
         <div class="member-info">
           <h3>{{ t('views.team.member2.name') }}</h3>
