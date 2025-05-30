@@ -65,6 +65,13 @@ const getBackgroundColor = (color) => {
   }
 }
 
+const emit = defineEmits(['readStory'])
+
+function handleClick() {
+  emit('readStory') // Si no pasas el objeto 'story' desde aquí, no llegará a openStoryModal
+}
+
+
 const getCardClass = (color) => {
   switch (color) {
     case 'pink':
@@ -133,8 +140,6 @@ const getCardClass = (color) => {
           <span class="detail-value">{{ profession }}</span>
         </div>
       </div>
-
-<p v-if="description" class="card-description">{{ description }}</p>
       <button @click="$emit('readStory')" class="card-button" :aria-label="$t('storiecard.readStory')">
   {{ $t('storiecard.readStory') }}
 </button>

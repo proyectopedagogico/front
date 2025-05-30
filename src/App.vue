@@ -40,7 +40,7 @@ body {
 
 /* Variables de colores */
 :root {
-  --primary-color: #00c2cb;
+  --primary-color: #5db898;
   --secondary-color: #ff6b6b;
   --text-color: #333;
   --background-color: #f5f5f5;

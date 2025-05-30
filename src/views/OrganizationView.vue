@@ -98,7 +98,7 @@ onMounted(() => {
 
 .hero-description {
   font-size: var(--font-size-lg);
-  color: var(--secondary-color);
+  color: var(--text-color);
   max-width: 800px;
   margin: 0 auto;
 }

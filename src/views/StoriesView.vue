@@ -1,20 +1,25 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
-import StoryCard from '../components/StoryCard.vue'
-import { ref, onMounted, computed } from 'vue'
-import StoryModal from '../components/StoryModal.vue'
-import { useI18n } from 'vue-i18n'
+import StoryCard from '../components/StoryCard.vue' 
+import { ref, onMounted, computed, watch } from 'vue'
+import StoryModal from '../components/StoryModal.vue' 
 import { useLanguageStore } from '@/stores/languageStore'
+import { useI18n } from 'vue-i18n'
 
 const storyStore = useStoryStore()
+const languageStore = useLanguageStore(); 
+const { t, locale } = useI18n()
+
 const stories = computed(() => storyStore.stories)
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
+const paginationInfo = computed(() => storyStore.paginationInfo)
 
 const selectedStory = ref(null)
 const showModal = ref(false)
 
 const openStoryModal = (story) => {
+  console.log("Opening modal for story:", JSON.parse(JSON.stringify(story)));
   selectedStory.value = story
   showModal.value = true
 }
@@ -24,9 +29,6 @@ const closeModal = () => {
   selectedStory.value = null
 }
 
-const { t, locale } = useI18n()
-const languageStore = useLanguageStore()
-
 onMounted(() => {
   languageStore.init()
   locale.value = languageStore.currentLanguage
@@ -34,45 +36,90 @@ onMounted(() => {
 
 
 
-// Filtros
 const activeFilters = ref({
-  origin: '',
-  profession: '',
-  tags: ''
+  origin: '',      
+  profession: '',  
+  tags: ''         
 })
 
-// Cargar historias filtradas
 const filteredStories = computed(() => {
-  return stories.value.filter(story => {
-    const matchOrigin = !activeFilters.value.origin || story.origin === activeFilters.value.origin;
-    const matchProfession = !activeFilters.value.profession || story.profession === activeFilters.value.profession;
-    const matchTags = !activeFilters.value.tags || (story.tags && story.tags.includes(activeFilters.value.tags));
+  if (!stories.value || !Array.isArray(stories.value)) {
+    return [];
+  }
+  
+  const currentOriginFilter = activeFilters.value?.origin?.toLowerCase() || '';
+  const currentProfessionFilter = activeFilters.value?.profession?.toLowerCase() || '';
+  const currentTagFilter = activeFilters.value?.tags?.toLowerCase() || '';
 
-    return matchOrigin && matchProfession && matchTags;
+  return stories.value.filter(story => {
+    const originMatch = !currentOriginFilter || 
+                        (story.persona_procedencia && story.persona_procedencia.toLowerCase().includes(currentOriginFilter));
+    
+    const professionMatch = !currentProfessionFilter || 
+                            (story.persona_profesion && story.persona_profesion.toLowerCase().includes(currentProfessionFilter));
+    
+    const tagMatch = !currentTagFilter || 
+                     (story.tags && story.tags.some(tag => tag.name && tag.name.toLowerCase().includes(currentTagFilter)));
+
+    return originMatch && professionMatch && tagMatch;
   });
 });
 
-// Función para reintentar la carga
-const retryLoad = async () => {
+async function loadData(page = 1, lang = languageStore.currentLanguage) { 
   try {
-    await Promise.all([
-      storyStore.fetchStories(),
-      storyStore.fetchFilterOptions()
-    ])
+    console.log(`StoriesView: Loading data - Lang: ${lang}, Page: ${page}, Filters:`, JSON.parse(JSON.stringify(activeFilters.value)));
+    await storyStore.fetchStories(
+      lang,
+      page,    
+      paginationInfo.value.per_page || 9, 
+      { 
+        origin: activeFilters.value.origin,
+        profession: activeFilters.value.profession,
+        tags: activeFilters.value.tags
+      }
+    );
   } catch (err) {
-    error.value = 'Error al cargar los datos'
+    console.error("Error in loadData (StoriesView):", err);
   }
 }
 
-// Cargar datos al montar el componente
+watch(activeFilters, () => {
+  loadData(1); 
+}, { deep: true });
+
+watch(() => languageStore.currentLanguage, (newLang) => {
+  loadData(1, newLang); 
+});
+
 onMounted(async () => {
-  await retryLoad()
-})
+  console.log("StoriesView.vue onMounted: Fetching filter options and initial stories...");
+  if (!storyStore.filterOptions || !storyStore.filterOptions.origins || storyStore.filterOptions.origins.length === 0) {
+      await storyStore.fetchFilterOptions();
+  }
+  await loadData(); 
+});
+
+const retryFetchStories = () => {
+  loadData(paginationInfo.value.page || 1); 
+}
+
+// --- NEW: Logic for Dynamic Card Colors (Frontend Only) ---
+const availableCardUiColors = ['pink', 'yellow', 'blue', 'mint', 'orange'];
+
+function getStoryCardColorName(story) {
+  if (story && story.id_historias) {
+    // Generate a consistent color name based on the story's ID
+    const colorIndex = story.id_historias % availableCardUiColors.length;
+    return availableCardUiColors[colorIndex];
+  }
+  return 'pink'; // Default color if no story or ID
+}
+// --- END NEW ---
+
 </script>
 
 <template>
   <div class="stories-view">
-    <!-- Mapa Mundial -->
     <section class="world-map-section">
       <h2 class="section-title">MAPA MUNDI</h2>
       <div class="map-container">
@@ -97,113 +144,78 @@ onMounted(async () => {
       </div>
 </section>
 
-    <!-- Sección de Filtros -->
     <section class="filter-section">
       <h2 class="section-title">{{ t('views.stories.filter_title') }}</h2>
       <div class="filters">
         <div class="filter-group">
-          <label for="origin">{{ t('views.stories.origin') }}</label>
-          <select
-            id="origin"
-            v-model="activeFilters.origin"
-            class="filter-select"
-          >
+          <label for="origin-filter">{{ t('views.stories.origin') }}</label>
+          <select id="origin-filter" v-model="activeFilters.origin" class="filter-select">
             <option value="">{{ t('views.stories.filter_value') }}</option>
-            <option
-              v-for="origin in storyStore.filterOptions.origins"
-              :key="origin"
-              :value="origin"
-            >
-              {{ origin }}
+            <option v-for="origin_option in storyStore.filterOptions.origins" :key="origin_option" :value="origin_option">
+              {{ origin_option }}
             </option>
           </select>
         </div>
-
         <div class="filter-group">
-          <label for="profession">{{ t('views.stories.profession') }}</label>
-          <select
-            id="profession"
-            v-model="activeFilters.profession"
-            class="filter-select"
-          >
+          <label for="profession-filter">{{ t('views.stories.profession') }}</label>
+          <select id="profession-filter" v-model="activeFilters.profession" class="filter-select">
             <option value="">{{ t('views.stories.filter_value') }}</option>
-            <option
-              v-for="profession in storyStore.filterOptions.professions"
-              :key="profession"
-              :value="profession"
-            >
-              {{ profession }}
+            <option v-for="profession_option in storyStore.filterOptions.professions" :key="profession_option" :value="profession_option">
+              {{ profession_option }}
             </option>
           </select>
         </div>
-
         <div class="filter-group">
-          <label for="tags">{{ t('views.stories.tags') }}</label>
-          <select
-            id="tags"
-            v-model="activeFilters.tags"
-            class="filter-select"
-          >
+          <label for="tags-filter">{{ t('views.stories.tags') }}</label>
+          <select id="tags-filter" v-model="activeFilters.tags" class="filter-select">
             <option value="">{{ t('views.stories.filter_value') }}</option>
-            <option
-              v-for="tag in storyStore.filterOptions.tags"
-              :key="tag"
-              :value="tag"
-            >
-              {{ tag }}
+            <option v-for="tag_name in storyStore.filterOptions.tags" :key="tag_name" :value="tag_name">
+              {{ tag_name }}
             </option>
           </select>
         </div>
       </div>
     </section>
 
-    <!-- Cuadrícula de Historias -->
     <section class="stories-grid-section">
-      <!-- Estado de carga -->
       <div v-if="isLoading" class="loading-container">
         <div class="loader"></div>
         <p class="loading-text">Cargando historias...</p>
       </div>
-
-      <!-- Estado de error -->
       <div v-else-if="error" class="error-container">
         <p class="error-message">{{ error }}</p>
-        <button @click="retryFetchStories" class="retry-btn">
-          Intentar de nuevo
-        </button>
+        <button @click="retryFetchStories" class="retry-btn">Intentar de nuevo</button>
       </div>
-
-      <!-- Historias (cuando no hay error ni está cargando) -->
       <div v-else class="stories-grid">
         <StoryCard
           v-for="story in filteredStories"
-          :key="story.id"
-          :title="story.name"
-          :color="story.color"
-          :buttonText="story.buttonText"
-          :icon="story.color === 'pink' ? 'sun' : story.color === 'yellow' ? 'bolt' : story.color === 'blue' ? 'wave' : 'sun'"
-          :origin="story.origin"
-          :age="story.birthYear"
-          :profession="story.profession"
-          :description="story.description"
-          :profileImage="story.profileImage"
+          :key="story.id_historias" 
+          :title="story.nombre_persona || 'Sin Título'"
+          :color="getStoryCardColorName(story)" :buttonText="'Leer historia'" 
+          :icon="story.icon_name || 'sun'" 
+          :origin="story.persona_procedencia || ''" 
+          :profession="story.persona_profesion || ''" 
+          :age="story.persona_anio_nacimiento || null" 
+          :description="story.contenido || 'Contenido no disponible.'"
+          :profileImage="story.persona_profile_image_url || null"
           class="show-details"
           @readStory="openStoryModal(story)"
         />
-
-        <!-- Mensaje cuando no hay historias -->
-        <div v-if="stories.length === 0" class="no-stories-message">
+        <div v-if="!isLoading && filteredStories.length === 0" class="no-stories-message">
           <p>No se encontraron historias que coincidan con los filtros seleccionados.</p>
         </div>
       </div>
+      <div v-if="!isLoading && paginationInfo.total_pages && paginationInfo.total_pages > 1" class="pagination-controls">
+        <button @click="loadData(paginationInfo.page - 1)" :disabled="!paginationInfo.prev_url">Anterior</button>
+        <span>Página {{ paginationInfo.page }} de {{ paginationInfo.total_pages }}</span>
+        <button @click="loadData(paginationInfo.page + 1)" :disabled="!paginationInfo.next_url">Siguiente</button>
+      </div>
     </section>
 
-    <!-- Modal de Historia -->
     <StoryModal
       v-if="selectedStory"
       :show="showModal"
-      :story="selectedStory"
-      @close="closeModal"
+      :story="selectedStory" @close="closeModal"
     />
   </div>
 </template>
@@ -288,7 +300,6 @@ background-color: black;
   justify-items: center;
 }
 
-/* Estilos para el estado de carga */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -318,7 +329,6 @@ background-color: black;
   color: var(--text-color);
 }
 
-/* Estilos para el estado de error */
 .error-container {
   display: flex;
   flex-direction: column;
@@ -351,7 +361,6 @@ background-color: black;
   transform: translateY(-2px);
 }
 
-/* Mensaje cuando no hay historias */
 .no-stories-message {
   grid-column: 1 / -1;
   text-align: center;
@@ -359,27 +368,22 @@ background-color: black;
   color: var(--text-color);
 }
 
-/* Mensaje cuando no hay resultados */
-.stories-grid:empty + .no-stories-message {
-  display: block;
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-color);
-  font-size: var(--font-size-md);
-  background-color: var(--light-gray);
-  border-radius: var(--border-radius-md);
-  margin: 2rem 0;
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
 }
-
-@media (max-width: 768px) {
-  .stories-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.pagination-controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
 }
-
-@media (max-width: 480px) {
-  .stories-grid {
-    grid-template-columns: 1fr;
-  }
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

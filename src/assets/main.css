@@ -3,7 +3,6 @@
 
 /* Variables globales adicionales */
 :root {
-  --primary-color: #000000;
   --secondary-color: #666666;
   --text-color: #333333;
   --background-color: #FFFFFF;
@@ -60,10 +59,15 @@ button {
   background-color: var(--primary-color);
   color: white;
 }
+.btn-primary:hover {
+  background-color: var(--background-color);
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+}
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--primary-color);
+  color: var(--text-color);
   border: 1px solid var(--primary-color);
 }
 

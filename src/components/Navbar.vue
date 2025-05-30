@@ -66,12 +66,11 @@ function handleLogout() {
   <RouterLink to="/historias" @click="isMenuOpen = false">{{ t('nav.menu.stories') }}</RouterLink>
   <RouterLink to="/organizacion" @click="isMenuOpen = false">{{ t('nav.menu.organization') }}</RouterLink>
   <template v-if="authStore.isAuthenticated">
-    <RouterLink to="/admin" @click="isMenuOpen = false">{{ t('nav.menu.admin') }}</RouterLink>
-    <a href="#" @click.prevent="handleLogout" class="logout-link">{{ t('nav.menu.logout') }}</a>
+            <RouterLink to="/admin" @click="isMenuOpen = false">{{ t('nav.menu.admin') }}</RouterLink>
   </template>
-  <template v-else>
-    <RouterLink to="/login" @click="isMenuOpen = false">{{ t('nav.menu.login') }}</RouterLink>
-  </template>
+        <template v-else>
+            <RouterLink to="/login" @click="isMenuOpen = false">Admin Login</RouterLink>
+          </template>
 </div>
 
 

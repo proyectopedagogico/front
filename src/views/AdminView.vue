@@ -1,12 +1,18 @@
 <script setup>
 import { useStoryStore } from '../stores/storyStore'
 import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '../stores/authStore' // Import authStore
+import { useRouter } from 'vue-router' // Import useRouter for navigation
 import countriesData from '../assets/countries.json'
 import { useI18n } from 'vue-i18n'
 import { useLanguageStore } from '@/stores/languageStore'
 
 const storyStore = useStoryStore()
-const stories = computed(() => storyStore.stories)
+const authStore = useAuthStore() // Initialize authStore
+const router = useRouter() // Initialize router
+
+
+const storiesForAdmin = computed(() => storyStore.adminStories) 
 const isLoading = computed(() => storyStore.isLoading)
 const error = computed(() => storyStore.error)
 const countries = computed(() => countriesData)
@@ -17,125 +23,228 @@ onMounted(() => {
   languageStore.init()
   locale.value = languageStore.currentLanguage
 })
+const availableTags = computed(() => storyStore.availableTags || [])
 
-// Cargar historias al montar el componente
+const supportedLanguages = ref([
+  { code: 'es', name: 'Español' },
+  { code: 'eu', name: 'Euskara' },
+  { code: 'en', name: 'English' },
+]);
+
 onMounted(async () => {
-  if (stories.value.length === 0) {
-    await storyStore.fetchStories()
+  console.log("AdminView.vue onMounted: Fetching admin stories and tags...");
+  await storyStore.fetchAdminStories(); 
+  if (!storyStore.availableTags || storyStore.availableTags.length === 0) { 
+    await storyStore.fetchTags();
   }
-})
+});
 
-// Estado para el formulario
-const formMode = ref('create') // 'create' o 'edit'
-const currentStoryId = ref(null)
-const formData = ref({
-  name: '',
-  color: 'pink', // Color pastel por defecto
-  buttonText: 'Leer',
-  buttonColor: 'white',
-  birthYear: '',
-  origin: '',
-  profession: '',
-  story: ''
-})
+const formMode = ref('create') 
+const currentStoryId = ref(null) 
 
-// Mostrar/ocultar formulario
+const initialFormData = () => ({
+  name: '',       
+  birthYear: '',  
+  origin: '',     
+  profession: '', 
+  story: '',      
+  Personas_id_persona: null, 
+  etiqueta_id_principal: null, 
+  tag_ids: [], 
+  current_lang_code: 'es', 
+  color: 'pink', // Default color for the form's select input
+  profileImageFile: null, 
+  profileImageDescription: '' 
+});
+
+const formData = ref(initialFormData());
+
 const showForm = ref(false)
-
-// Referencia al formulario para desplazamiento
 const formSection = ref(null)
 
-// Función para desplazarse suavemente al formulario
+function handleImageFileChange(event) {
+  const file = event.target.files[0];
+  if (file) {
+    formData.value.profileImageFile = file;
+  } else {
+    formData.value.profileImageFile = null;
+  }
+}
+
 function scrollToForm() {
-  // Esperar a que el formulario esté visible en el DOM
   setTimeout(() => {
     if (formSection.value) {
-      // Desplazarse al formulario con un offset
-      const yOffset = -80; // Ajusta este valor para controlar cuánto espacio dejar arriba
+      const yOffset = -80; 
       const y = formSection.value.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-      window.scrollTo({
-        top: y,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
-  }, 100) // Pequeño retraso para asegurar que el formulario esté renderizado
+  }, 100);
 }
 
-// Funciones
+function resetForm() {
+  formData.value = initialFormData();
+  currentStoryId.value = null;
+  formMode.value = 'create';
+  const fileInput = document.getElementById('form-profile-image'); 
+  if (fileInput) {
+    fileInput.value = null;
+  }
+}
+
 function createNewStory() {
-  formMode.value = 'create'
-  resetForm()
-  showForm.value = true
-  // Desplazarse al formulario después de hacerlo visible
-  scrollToForm()
+  formMode.value = 'create';
+  resetForm(); 
+  showForm.value = true;
+  scrollToForm();
 }
 
-function editStory(story) {
-  formMode.value = 'edit'
-  currentStoryId.value = story.id
-  formData.value = { ...story }
-  showForm.value = true
-  // Desplazarse al formulario después de hacerlo visible
-  scrollToForm()
+function editStory(story) { 
+  formMode.value = 'edit';
+  currentStoryId.value = story.id_historias;
+  
+  formData.value = {
+    name: story.nombre_persona || '', 
+    birthYear: story.persona_anio_nacimiento || '',
+    origin: story.persona_procedencia || '',
+    profession: story.persona_profesion || '',
+    story: story.contenido || '', 
+    Personas_id_persona: story.Personas_id_persona, 
+    etiqueta_id_principal: story.etiqueta_id_principal || null,
+    tag_ids: story.tags ? story.tags.map(tag => tag.etiqueta_id) : [], 
+    current_lang_code: 'es', 
+    // The 'color' in formData is for the form's select.
+    // If the story object from API had a 'color_card', you would use it here.
+    // For now, we default the form's color selector.
+    color: story.color_ui_from_api || 'pink', // Example if API sent a color for the story
+    profileImageFile: null, 
+    profileImageDescription: story.persona_info?.profile_image_description || '' 
+  };
+  showForm.value = true;
+  scrollToForm();
 }
 
-async function deleteStory(id) {
+async function deleteStoryFromAdminView(id_historias) { 
   if (confirm('¿Estás seguro de que quieres eliminar esta historia?')) {
     try {
-      await storyStore.deleteStory(id)
+      await storyStore.deleteStory(id_historias);
     } catch (err) {
-      alert(`Error al eliminar la historia: ${err}`)
+      alert(`Error al eliminar la historia: ${err.data ? err.data.error : err.message}`);
     }
   }
 }
 
 async function submitForm() {
+  isLoading.value = true; 
+  error.value = null; 
+  let final_Personas_id_persona = formData.value.Personas_id_persona ? parseInt(formData.value.Personas_id_persona) : null;
+
   try {
     if (formMode.value === 'create') {
-      await storyStore.addStory({ ...formData.value })
-    } else {
-      await storyStore.updateStory(currentStoryId.value, { ...formData.value })
+      if (!formData.value.name || !formData.value.origin) { 
+        alert("Para una nueva historia, el NOMBRE y el PAÍS DE ORIGEN de la persona son obligatorios.");
+        isLoading.value = false; return;
+      }
+      const personDataToCreate = {
+        nombre: formData.value.name,
+        procedencia: formData.value.origin, 
+        profesion: formData.value.profession || null,
+        anio: formData.value.birthYear ? parseInt(formData.value.birthYear) : null 
+      };
+      const newPerson = await storyStore.createPersonAndGetId(personDataToCreate); 
+      if (newPerson && newPerson.id_persona) {
+        final_Personas_id_persona = newPerson.id_persona;
+        if (formData.value.profileImageFile && final_Personas_id_persona) {
+          await storyStore.uploadImageForPerson(final_Personas_id_persona, formData.value.profileImageFile, formData.value.profileImageDescription);
+        }
+      } else {
+        throw new Error("No se pudo crear la persona o no se obtuvo un ID válido.");
+      }
+    } else { // Edit mode
+      if (!final_Personas_id_persona) {
+        alert('Error: No se encontró el ID de la persona para editar la historia.');
+        isLoading.value = false; return;
+      }
+      if (formData.value.profileImageFile && final_Personas_id_persona) {
+        await storyStore.uploadImageForPerson(final_Personas_id_persona, formData.value.profileImageFile, formData.value.profileImageDescription);
+      }
     }
-    showForm.value = false
-    resetForm()
+    
+    if (!formData.value.story || !formData.value.story.trim()) {
+      alert("El contenido de la historia no puede estar vacío.");
+      isLoading.value = false; return;
+    }
+
+    const traduccionesPayload = [{
+      codigo_idioma: formData.value.current_lang_code || 'es',
+      contenido_traducido: formData.value.story 
+    }];
+
+    const tag_ids_payload = Array.isArray(formData.value.tag_ids) 
+      ? formData.value.tag_ids.map(id => parseInt(id)).filter(n => !isNaN(n)) 
+      : [];
+
+    const storyApiPayload = {
+      Personas_id_persona: final_Personas_id_persona,
+      etiqueta_id_principal: formData.value.etiqueta_id_principal ? parseInt(formData.value.etiqueta_id_principal) : null,
+      traducciones: traduccionesPayload,
+      tag_ids: tag_ids_payload
+      // We are NOT sending formData.color to the backend, as it's UI only.
+    };
+
+    if (formMode.value === 'create') {
+      await storyStore.addStory(storyApiPayload);
+    } else {
+      await storyStore.updateStory(currentStoryId.value, storyApiPayload);
+    }
+    showForm.value = false;
+    resetForm();
+    await storyStore.fetchAdminStories(); 
+
   } catch (err) {
-    alert(`Error al guardar la historia: ${err}`)
+    console.error("AdminView: Error in submitForm:", err);
+    const errorMessage = (err.data && (err.data.message || err.data.error)) || err.message || 'Error desconocido al procesar el formulario.';
+    alert(`Error: ${errorMessage}`);
+  } finally {
+    isLoading.value = false;
   }
 }
 
-// Función para reintentar la carga si hay error
-function retryFetchStories() {
-  storyStore.fetchStories()
+function retryFetchAdminStories() { 
+  storyStore.fetchAdminStories();
 }
 
-function resetForm() {
-  formData.value = {
-    name: '',
-    color: 'orange',
-    buttonText: 'Leer',
-    buttonColor: 'white',
-    birthYear: '',
-    origin: '',
-    profession: '',
-    story: ''
+// --- UPDATED getCardClass function for UI display only ---
+const availableCardUiColors = ['pink', 'yellow', 'blue', 'mint', 'orange'];
+
+function getCardClassForStoryItem(story) {
+  if (story && story.id_historias) {
+    // Generate a consistent color based on the story's ID
+    // This ensures the same story always gets the same color from the list
+    // The color is determined purely on the frontend for display purposes.
+    const colorIndex = story.id_historias % availableCardUiColors.length;
+    const colorName = availableCardUiColors[colorIndex];
+    
+    switch (colorName) {
+      case 'pink': return 'card-pink';
+      case 'yellow': return 'card-yellow';
+      case 'blue': return 'card-blue';
+      case 'mint': return 'card-mint';
+      case 'orange': return 'card-orange'; // Ensure you have .card-orange style
+      default: return 'card-pink';
+    }
   }
-  currentStoryId.value = null
+  return 'card-pink'; // Default if no story or ID
 }
 
-// Función para obtener la clase de color de la tarjeta
-function getCardClass(color) {
-  switch (color) {
-    case 'pink':
-      return 'card-pink'
-    case 'yellow':
-      return 'card-yellow'
-    case 'blue':
-      return 'card-blue'
-    case 'mint':
-      return 'card-mint'
-    default:
-      return 'card-pink'
+async function handleLogout() {
+  try {
+    await authStore.logout(); // Call the logout action from your auth store
+    router.push({ name: 'login' }); // Redirect to login page after logout
+    // Or router.push('/'); to redirect to home page
+  } catch (error) {
+    console.error("Error during logout:", error);
+    // Handle any errors during logout if necessary, though authStore.logout should also handle errors
+    alert("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
   }
 }
 </script>
@@ -147,83 +256,86 @@ function getCardClass(color) {
     <div class="create-story-container">
       <button class="create-story-btn" @click="createNewStory">{{ t('views.admin.new') }}</button>
     </div>
-
-    <!-- Componente 1: Lista de historias para editar/borrar -->
+<button @click="handleLogout" class="logout-btn">Cerrar Sesión</button>
     <section class="story-list-section">
       <h2 class="component-title">{{ t('views.admin.story_list') }}</h2>
-
-      <!-- Estado de carga -->
-      <div v-if="isLoading" class="loading-container">
-        <div class="loader"></div>
-        <p class="loading-text">Cargando historias...</p>
-      </div>
-
-      <!-- Estado de error -->
-      <div v-else-if="error" class="error-container">
+      <div v-if="isLoading && !showForm" class="loading-container">Cargando...</div>
+      <div v-else-if="error && !showForm" class="error-container">
         <p class="error-message">{{ error }}</p>
-        <button @click="retryFetchStories" class="retry-btn">
-          Intentar de nuevo
-        </button>
+        <button @click="retryFetchAdminStories" class="retry-btn">Intentar de nuevo</button>
       </div>
-
-      <!-- Lista de historias -->
       <div v-else class="story-list">
-        <!-- Mensaje cuando no hay historias -->
-        <div v-if="stories.length === 0" class="no-stories-message">
+        <div v-if="storiesForAdmin.length === 0 && !isLoading" class="no-stories-message">
           <p>No hay historias disponibles. Crea una nueva historia para comenzar.</p>
         </div>
-
         <div
-          v-for="story in stories"
-          :key="story.id"
+          v-for="story in storiesForAdmin"
+          :key="story.id_historias"
           class="story-item"
-          :class="getCardClass(story.color)"
-        >
+          :class="getCardClassForStoryItem(story)" >
           <div class="story-info">
-            <h3>{{ story.name }}</h3>
-            <div class="story-details">
-              <span v-if="story.origin"><strong>{{ t ('views.admin.origin') }}:</strong> {{ story.origin }}</span>
-              <span v-if="story.birthYear"><strong>{{ t ('views.admin.birth') }}:</strong> {{ story.birthYear }}</span>
-              <span v-if="story.profession"><strong>{{ t ('views.admin.profession') }}:</strong> {{ story.profession }}</span>
+            <img 
+              v-if="story.persona_profile_image_url" 
+              :src="story.persona_profile_image_url" 
+              :alt="story.nombre_persona || 'Imagen de perfil'" 
+              class="story-item-profile-image"
+            />
+            <div v-else class="story-item-no-image">Sin Imagen</div>
+            
+            <div> 
+              <h3>{{ story.nombre_persona || 'Historia sin nombre de persona' }}</h3>
+              <div class="story-details">
+                <span v-if="story.persona_procedencia"><strong>Origen:</strong> {{ story.persona_procedencia }}</span>
+                <span v-if="story.persona_anio_nacimiento"><strong>Año:</strong> {{ story.persona_anio_nacimiento }}</span>
+                <span v-if="story.persona_profesion"><strong>Profesión:</strong> {{ story.persona_profesion }}</span>
+              </div>
+              <div class="story-text">
+                <p>{{ story.contenido || 'Contenido no disponible en este idioma.' }}</p>
+              </div>
+             <div class="story-tags" v-if="story.tags && story.tags.length > 0">
+              <strong>Etiquetas:</strong>
+              <span v-for="tag_item in story.tags" :key="tag_item.etiqueta_id" class="tag-item">{{ tag_item.name }}</span>
             </div>
-            <div class="story-text">
-              <p>{{ story.description }}</p>
+            <div class="story-main-tag" v-if="story.nombre_etiqueta_principal">
+              <strong>Etiqueta Principal:</strong> {{ story.nombre_etiqueta_principal }}
             </div>
           </div>
+          </div>
           <div class="story-actions">
-            <button class="action-btn edit-btn" @click="editStory(story)">{{ t ('views.admin.edit') }}:</button>
-            <button class="action-btn delete-btn" @click="deleteStory(story.id)">{{ t ('views.admin.erase') }}:</button>
+            <button class="action-btn edit-btn" @click="editStory(story)">Editar</button>
+            <button class="action-btn delete-btn" @click="deleteStoryFromAdminView(story.id_historias)">Borrar</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Componente 2: Formulario para crear/editar historias -->
     <section v-if="showForm" class="story-form-section" ref="formSection">
       <h2 class="component-title">
        Formulario para la {{ formMode === 'create' ? 'creación' : 'edición' }} de historias
       </h2>
-
       <form class="story-form" @submit.prevent="submitForm">
+        
+        <div class="form-group" v-if="formMode === 'edit'">
+          <label for="form-personas-id-edit">ID de Persona Asociada (Edición):</label>
+          <input type="number" id="form-personas-id-edit" class="form-control" v-model.number="formData.Personas_id_persona" readonly />
+        </div>
+
+        <p v-if="formMode === 'create'"><strong>Datos de la Nueva Persona (Obligatorio para nueva historia):</strong></p>
+        
         <div class="form-group">
-          <label for="nombre">{{ t ('views.admin.form.name') }}:</label>
-          <input type="text" id="nombre" class="form-control" v-model="formData.name" required />
+          <label for="nombre">Nombre Persona:</label>
+          <input type="text" id="nombre" class="form-control" v-model="formData.name" :required="formMode === 'create'" />
+        </div>
+        
+        <div class="form-group">
+          <label for="anioNacimiento">Año Nacimiento Persona:</label>
+          <input type="number" id="anioNacimiento" class="form-control" v-model.number="formData.birthYear" />
         </div>
 
         <div class="form-group">
-          <label for="imagen">{{ t ('views.admin.form.image') }}:</label>
-          <input type="text" id="imagen" class="form-control" placeholder="URL de la imagen" />
-        </div>
-
-        <div class="form-group">
-          <label for="anioNacimiento">{{ t ('views.admin.form.birth') }}:</label>
-          <input type="number" id="anioNacimiento" class="form-control" v-model="formData.birthYear" min="1950" :max="new Date().getFullYear()" />
-        </div>
-
-        <div class="form-group">
-          <label for="procedencia">{{ t ('views.admin.form.country') }}:</label>
-          <select id="procedencia" class="form-control" v-model="formData.origin">
-            <option value="">{{ t ('views.admin.form.country_placeholder') }}</option>
+          <label for="procedencia">País Origen Persona (Obligatorio si es nueva):</label>
+          <select id="procedencia" class="form-control" v-model="formData.origin" :required="formMode === 'create'">
+            <option value="">Selecciona un país</option>
             <option v-for="country in countries" :key="country.id" :value="country.name">
               {{ country.name }}
             </option>
@@ -231,29 +343,69 @@ function getCardClass(color) {
         </div>
 
         <div class="form-group">
-          <label for="profesion">{{ t ('views.admin.form.profession') }}:</label>
+          <label for="profesion">Profesión Persona:</label>
           <input type="text" id="profesion" class="form-control" v-model="formData.profession" />
+        </div>
+        
+        <div class="form-group">
+          <label for="form-profile-image">Imagen de Perfil (opcional):</label>
+          <input type="file" id="form-profile-image" class="form-control" @change="handleImageFileChange" accept="image/png, image/jpeg, image/gif, image/webp" />
+        </div>
+        <div class="form-group">
+          <label for="form-image-description">Descripción de la Imagen (opcional):</label>
+          <input type="text" id="form-image-description" class="form-control" v-model="formData.profileImageDescription" />
+        </div>
+        
+        <hr> 
+        <p><strong>Datos de la Historia:</strong></p>
+
+        <div class="form-group">
+            <label for="form-story-language">Idioma del Contenido:</label>
+            <select id="form-story-language" class="form-control" v-model="formData.current_lang_code">
+                <option v-for="lang in supportedLanguages" :key="lang.code" :value="lang.code">
+                    {{ lang.name }}
+                </option>
+            </select>
         </div>
 
         <div class="form-group">
-          <label for="color">{{ t ('views.admin.form.color') }}:</label>
-          <select id="color" class="form-control" v-model="formData.color">
-            <option value="orange">{{ t ('views.admin.form.orange') }}</option>
-            <option value="pink">{{ t ('views.admin.form.pink') }}</option>
-            <option value="yellow">{{ t ('views.admin.form.yellow') }}</option>
-            <option value="blue">{{ t ('views.admin.form.blue') }}</option>
-            <option value="mint">{{ t ('views.admin.form.mint') }}</option>
+          <label for="historia">Historia (Contenido en {{ formData.current_lang_code.toUpperCase() }}):</label>
+          <textarea id="historia" class="form-control textarea" v-model="formData.story" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="form-etiqueta-principal">Etiqueta Principal (opcional):</label>
+            <select id="form-etiqueta-principal" class="form-control" v-model="formData.etiqueta_id_principal">
+                <option :value="null">-- Ninguna --</option>
+                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
+                    {{ tag_option.name }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="form-tag-ids">Etiquetas Adicionales (opcional, mantén Ctrl/Cmd para seleccionar varias):</label>
+            <select id="form-tag-ids" class="form-control" v-model="formData.tag_ids" multiple>
+                <option v-for="tag_option in availableTags" :key="tag_option.etiqueta_id" :value="tag_option.etiqueta_id">
+                    {{ tag_option.name }}
+                </option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="form-color-card">Color de Tarjeta (UI):</label>
+          <select id="form-color-card" class="form-control" v-model="formData.color">
+            <option value="pink">Rosa Pastel</option>
+            <option value="yellow">Amarillo Pastel</option>
+            <option value="blue">Azul Pastel</option>
+            <option value="mint">Menta Pastel</option>
+            <option value="orange">Naranja Vibrante</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="historia">{{ t ('views.admin.form.story') }}:</label>
-          <textarea id="historia" class="form-control textarea" v-model="formData.story"></textarea>
-        </div>
-
         <div class="form-actions">
-          <button type="submit" class="create-btn">
-            {{ formMode === 'create' ? 'Crear' : 'Guardar cambios' }}
+          <button type="submit" class="create-btn" :disabled="isLoading">
+            {{ isLoading ? 'Guardando...' : (formMode === 'create' ? 'Crear Historia y Persona' : 'Guardar Cambios') }}
           </button>
         </div>
       </form>
@@ -262,6 +414,7 @@ function getCardClass(color) {
 </template>
 
 <style scoped>
+/* Tus estilos permanecen aquí sin cambios */
 .admin-view {
   max-width: 1000px;
   margin: 0 auto;
@@ -322,7 +475,12 @@ function getCardClass(color) {
   margin-bottom: 15px;
   min-height: 120px;
 }
-
+.story-item-profile-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 /* Clases para los colores de las tarjetas */
 .card-orange {
   background-color: var(--card-orange);
@@ -424,20 +582,6 @@ function getCardClass(color) {
   background-color: white;
 }
 
-/* Círculo de selección */
-/* .story-item::before {
-  content: "";
-  position: absolute;
-  top: 16.5px;
-  right: 277px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid #333;
-  background-color: white;
-} */
-
-/* Estados de carga y error */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -508,7 +652,6 @@ function getCardClass(color) {
   margin-bottom: 15px;
 }
 
-/* Formulario */
 .story-form {
   display: flex;
   flex-direction: column;
@@ -553,12 +696,24 @@ function getCardClass(color) {
   font-size: 14px;
 }
 
+.logout-btn { /* NEW STYLE for logout button */
+  background-color: white;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.logout-btn:hover {
+  background-color: #d32f2f8a; /* Darker red */
+}
+
 @media (max-width: 768px) {
   .story-item {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .story-actions {
     flex-direction: row;
     margin-top: 15px;
